@@ -500,7 +500,7 @@ what each does, what was taken, and where each is better.
   From the repository root:
 
   ```bash
-  ln -s "$PWD/vscode/command-layer-extension" ~/.vscode/extensions/saemeon.command-layer-0.1.1
+  ln -s "$PWD/vscode/command-layer-extension" ~/.vscode/extensions/saemeon.command-layer-0.1.2
   ```
 
   then reopen VS Code (if the link is not picked up, **Developer: Install
