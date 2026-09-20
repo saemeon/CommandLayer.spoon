@@ -53,15 +53,19 @@ local function encode(text)
   return (tostring(text):gsub("[^%w%-%._~]", function(c) return ("%%%02X"):format(c:byte()) end))
 end
 
--- The extension's URI handler: ?task=<label>, or ?command=<id> with args a
--- JSON array encoded twice, since VS Code decodes the query once before the
--- handler reads it.
+-- The extension's URI handler: ?task=<label>, or ?command=<id> with each
+-- argument as ?argsN=, its JSON, encoded twice since VS Code decodes the
+-- query once before the handler reads it. An argument is wrapped in a list
+-- to be encoded, and the brackets taken off, so a string keeps its quotes and
+-- stays a string when the extension reads it.
 function M.url(spec)
-  local base = "vscode://" .. M.identifier .. "/run?"
+  local base = "vscode://" .. M.identifier .. "?"
   if spec.task then return base .. "task=" .. encode(spec.task) end
   local url = base .. "command=" .. encode(spec.command)
-  if type(spec.args) == "table" and next(spec.args) ~= nil then
-    url = url .. "&args=" .. encode(encode(hs.json.encode(spec.args)))
+  if type(spec.args) == "table" then
+    for i, value in ipairs(spec.args) do
+      url = url .. "&args" .. (i - 1) .. "=" .. encode(encode(hs.json.encode({ value }):sub(2, -2)))
+    end
   end
   return url
 end
