@@ -1,0 +1,476 @@
+[
+  {
+    "Constant" : [
+
+    ],
+    "submodules" : [
+
+    ],
+    "Function" : [
+
+    ],
+    "Variable" : [
+      {
+        "doc" : "The Spoon's folder, ending in a slash.",
+        "def" : "CommandLayer.spoonPath",
+        "stripped_doc" : [
+          "The Spoon's folder, ending in a slash."
+        ],
+        "desc" : "The Spoon's folder, ending in a slash.",
+        "notes" : [
+
+        ],
+        "signature" : "CommandLayer.spoonPath",
+        "type" : "Variable",
+        "returns" : [
+
+        ],
+        "name" : "spoonPath",
+        "parameters" : [
+
+        ]
+      },
+      {
+        "doc" : "The mapping `CommandLayer:bindHotkeys()` takes, holding the chord that opens\nthe layer as shipped: `{ enter = { { \"alt\" }, \"space\" } }`.\n\nNotes:\n * start() binds alt+space from the shipped keybindings without it. Passing it to bindHotkeys binds the same\n   chord in init.lua instead, where a keybinding written from the launcher cannot remove it.",
+        "def" : "CommandLayer.defaultHotkeys",
+        "stripped_doc" : [
+          "The mapping `CommandLayer:bindHotkeys()` takes, holding the chord that opens",
+          "the layer as shipped: `{ enter = { { \"alt\" }, \"space\" } }`.",
+          ""
+        ],
+        "desc" : "The mapping `CommandLayer:bindHotkeys()` takes, holding the chord that opens",
+        "notes" : [
+          " * start() binds alt+space from the shipped keybindings without it. Passing it to bindHotkeys binds the same",
+          "   chord in init.lua instead, where a keybinding written from the launcher cannot remove it."
+        ],
+        "signature" : "CommandLayer.defaultHotkeys",
+        "type" : "Variable",
+        "returns" : [
+
+        ],
+        "name" : "defaultHotkeys",
+        "parameters" : [
+
+        ]
+      },
+      {
+        "doc" : "Which profile's settings.json and keybindings.json apply over the shipped defaults, or nil.\n\nNotes:\n * A name is the Spoon's config\/profiles\/<name>\/, then ~\/.config\/commandlayer\/profiles\/<name>\/; a path\n   is that folder.\n * Left nil, ~\/.config\/commandlayer\/profile.json decides, then \"default\", whose files are\n   ~\/.config\/commandlayer\/settings.json and keybindings.json.\n * Read at the first start(); set it before.",
+        "def" : "CommandLayer.profile",
+        "stripped_doc" : [
+          "Which profile's settings.json and keybindings.json apply over the shipped defaults, or nil.",
+          ""
+        ],
+        "desc" : "Which profile's settings.json and keybindings.json apply over the shipped defaults, or nil.",
+        "notes" : [
+          " * A name is the Spoon's config\/profiles\/<name>\/, then ~\/.config\/commandlayer\/profiles\/<name>\/; a path",
+          "   is that folder.",
+          " * Left nil, ~\/.config\/commandlayer\/profile.json decides, then \"default\", whose files are",
+          "   ~\/.config\/commandlayer\/settings.json and keybindings.json.",
+          " * Read at the first start(); set it before."
+        ],
+        "signature" : "CommandLayer.profile",
+        "type" : "Variable",
+        "returns" : [
+
+        ],
+        "name" : "profile",
+        "parameters" : [
+
+        ]
+      },
+      {
+        "doc" : "The folder holding your settings, keybindings, profiles and plugin files, or nil.\n\nNotes:\n * Left nil, it is $XDG_CONFIG_HOME\/commandlayer when that is set, else ~\/.config\/commandlayer.\n * Read at the first start(); set it before.",
+        "def" : "CommandLayer.userDir",
+        "stripped_doc" : [
+          "The folder holding your settings, keybindings, profiles and plugin files, or nil.",
+          ""
+        ],
+        "desc" : "The folder holding your settings, keybindings, profiles and plugin files, or nil.",
+        "notes" : [
+          " * Left nil, it is $XDG_CONFIG_HOME\/commandlayer when that is set, else ~\/.config\/commandlayer.",
+          " * Read at the first start(); set it before."
+        ],
+        "signature" : "CommandLayer.userDir",
+        "type" : "Variable",
+        "returns" : [
+
+        ],
+        "name" : "userDir",
+        "parameters" : [
+
+        ]
+      },
+      {
+        "doc" : "The layer itself, made by init(), as the console reaches it: `spoon.CommandLayer.layer`.\n\nNotes:\n * `executeCommand(id, args)` runs a command by id, asking for what args does not answer, and returns\n   true and what the command returned, or false when there is no such command.\n * `setLogLevel(level)` takes VS Code's level names: \"off\", \"trace\", \"debug\", \"info\", \"warning\", \"error\".\n * `problems` is a copy of what is wrong in your files, each `{ file, message }`.\n * `apiVersion` is the plugin contract's version, 0 while in development.\n * `start`, `stop` and `bindHotkeys` are what the methods of the same names call.\n * Reading or setting any other name raises.",
+        "def" : "CommandLayer.layer",
+        "stripped_doc" : [
+          "The layer itself, made by init(), as the console reaches it: `spoon.CommandLayer.layer`.",
+          ""
+        ],
+        "desc" : "The layer itself, made by init(), as the console reaches it: `spoon.CommandLayer.layer`.",
+        "notes" : [
+          " * `executeCommand(id, args)` runs a command by id, asking for what args does not answer, and returns",
+          "   true and what the command returned, or false when there is no such command.",
+          " * `setLogLevel(level)` takes VS Code's level names: \"off\", \"trace\", \"debug\", \"info\", \"warning\", \"error\".",
+          " * `problems` is a copy of what is wrong in your files, each `{ file, message }`.",
+          " * `apiVersion` is the plugin contract's version, 0 while in development.",
+          " * `start`, `stop` and `bindHotkeys` are what the methods of the same names call.",
+          " * Reading or setting any other name raises."
+        ],
+        "signature" : "CommandLayer.layer",
+        "type" : "Variable",
+        "returns" : [
+
+        ],
+        "name" : "layer",
+        "parameters" : [
+
+        ]
+      }
+    ],
+    "stripped_doc" : [
+
+    ],
+    "Deprecated" : [
+
+    ],
+    "type" : "Module",
+    "desc" : "A keyboard launcher shaped like VS Code's quick open: the commands for",
+    "Constructor" : [
+
+    ],
+    "doc" : "A keyboard launcher shaped like VS Code's quick open: the commands for\nwhatever is in front of you -- an app, a window, a Finder selection, a\nbrowser tab, a project -- in one palette, each handed to whatever already\ndoes the job -- Spotlight, the menu bar, a CLI, another Spoon.\n\nInstall to ~\/.hammerspoon\/Spoons\/CommandLayer.spoon, then in init.lua:\n\n```\nhs.loadSpoon(\"CommandLayer\")\nspoon.CommandLayer:start()\n```\n\nalt+space opens it -- Raycast's and Alfred's default too, so whichever of\nthem holds it has to give it up first.\n\nSettings, keybindings and profiles are JSONC files in ~\/.config\/commandlayer\/,\nover the Spoon's own in config\/. Anything needing code is a file in\nextensions\/, views\/, matchers\/, rankers\/ or presenters\/ -- see README.md.",
+    "Method" : [
+      {
+        "doc" : "Loads the layer without starting it.\n\nParameters:\n * None\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * hs.loadSpoon calls this. No folder is read and no chord claimed until start(), so `profile` and\n   `userDir` can be set in between.",
+        "def" : "CommandLayer:init()",
+        "stripped_doc" : [
+          "Loads the layer without starting it.",
+          ""
+        ],
+        "desc" : "Loads the layer without starting it.",
+        "notes" : [
+          " * hs.loadSpoon calls this. No folder is read and no chord claimed until start(), so `profile` and",
+          "   `userDir` can be set in between."
+        ],
+        "signature" : "CommandLayer:init()",
+        "type" : "Method",
+        "returns" : [
+          " * The CommandLayer object",
+          ""
+        ],
+        "name" : "init",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "doc" : "Binds the chord that opens the layer, in place of the one the keybindings files bind.\n\nParameters:\n * mapping - A table with one key:\n  * enter - opens the default picker, from any app: `{ { \"alt\" }, \"space\" }`, or a keybinding's\n    `\"alt+space\"`\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * The chord becomes a global keybinding after every file's, and every chord entering the layer\n   before it is removed. Every other chord still comes from the keybindings files.\n * Before start() it applies at start; after, at once. A name other than `enter` is reported with\n   the problems in your files.\n * `CommandLayer.defaultHotkeys` is the shipped chord in this shape.",
+        "def" : "CommandLayer:bindHotkeys(mapping)",
+        "stripped_doc" : [
+          "Binds the chord that opens the layer, in place of the one the keybindings files bind.",
+          ""
+        ],
+        "desc" : "Binds the chord that opens the layer, in place of the one the keybindings files bind.",
+        "notes" : [
+          " * The chord becomes a global keybinding after every file's, and every chord entering the layer",
+          "   before it is removed. Every other chord still comes from the keybindings files.",
+          " * Before start() it applies at start; after, at once. A name other than `enter` is reported with",
+          "   the problems in your files.",
+          " * `CommandLayer.defaultHotkeys` is the shipped chord in this shape."
+        ],
+        "signature" : "CommandLayer:bindHotkeys(mapping)",
+        "type" : "Method",
+        "returns" : [
+          " * The CommandLayer object",
+          ""
+        ],
+        "name" : "bindHotkeys",
+        "parameters" : [
+          " * mapping - A table with one key:",
+          "  * enter - opens the default picker, from any app: `{ { \"alt\" }, \"space\" }`, or a keybinding's",
+          "    `\"alt+space\"`",
+          ""
+        ]
+      },
+      {
+        "doc" : "Starts the layer.\n\nParameters:\n * None\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * The first start reads the plugin folders, the settings and the keybindings of `profile` from\n   `userDir`, and binds the keybindings. Every start then starts the extensions, binds the global\n   keybindings and shows any problem found in one alert.",
+        "def" : "CommandLayer:start()",
+        "stripped_doc" : [
+          "Starts the layer.",
+          ""
+        ],
+        "desc" : "Starts the layer.",
+        "notes" : [
+          " * The first start reads the plugin folders, the settings and the keybindings of `profile` from",
+          "   `userDir`, and binds the keybindings. Every start then starts the extensions, binds the global",
+          "   keybindings and shows any problem found in one alert."
+        ],
+        "signature" : "CommandLayer:start()",
+        "type" : "Method",
+        "returns" : [
+          " * The CommandLayer object",
+          ""
+        ],
+        "name" : "start",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "doc" : "Stops the layer.\n\nParameters:\n * None\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * Closes the launcher if it is open, releases the global keybindings, and stops every extension that\n   started. start() starts it again.",
+        "def" : "CommandLayer:stop()",
+        "stripped_doc" : [
+          "Stops the layer.",
+          ""
+        ],
+        "desc" : "Stops the layer.",
+        "notes" : [
+          " * Closes the launcher if it is open, releases the global keybindings, and stops every extension that",
+          "   started. start() starts it again."
+        ],
+        "signature" : "CommandLayer:stop()",
+        "type" : "Method",
+        "returns" : [
+          " * The CommandLayer object",
+          ""
+        ],
+        "name" : "stop",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      }
+    ],
+    "Command" : [
+
+    ],
+    "Field" : [
+
+    ],
+    "items" : [
+      {
+        "doc" : "The mapping `CommandLayer:bindHotkeys()` takes, holding the chord that opens\nthe layer as shipped: `{ enter = { { \"alt\" }, \"space\" } }`.\n\nNotes:\n * start() binds alt+space from the shipped keybindings without it. Passing it to bindHotkeys binds the same\n   chord in init.lua instead, where a keybinding written from the launcher cannot remove it.",
+        "def" : "CommandLayer.defaultHotkeys",
+        "stripped_doc" : [
+          "The mapping `CommandLayer:bindHotkeys()` takes, holding the chord that opens",
+          "the layer as shipped: `{ enter = { { \"alt\" }, \"space\" } }`.",
+          ""
+        ],
+        "desc" : "The mapping `CommandLayer:bindHotkeys()` takes, holding the chord that opens",
+        "notes" : [
+          " * start() binds alt+space from the shipped keybindings without it. Passing it to bindHotkeys binds the same",
+          "   chord in init.lua instead, where a keybinding written from the launcher cannot remove it."
+        ],
+        "signature" : "CommandLayer.defaultHotkeys",
+        "type" : "Variable",
+        "returns" : [
+
+        ],
+        "name" : "defaultHotkeys",
+        "parameters" : [
+
+        ]
+      },
+      {
+        "doc" : "The layer itself, made by init(), as the console reaches it: `spoon.CommandLayer.layer`.\n\nNotes:\n * `executeCommand(id, args)` runs a command by id, asking for what args does not answer, and returns\n   true and what the command returned, or false when there is no such command.\n * `setLogLevel(level)` takes VS Code's level names: \"off\", \"trace\", \"debug\", \"info\", \"warning\", \"error\".\n * `problems` is a copy of what is wrong in your files, each `{ file, message }`.\n * `apiVersion` is the plugin contract's version, 0 while in development.\n * `start`, `stop` and `bindHotkeys` are what the methods of the same names call.\n * Reading or setting any other name raises.",
+        "def" : "CommandLayer.layer",
+        "stripped_doc" : [
+          "The layer itself, made by init(), as the console reaches it: `spoon.CommandLayer.layer`.",
+          ""
+        ],
+        "desc" : "The layer itself, made by init(), as the console reaches it: `spoon.CommandLayer.layer`.",
+        "notes" : [
+          " * `executeCommand(id, args)` runs a command by id, asking for what args does not answer, and returns",
+          "   true and what the command returned, or false when there is no such command.",
+          " * `setLogLevel(level)` takes VS Code's level names: \"off\", \"trace\", \"debug\", \"info\", \"warning\", \"error\".",
+          " * `problems` is a copy of what is wrong in your files, each `{ file, message }`.",
+          " * `apiVersion` is the plugin contract's version, 0 while in development.",
+          " * `start`, `stop` and `bindHotkeys` are what the methods of the same names call.",
+          " * Reading or setting any other name raises."
+        ],
+        "signature" : "CommandLayer.layer",
+        "type" : "Variable",
+        "returns" : [
+
+        ],
+        "name" : "layer",
+        "parameters" : [
+
+        ]
+      },
+      {
+        "doc" : "Which profile's settings.json and keybindings.json apply over the shipped defaults, or nil.\n\nNotes:\n * A name is the Spoon's config\/profiles\/<name>\/, then ~\/.config\/commandlayer\/profiles\/<name>\/; a path\n   is that folder.\n * Left nil, ~\/.config\/commandlayer\/profile.json decides, then \"default\", whose files are\n   ~\/.config\/commandlayer\/settings.json and keybindings.json.\n * Read at the first start(); set it before.",
+        "def" : "CommandLayer.profile",
+        "stripped_doc" : [
+          "Which profile's settings.json and keybindings.json apply over the shipped defaults, or nil.",
+          ""
+        ],
+        "desc" : "Which profile's settings.json and keybindings.json apply over the shipped defaults, or nil.",
+        "notes" : [
+          " * A name is the Spoon's config\/profiles\/<name>\/, then ~\/.config\/commandlayer\/profiles\/<name>\/; a path",
+          "   is that folder.",
+          " * Left nil, ~\/.config\/commandlayer\/profile.json decides, then \"default\", whose files are",
+          "   ~\/.config\/commandlayer\/settings.json and keybindings.json.",
+          " * Read at the first start(); set it before."
+        ],
+        "signature" : "CommandLayer.profile",
+        "type" : "Variable",
+        "returns" : [
+
+        ],
+        "name" : "profile",
+        "parameters" : [
+
+        ]
+      },
+      {
+        "doc" : "The Spoon's folder, ending in a slash.",
+        "def" : "CommandLayer.spoonPath",
+        "stripped_doc" : [
+          "The Spoon's folder, ending in a slash."
+        ],
+        "desc" : "The Spoon's folder, ending in a slash.",
+        "notes" : [
+
+        ],
+        "signature" : "CommandLayer.spoonPath",
+        "type" : "Variable",
+        "returns" : [
+
+        ],
+        "name" : "spoonPath",
+        "parameters" : [
+
+        ]
+      },
+      {
+        "doc" : "The folder holding your settings, keybindings, profiles and plugin files, or nil.\n\nNotes:\n * Left nil, it is $XDG_CONFIG_HOME\/commandlayer when that is set, else ~\/.config\/commandlayer.\n * Read at the first start(); set it before.",
+        "def" : "CommandLayer.userDir",
+        "stripped_doc" : [
+          "The folder holding your settings, keybindings, profiles and plugin files, or nil.",
+          ""
+        ],
+        "desc" : "The folder holding your settings, keybindings, profiles and plugin files, or nil.",
+        "notes" : [
+          " * Left nil, it is $XDG_CONFIG_HOME\/commandlayer when that is set, else ~\/.config\/commandlayer.",
+          " * Read at the first start(); set it before."
+        ],
+        "signature" : "CommandLayer.userDir",
+        "type" : "Variable",
+        "returns" : [
+
+        ],
+        "name" : "userDir",
+        "parameters" : [
+
+        ]
+      },
+      {
+        "doc" : "Binds the chord that opens the layer, in place of the one the keybindings files bind.\n\nParameters:\n * mapping - A table with one key:\n  * enter - opens the default picker, from any app: `{ { \"alt\" }, \"space\" }`, or a keybinding's\n    `\"alt+space\"`\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * The chord becomes a global keybinding after every file's, and every chord entering the layer\n   before it is removed. Every other chord still comes from the keybindings files.\n * Before start() it applies at start; after, at once. A name other than `enter` is reported with\n   the problems in your files.\n * `CommandLayer.defaultHotkeys` is the shipped chord in this shape.",
+        "def" : "CommandLayer:bindHotkeys(mapping)",
+        "stripped_doc" : [
+          "Binds the chord that opens the layer, in place of the one the keybindings files bind.",
+          ""
+        ],
+        "desc" : "Binds the chord that opens the layer, in place of the one the keybindings files bind.",
+        "notes" : [
+          " * The chord becomes a global keybinding after every file's, and every chord entering the layer",
+          "   before it is removed. Every other chord still comes from the keybindings files.",
+          " * Before start() it applies at start; after, at once. A name other than `enter` is reported with",
+          "   the problems in your files.",
+          " * `CommandLayer.defaultHotkeys` is the shipped chord in this shape."
+        ],
+        "signature" : "CommandLayer:bindHotkeys(mapping)",
+        "type" : "Method",
+        "returns" : [
+          " * The CommandLayer object",
+          ""
+        ],
+        "name" : "bindHotkeys",
+        "parameters" : [
+          " * mapping - A table with one key:",
+          "  * enter - opens the default picker, from any app: `{ { \"alt\" }, \"space\" }`, or a keybinding's",
+          "    `\"alt+space\"`",
+          ""
+        ]
+      },
+      {
+        "doc" : "Loads the layer without starting it.\n\nParameters:\n * None\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * hs.loadSpoon calls this. No folder is read and no chord claimed until start(), so `profile` and\n   `userDir` can be set in between.",
+        "def" : "CommandLayer:init()",
+        "stripped_doc" : [
+          "Loads the layer without starting it.",
+          ""
+        ],
+        "desc" : "Loads the layer without starting it.",
+        "notes" : [
+          " * hs.loadSpoon calls this. No folder is read and no chord claimed until start(), so `profile` and",
+          "   `userDir` can be set in between."
+        ],
+        "signature" : "CommandLayer:init()",
+        "type" : "Method",
+        "returns" : [
+          " * The CommandLayer object",
+          ""
+        ],
+        "name" : "init",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "doc" : "Starts the layer.\n\nParameters:\n * None\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * The first start reads the plugin folders, the settings and the keybindings of `profile` from\n   `userDir`, and binds the keybindings. Every start then starts the extensions, binds the global\n   keybindings and shows any problem found in one alert.",
+        "def" : "CommandLayer:start()",
+        "stripped_doc" : [
+          "Starts the layer.",
+          ""
+        ],
+        "desc" : "Starts the layer.",
+        "notes" : [
+          " * The first start reads the plugin folders, the settings and the keybindings of `profile` from",
+          "   `userDir`, and binds the keybindings. Every start then starts the extensions, binds the global",
+          "   keybindings and shows any problem found in one alert."
+        ],
+        "signature" : "CommandLayer:start()",
+        "type" : "Method",
+        "returns" : [
+          " * The CommandLayer object",
+          ""
+        ],
+        "name" : "start",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "doc" : "Stops the layer.\n\nParameters:\n * None\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * Closes the launcher if it is open, releases the global keybindings, and stops every extension that\n   started. start() starts it again.",
+        "def" : "CommandLayer:stop()",
+        "stripped_doc" : [
+          "Stops the layer.",
+          ""
+        ],
+        "desc" : "Stops the layer.",
+        "notes" : [
+          " * Closes the launcher if it is open, releases the global keybindings, and stops every extension that",
+          "   started. start() starts it again."
+        ],
+        "signature" : "CommandLayer:stop()",
+        "type" : "Method",
+        "returns" : [
+          " * The CommandLayer object",
+          ""
+        ],
+        "name" : "stop",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      }
+    ],
+    "name" : "CommandLayer"
+  }
+]
