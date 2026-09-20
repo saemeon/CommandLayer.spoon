@@ -6,7 +6,7 @@
 local M = {}
 
 -- publisher.name from the extension's package.json, the authority of its URIs.
-M.identifier = "local.command-layer"
+M.identifier = "saemeon.command-layer"
 
 M.extensionsPath = (os.getenv("HOME") or "") .. "/.vscode/extensions"
 

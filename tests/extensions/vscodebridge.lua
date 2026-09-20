@@ -96,12 +96,12 @@ check("run with VS Code not installed, it says so and sends nothing; with the br
       noVSCode and nothing and notJSON and #alerts == 3 and looked == 2,
       table.concat(alerts, " | ") .. " / looked " .. looked)
 
-os.execute(("mkdir -p %q"):format(folder .. "/local.command-layer-1.0.0"))
+os.execute(("mkdir -p %q"):format(folder .. "/saemeon.command-layer-0.1.0"))
 cl.executeCommand("vscodebridge.runCommand", zen, {})
 local byFolder = #urls == 1 and #alerts == 3
-os.execute(("rm -rf %q"):format(folder .. "/local.command-layer-1.0.0"))
-writeList('[{"identifier":{"id":"ms-python.python"},"version":"1.0.0"},'
-  .. '{"identifier":{"id":"local.command-layer"},"version":"1.0.0",'
+os.execute(("rm -rf %q"):format(folder .. "/saemeon.command-layer-0.1.0"))
+writeList('[{"identifier":{"id":"ms-python.python"},"version":"0.1.0"},'
+  .. '{"identifier":{"id":"saemeon.command-layer"},"version":"0.1.0",'
   .. '"location":{"$mid":1,"fsPath":"/repo/vscode/command-layer-extension","scheme":"file"}}]')
 cl.executeCommand("vscodebridge.runCommand", zen, {})
 local byList = #urls == 2 and #alerts == 3
@@ -120,7 +120,7 @@ cl.executeCommand("vscodebridge.quickOpen", { query = "main.lua" }, {})
 cl.executeCommand("vscodebridge.runTask", { label = "npm: build" }, {})
 cl.executeCommand("vscodebridge.runCommand", zen, {})
 os.execute(("rm -rf %q"):format(folder))
-local base = "vscode://local.command-layer/run?"
+local base = "vscode://saemeon.command-layer/run?"
 local find = base .. "command=workbench.action.findInFiles&args="
              .. percent(percent('[{"query":"a&b +c%${clipboard}","triggerSearch":true}]'))
 check("Find in files opens the extension's URI through system.open, its JSON arguments encoded twice, "
@@ -135,7 +135,7 @@ check("Go to file sends its text as quick open's argument, Run task a task, Run 
 -- The owner's rule: nothing may need the extension in VS Code but these rows.
 local mentions = {}
 for _, path in ipairs(T.sourceFiles({ "extensions", "views" })) do
-  if path ~= "extensions/vscodebridge.lua" and T.readSource(path):find("local.command-layer", 1, true) then
+  if path ~= "extensions/vscodebridge.lua" and T.readSource(path):find("saemeon.command-layer", 1, true) then
     mentions[#mentions + 1] = path
   end
 end

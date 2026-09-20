@@ -123,7 +123,7 @@ for _, row in ipairs(palette) do
 end
 for _, command in ipairs(cl.getCommands()) do
   local target = command.extension == "vscode" and command.args and command.args.target
-  if type(target) == "string" and target:find("local.command-layer", 1, true) then
+  if type(target) == "string" and target:find("saemeon.command-layer", 1, true) then
     needsHandler = command.id
   end
 end

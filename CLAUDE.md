@@ -929,15 +929,15 @@ not do is not taken as a text command's answer, so picking asks.
   so its four commands are always rows, looking for nothing on an open: Find
   in files and Go to file (text commands), Run task… and Run command…. Each
   runs `vscodebridge.run`, which fills its args' templates and opens
-  `vscode://local.command-layer/run?command=<id>&args=<JSON>` -- the JSON
+  `vscode://saemeon.command-layer/run?command=<id>&args=<JSON>` -- the JSON
   percent-encoded twice, as VS Code decodes the query once -- or
   `?task=<label>` through `system.open`, whose failing exit is its "Could not
   open" alert. Only as it runs does it look, and send nothing but an alert
   when a link would reach nothing: VS Code not installed (by bundle id), or
   the extension in neither `~/.vscode/extensions/extensions.json` (an entry
-  whose `identifier.id` is `local.command-layer`, as "Developer: Install
+  whose `identifier.id` is `saemeon.command-layer`, as "Developer: Install
   Extension from Location…" writes it without copying a folder) nor a
-  `local.command-layer*` folder there. A list that is not JSON names nothing
+  `saemeon.command-layer*` folder there. A list that is not JSON names nothing
   and is no problem; the harness points `extensionsPath` at fixtures. The allowlists are the VS Code
   extension's settings; nothing else in the launcher needs it, and the
   harness checks no other extension names it. Its install is one symlink,
