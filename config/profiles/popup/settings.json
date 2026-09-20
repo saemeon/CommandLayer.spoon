@@ -1,0 +1,10 @@
+// The presenter seam as a profile: the command palette drawn as a native
+// menu instead of a search field, with Recent as a real submenu. cmd+m opens
+// it; everything else is the default launcher.
+{
+  "$schema": "../../settings.schema.json",
+  "views": [
+    { "name": "popup-demo", "title": "Menu", "menus": [ "commandPalette" ], "presenter": "popup" },
+    { "name": "popup-demo-recent", "title": "Recent", "menus": [ "recent" ], "parent": "popup-demo" }
+  ]
+}

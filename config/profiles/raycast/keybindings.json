@@ -1,0 +1,7 @@
+// No chorded navigation: arrows move and return opens, which AppKit gives
+// for free. The default pickers' chords go with the pickers, and the entry
+// chord with them, so it is bound again.
+[
+  { "command": "-quickOpen" },
+  { "key": "alt+space", "command": "quickOpen", "global": true }
+]

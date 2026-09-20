@@ -1,0 +1,153 @@
+// The launcher's default settings, as VS Code ships its own.
+//
+// Yours go in ~/.config/commandlayer/settings.json, which overrides only
+// the keys it names; keys are these, and an extension's switch is
+// "<extension>.<setting>": "browser.tabOrder": "browser". Another profile
+// keeps its own settings.json in ~/.config/commandlayer/profiles/<name>/.
+// Keybindings are a separate file: defaultKeybindings.jsonc.
+//
+// An extension for a tool not everyone has ships switched off:
+// "maccy.enabled": true switches Maccy on.
+//
+// Anything needing code is an extension, a backend, a ranker or a view
+// file instead.
+{
+  // Pickers, merged by name: a profile's entry changes the fields it names,
+  // "enabled": false removes one. `menu` takes whatever the extensions put
+  // there. A picker has no chord of its own; keybindings open it.
+  "views": [
+    // Entering the layer opens this. Before anything is typed: the top of
+    // the context picker for what is in front -- recent tabs in a browser
+    // -- then recent projects, then windows as alt-tab orders them.
+    { "name": "root", "placeholder": "Search", "menus": [ "root" ],
+      // A row for each picker with a prefix, and the commands that take text
+      // offered when nothing matched.
+      "pickerRows": true, "textCommands": "fallback",
+      // Window commands are context actions everywhere, and already rows here.
+      "sections": [ { "view": "context", "limit": 4, "exclude": [ "windows" ] },
+                    { "from": "projects", "limit": 5 },
+                    { "from": "windows", "limit": 5, "title": "Recent windows" } ] },
+
+    // A mode of the root, as VS Code's Cmd+Shift+P is Quick Open with ">"
+    // typed. Opens on the five you used most, as VS Code's palette does.
+    { "name": "palette", "prefix": ">", "icon": "$(terminal-cmd)",
+      "placeholder": "Command Palette", "menus": [ "commandPalette" ], "recentlyUsed": 5 },
+
+    // A few of each kind first, labelled, then everything recent below.
+    { "name": "recent", "prefix": "recent ", "icon": "$(history)",
+      "placeholder": "Recent", "menus": [ "recent" ],
+      "sections": [ { "from": "projects", "limit": 3 },
+                    { "from": "browser", "limit": 3, "title": "Tabs" },
+                    { "from": "windows", "limit": 3 },
+                    { "from": "apps", "limit": 3, "title": "Recent apps" } ] },
+
+    // What applies to the app in front. The thing in front of that -- the
+    // page, the selection -- is a context inside this one, so its own verbs
+    // lead, as the root leads with context; then the recent tabs.
+    { "name": "context", "prefix": "context ", "menus": [ "context" ], "icon": "$(lightbulb)",
+      "sections": [ { "from": "context", "limit": 4, "title": "What is in front" },
+                    { "from": "browser", "limit": 3, "title": "Recent tabs" } ],
+      "placeholder": "Actions -- ${frontmostApp}",
+      "empty": "No context actions for ${frontmostApp}" },
+
+    // Asks again on every keystroke: recent files before you type.
+    { "name": "files", "prefix": "files ", "menus": [ "files" ], "kind": "search", "icon": "$(files)",
+      "placeholder": "Search files" },
+
+    // Text in one place, asked of the grep extension again as you type. No
+    // prefix: a place has to be chosen first, and "Search Text in…" is where
+    // that happens, so typing a word cannot open it without one. No "empty":
+    // the extension's rows say where it searches, or that nothing was chosen.
+    // From three characters, since one or two are in nearly every line and
+    // each search walks a whole folder.
+    { "name": "grep", "title": "Text search", "icon": "$(search)", "menus": [ "grep" ],
+      "kind": "search", "minQuery": 3, "debounce": 0.25, "placeholder": "Search text" },
+
+    // cmd+k: what can be done with the row it is given. Typing narrows the
+    // verbs; a sum, or a prefix switching pickers, would only get in the way.
+    { "name": "actions", "kind": "item", "compact": true, "answers": false,
+      "placeholder": "${subject:label}", "empty": "No actions for ${subject:label}" },
+
+    // VS Code's "?" in Quick Open: every picker there is a way to, from the
+    // help extension. Text after it leads with every command that takes text,
+    // filled in, so "? lofi" picks the engine; with help switched off that
+    // still works, which is why it says nothing when empty. "?1" is no sum.
+    { "name": "help", "title": "Help", "icon": "$(question)", "prefix": "?", "menus": [ "help" ],
+      "answers": false, "textCommands": "first" },
+
+    // Every extension and switch, flipped in place, from the settings extension.
+    { "name": "settings", "title": "Settings", "icon": "$(settings-gear)", "prefix": "settings ",
+      "placeholder": "Command Layer settings", "menus": [ "settings" ], "answers": false,
+      "empty": "Settings is switched off: \"settings.enabled\": true in settings.json switches it back on" },
+
+    // Every keybinding in effect, from the keybindings extension. "cmd+1" is a
+    // chord to find, not a sum to work out.
+    { "name": "keybindings", "title": "Keyboard Shortcuts", "icon": "$(keyboard)", "prefix": "keybindings ",
+      "placeholder": "Keyboard Shortcuts", "menus": [ "keybindings" ], "answers": false,
+      "empty": "Keyboard Shortcuts is switched off: \"keybindings.enabled\": true in settings.json switches it back on" }
+  ],
+
+  // The matchers used, in the order tried: the first that takes a query
+  // decides which rows stay, and one not named does not run. fzf declines
+  // when it is not installed.
+  "matchers": [ "fzf", "substring" ],
+
+  // Each ranker scores a row 0..1; the weight is the whole of how much that
+  // counts. specificity 0 ranks purely on what you typed; frecency 0 gives a
+  // list that never reorders under you, and records nothing.
+  "rankers": { "relevance": 1, "specificity": 0.35, "frecency": 0.2, "alphabetical": 0 },
+
+  // What every picker shares. A presenter's own options are its settings --
+  // "chooser.screen", "chooser.styled" -- listed in Default Settings.
+  "appearance": {
+    "dark": true,
+    "width": 36,
+    "rows": 12,
+    // The most rows a picker is handed. Everything is still matched and
+    // ranked; only drawing is capped, since a browser's tabs, bookmarks and
+    // history alone run to thousands.
+    "maxRows": 200,
+    // The cmd+k panel describes one row, so it reads better small.
+    "actionWidth": 24,
+    "actionRows": 7
+  },
+
+  // Shorter prefixes of your own, added to a picker's: { "recent": "r " }.
+  "prefixes": {},
+
+  // Aliases of your own for commands, by id: { "windows.leftHalf": "lh" }.
+  // Typed as the whole query, an alias puts its command first.
+  "aliases": {},
+
+  // In a profile other than default, what it takes from the default profile
+  // -- VS Code's "Use Default Profile". Its keybindings come before the
+  // profile's own, which still win.
+  "useDefaultProfile": { "keybindings": false },
+
+  // Where a tool is ("paths": { "code": "/opt/local/bin/code" }), which
+  // provider does a job ("use": { "editor": "zed" }), and whether a login
+  // shell is asked once at start for tools the known paths missed.
+  "tools": { "paths": {}, "use": {}, "loginShell": true },
+
+  "defaultView": "root",
+  // Which picker cmd+k opens for the highlighted row: actions, above.
+  "actionsView": "actions",
+  // "chooser", the native search panel, or "popup", a native menu.
+  "presenter": "chooser",
+
+  // How much the layer writes to the Hammerspoon console, as VS Code names
+  // its levels: off, trace, debug, info, warning or error. "Developer: Show
+  // Logs" opens the console.
+  "logLevel": "warning",
+
+  // Where the time goes. A span -- one extension's rows, matching, drawing --
+  // or a whole open taking slowMilliseconds is a warning; at "debug" every
+  // open and keystroke writes one line of what it was made of, at "trace"
+  // every span. 0 records nothing. "Developer: Show Performance" lists them.
+  "performance": { "slowMilliseconds": 250, "keep": 200 },
+
+  "github.enabled": false,       // needs gh, signed in
+  "maccy.enabled": false,        // needs Maccy
+  "raycast.enabled": false,      // needs Raycast
+  "vscodebridge.enabled": false  // needs VS Code with vscode/command-layer-extension installed
+}

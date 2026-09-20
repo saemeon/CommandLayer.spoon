@@ -1,0 +1,18 @@
+// A profile shaped the way Raycast is, rather than the way VS Code is.
+//
+// One picker instead of several: everything is in the root and you narrow
+// it by typing, so the root takes every menu and the other pickers are
+// removed. That is the claim worth keeping: a profile can change how many
+// pickers there are, not just their keys. Not a faithful copy; only the
+// shape is borrowed.
+{
+  "$schema": "../../settings.schema.json",
+  "views": [
+    { "name": "root", "placeholder": "Search", "sections": [],
+      "menus": [ "root", "commandPalette", "recent", "context" ] },
+    { "name": "palette", "enabled": false },
+    { "name": "recent", "enabled": false },
+    { "name": "context", "enabled": false }
+  ],
+  "appearance": { "width": 40, "rows": 9, "actionWidth": 26, "actionRows": 8 }
+}

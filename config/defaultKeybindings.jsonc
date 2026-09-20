@@ -1,0 +1,24 @@
+// The launcher's default keybindings, as VS Code ships its own.
+//
+// The entry chord, the pickers' chords, and cmd+k for a row's actions, which
+// every launcher has. Moving and opening inside a picker --
+// quickOpen.selectNext, quickOpen.accept, quickOpen.back, quickOpen.hide --
+// is yours to bind: arrows, return and escape work without a binding. Yours
+// go in ~/.config/commandlayer/keybindings.json, added after these; a
+// command starting with "-" removes earlier entries for it -- only that key
+// when it names one.
+//
+// "global": true binds a key in every app, while the layer is closed too;
+// the rest work only while it is open. alt+space is Raycast's and Alfred's
+// default too: whichever of them holds it has to give it up.
+//
+// A picker with a prefix is a mode of the root, so its chord opens the root
+// with that prefix typed.
+[
+  { "key": "alt+space", "command": "quickOpen", "global": true },
+  { "key": "cmd+k", "command": "quickOpen.showActions" },
+  { "key": "cmd+o", "command": "quickOpen", "args": { "view": "palette" } },
+  { "key": "cmd+r", "command": "quickOpen", "args": { "view": "recent" } },
+  { "key": "cmd+.", "command": "quickOpen", "args": { "view": "context" } },
+  { "key": "cmd+p", "command": "quickOpen", "args": { "view": "files" } }
+]

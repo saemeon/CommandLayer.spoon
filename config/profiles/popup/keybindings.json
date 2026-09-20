@@ -1,0 +1,4 @@
+// The menu-drawn palette on a chord of its own.
+[
+  { "key": "cmd+m", "command": "quickOpen", "args": { "view": "popup-demo" } }
+]
