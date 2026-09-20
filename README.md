@@ -500,14 +500,12 @@ what each does, what was taken, and where each is better.
   From the repository root:
 
   ```bash
-  ln -s "$PWD/vscode/command-layer-extension" ~/.vscode/extensions/saemeon.command-layer-0.1.0
+  ln -s "$PWD/vscode/command-layer-extension" ~/.vscode/extensions/saemeon.command-layer-0.1.1
   ```
 
   then reopen VS Code (if the link is not picked up, **Developer: Install
-  Extension from Location…**), and list the VS Code commands the launcher
-  may run in its `commandLayer.uriHandler.allowedCommands` setting --
-  `workbench.action.findInFiles` and `workbench.action.quickOpen` for the
-  first two rows. Its README has the rest.
+  Extension from Location…**), and accept VS Code's prompt the first time a
+  row opens a link. Its README has the rest.
 - `zsh/` — the same idea in the shell: fuzzy-find, then pick an action.
   Session-bound things (`cd`, virtualenvs, terminal panes) live there
   and deliberately do not migrate.

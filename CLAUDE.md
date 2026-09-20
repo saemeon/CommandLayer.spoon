@@ -932,15 +932,15 @@ not do is not taken as a text command's answer, so picking asks.
   `vscode://saemeon.command-layer?command=<id>&args0=<JSON>&args1=<JSON>` --
   each argument's JSON percent-encoded twice, as VS Code decodes the query
   once -- or
-  `?task=<label>` through `system.open`, whose failing exit is its "Could not
-  open" alert. Only as it runs does it look, and send nothing but an alert
+  `workbench.action.tasks.runTask` with the label as `args0` for Run task, through
+  `system.open`, whose failing exit is its "Could not open" alert. Only as it runs does it look, and send nothing but an alert
   when a link would reach nothing: VS Code not installed (by bundle id), or
   the extension in neither `~/.vscode/extensions/extensions.json` (an entry
   whose `identifier.id` is `saemeon.command-layer`, as "Developer: Install
   Extension from Location…" writes it without copying a folder) nor a
   `saemeon.command-layer*` folder there. A list that is not JSON names nothing
-  and is no problem; the harness points `extensionsPath` at fixtures. The allowlists are the VS Code
-  extension's settings; nothing else in the launcher needs it, and the
+  and is no problem; the harness points `extensionsPath` at fixtures. The extension checks nothing --
+  any command a link names runs, after VS Code's own prompt; nothing else in the launcher needs it, and the
   harness checks no other extension names it. Its install is one symlink,
   in `vscode/command-layer-extension/README.md`.
 

@@ -126,9 +126,9 @@ local find = base .. "command=workbench.action.findInFiles&args0="
 check("Find in files opens the extension's URI through system.open, each argument its JSON in ?argsN=, encoded twice, "
         .. "the text as typed",
       urls[1] == find and not tostring(urls[1]):find("SECRET", 1, true), tostring(urls[1]))
-check("Go to file sends its text as quick open's argument, Run task a task, Run command an id with no arguments",
+check("Go to file sends its text as quick open's argument, Run task the runTask command with the label, Run command an id with no arguments",
       urls[2] == base .. "command=workbench.action.quickOpen&args0=" .. percent(percent('"main.lua"'))
-      and urls[3] == base .. "task=npm%3A%20build"
+      and urls[3] == base .. "command=workbench.action.tasks.runTask&args0=" .. percent(percent('"npm: build"'))
       and urls[4] == base .. "command=workbench.action.toggleZenMode",
       table.concat({ tostring(urls[2]), tostring(urls[3]), tostring(urls[4]) }, " | "))
 

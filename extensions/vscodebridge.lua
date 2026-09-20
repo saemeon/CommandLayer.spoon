@@ -53,15 +53,13 @@ local function encode(text)
   return (tostring(text):gsub("[^%w%-%._~]", function(c) return ("%%%02X"):format(c:byte()) end))
 end
 
--- The extension's URI handler: ?task=<label>, or ?command=<id> with each
--- argument as ?argsN=, its JSON, encoded twice since VS Code decodes the
--- query once before the handler reads it. An argument is wrapped in a list
--- to be encoded, and the brackets taken off, so a string keeps its quotes and
--- stays a string when the extension reads it.
+-- The extension's URI handler: ?command=<id> with each argument as ?argsN=,
+-- its JSON, encoded twice since VS Code decodes the query once before the
+-- handler reads it. An argument is wrapped in a list to be encoded, and the
+-- brackets taken off, so a string keeps its quotes and stays a string when
+-- the extension reads it.
 function M.url(spec)
-  local base = "vscode://" .. M.identifier .. "?"
-  if spec.task then return base .. "task=" .. encode(spec.task) end
-  local url = base .. "command=" .. encode(spec.command)
+  local url = "vscode://" .. M.identifier .. "?command=" .. encode(spec.command)
   if type(spec.args) == "table" then
     for i, value in ipairs(spec.args) do
       url = url .. "&args" .. (i - 1) .. "=" .. encode(encode(hs.json.encode({ value }):sub(2, -2)))
@@ -94,20 +92,18 @@ function M.extension(cl)
     menus       = {},
 
     commands = {
-      -- The allowlists are the extension's: commandLayer.uriHandler.allowedCommands
-      -- and allowedTasks in VS Code's settings. A refusal is VS Code's message.
-      -- A link nothing would answer is said here instead of sent.
+      -- The extension runs whatever command a link names, so nothing is
+      -- allowed here. A link nothing would answer is said here instead of sent.
       { id = "vscodebridge.run", title = "Run in VS Code", menus = {},
         run = function(args, ctx)
-          local task = text(cl.resolve(args.task, ctx))
           local command = text(cl.resolve(args.command, ctx))
-          if not (task or command) then return end
+          if not command then return end
           local why = M.missing()
           if why then
             hs.alert.show(why)
             return
           end
-          local url = M.url({ task = task, command = command, args = filled(args.args, ctx) })
+          local url = M.url({ command = command, args = filled(args.args, ctx) })
           return cl.executeCommand("system.open", { target = url, title = "the VS Code bridge's link" }, ctx)
         end },
 
@@ -128,9 +124,9 @@ function M.extension(cl)
 
       { id = "vscodebridge.runTask", title = "Run task…", category = "VS Code",
         icon = "$(run)", menus = { "commandPalette" },
-        -- Not named task: the args' own task would stand in for the answer.
         inputs = { { id = "label", description = "Task, as Run Task names it", picker = { typed = true } } },
-        command = "vscodebridge.run", args = { task = "${input:label}" } },
+        command = "vscodebridge.run",
+        args = { command = "workbench.action.tasks.runTask", args = { "${input:label}" } } },
 
       { id = "vscodebridge.runCommand", title = "Run command…", category = "VS Code",
         icon = "$(terminal-cmd)", menus = { "commandPalette" },
