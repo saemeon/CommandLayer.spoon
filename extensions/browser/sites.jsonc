@@ -1,0 +1,24 @@
+// The sites that ship. A person's own are files shaped the same in
+// ~/.config/commandlayer/sites/: one site, or a list of them.
+//
+// "keys" are the page's own shortcuts, pressed into it: a keyboard extension
+// in the page (Vimium) takes them first. Exclude the site there, or write
+// the command with "js", which needs "Allow JavaScript from Apple Events".
+[
+  {
+    "name": "YouTube",
+    // A Lua pattern over the page's URL.
+    "match": "youtube%.com/watch",
+    // No play / pause here: the media keys reach whatever holds Now Playing,
+    // so "Media: Play / pause" answers a video without pressing into the page.
+    "commands": [
+      { "title": "Full screen",        "keys": "f" },
+      { "title": "Theatre mode",       "keys": "t" },
+      { "title": "Mute",               "keys": "m" },
+      { "title": "Captions",           "keys": "c" },
+      { "title": "Back 10 seconds",    "keys": "j" },
+      { "title": "Forward 10 seconds", "keys": "l" },
+      { "title": "Next video",         "keys": "shift+n" }
+    ]
+  }
+]
