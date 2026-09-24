@@ -129,6 +129,15 @@ confirmed moves to CLAUDE.md's "Seen working".
   `{ "version": "2.0.0", "tasks": [ { "label": "where am I", "type": "shell", "command": "pwd", "options": { "cwd": "~/Git" } } ] }`
   and save: "where am I" in the root runs in Terminal and prints ~/Git. A
   task without "command" is listed in Show Problems.
+- [ ] A task taking a folder asks for one, and is on a folder's cmd+k once
+  `tasks.contextMenu` names it.
+  How (terminal on, yazi installed): add to tasks.json
+  `{ "label": "Open in yazi", "type": "process", "command": "yazi", "args": ["${input:folder}"] }`
+  and `"inputs": [ { "id": "folder", "type": "command", "command": "tasks.pickFolder" } ]`,
+  and to settings.json `"tasks.contextMenu": ["Open in yazi"]`, then reload.
+  "Open in yazi" in the root asks for a folder and opens yazi there; cmd+k
+  on a project row offers it and opens that project. Without the setting,
+  cmd+k does not offer it.
 
 ## What is left
 

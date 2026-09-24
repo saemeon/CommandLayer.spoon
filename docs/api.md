@@ -654,6 +654,7 @@ The tasks in tasks.json beside settings.json, run in the terminal
 |---|---|---|---|
 | `tasks.enabled` | boolean | `true` | Whether Tasks is on; a change applies on reload. The tasks in tasks.json beside settings.json, run in the terminal. |
 | `tasks.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
+| `tasks.contextMenu` | array | `{}` | Tasks, by label, that cmd+k offers on the folder, project or file they take; applies on reload |
 
 #### Terminal (`terminal`, extension)
 

@@ -157,6 +157,8 @@ local expectedLogs = {
   "ranker 'throws' forget %-> ",                      -- a ranker that throws while forgetting
   "extension 'test%-left%-throws' left %-> ",         -- an extension that throws as a level is left
   "%-tasks/tasks%.json",                              -- the tasks checks' broken tasks.json
+  "%-task%-inputs/tasks%.json",                       -- and their inputs' mistakes
+  "tasks%.contextMenu names deploy",
   "editor forced to 'zed', which is not available",   -- the editor's remote declined by Zed
   "editor forced to 'open', which is not available",  -- and by open
   '"brew%.menus": no picker lists', '"brew%.menus%.root" should be', '"apps%.menus" should be',  -- menus settings

@@ -137,3 +137,90 @@ check("Open User Tasks makes an empty tasks.json in the profile's folder and ope
 
 cl.userDir = savedUserDir
 os.execute(("rm -rf %q"):format(folder))
+
+-- Inputs: a kernel of its own, since the commands for tasks with inputs are
+-- made at setup from the tasks.json there.
+T.restoreStubs()
+do
+  local dir = os.tmpname() .. "-task-inputs"
+  os.execute(("mkdir -p %q"):format(dir))
+  local function put(name, text)
+    local handle = assert(io.open(dir .. "/" .. name, "w"))
+    handle:write(text)
+    handle:close()
+  end
+  put("settings.json", [[{ "tasks.contextMenu": ["Open in yazi", "deploy"] }]])
+  put("tasks.json", [[
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "Open in yazi", "type": "process", "command": "yazi", "args": ["${input:folder}"],
+      "options": { "cwd": "${input:folder}" } },
+    { "label": "Replace in", "type": "shell", "command": "scooter", "args": ["--dir=${input:folder}"] },
+    { "label": "deploy", "type": "shell", "command": "make deploy", "args": ["ENV=${input:env}"] },
+    { "label": "missing", "type": "shell", "command": "echo ${input:nope}" },
+    { "label": "secret", "type": "shell", "command": "echo ${input:pw}" },
+  ],
+  "inputs": [
+    { "id": "folder", "type": "command", "command": "tasks.pickFolder" },
+    { "id": "env", "type": "pickString", "description": "Where", "options": ["staging", { "label": "Production", "value": "prod" }] },
+    { "id": "pw", "type": "promptString", "password": true },
+  ],
+}
+]])
+
+  local l = T.loadKernel()
+  l.userDir = dir
+  l.setup()
+  T.adopt(l)
+  local runs = {}
+  l.registerCommand("terminal.run", { title = "spy", menus = {}, run = function(args, ctx)
+    local cmd = args.cmd
+    if type(cmd) == "table" then
+      local words = {}
+      for i, word in ipairs(cmd) do words[i] = l.resolve(word, ctx) end
+      cmd = table.concat(words, "|")
+    end
+    -- As terminal.run fills a line: every value single-quoted.
+    local line = type(args.cmd) == "string"
+                 and l.resolve(args.cmd, ctx, nil, function(v) return "'" .. v:gsub("'", "'\\''") .. "'" end) or nil
+    runs[#runs + 1] = { cmd = cmd, line = line,
+                        target = args.target and l.resolve(args.target, ctx) or nil }
+  end })
+  local lines = {}
+  for _, p in ipairs(l.getProblems()) do lines[#lines + 1] = p.message end
+  local problems = table.concat(lines, " | ")
+
+  local yazi = l.getCommand("tasks.run.openInYazi")
+  check("a task using an input is a command of its own, asking tasks.json's inputs in VS Code's shape",
+        yazi ~= nil and yazi.inputs[1].id == "folder" and yazi.inputs[1].picker.when ~= nil
+        and l.getCommand("tasks.run.deploy").inputs[1].picker.options[2].value == "prod",
+        tostring(yazi and yazi.inputs[1].id))
+
+  local offered = {}
+  for _, row in ipairs(l.itemActions({ kind = "folder", path = "/a b" }, {})) do offered[#offered + 1] = row.command end
+  offered = " " .. table.concat(offered, " ") .. " "
+  check("cmd+k on a folder offers a task taking one only when tasks.contextMenu names it",
+        offered:find(" tasks.run.openInYazi ", 1, true) ~= nil
+        and offered:find(" tasks.run.replaceIn ", 1, true) == nil, offered)
+
+  l.executeCommand("tasks.run.openInYazi", { folder = { kind = "folder", path = "/a b" } }, {})
+  check("the picked row's path fills ${input:folder}, in the arguments and in options.cwd",
+        runs[1] ~= nil and runs[1].cmd == "yazi|/a b" and runs[1].target == "/a b",
+        tostring(runs[1] and runs[1].cmd) .. " @ " .. tostring(runs[1] and runs[1].target))
+
+  l.executeCommand("tasks.runTask", { task = "Replace in", folder = "/x y" }, {})
+  check("Run Task passes the inputs given beside the label, and a shell task's argument leaves the input "
+        .. "for terminal.run to quote",
+        runs[2] ~= nil and runs[2].cmd == "scooter '--dir='${input:folder}"
+        and runs[2].line == "scooter '--dir=''/x y'",
+        tostring(runs[2] and runs[2].cmd) .. " / " .. tostring(runs[2] and runs[2].line))
+
+  check("an input not declared, a password prompt, and tasks.contextMenu naming a task that takes no folder "
+        .. "are problems",
+        problems:find("uses ${input:nope}, which inputs does not declare", 1, true) ~= nil
+        and problems:find("password prompt", 1, true) ~= nil
+        and problems:find("tasks.contextMenu names deploy", 1, true) ~= nil, problems)
+
+  os.execute(("rm -rf %q"):format(dir))
+end

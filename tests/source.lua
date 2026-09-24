@@ -101,8 +101,10 @@ check("no extension writes a row's old names", (function()
       end)())
 
 -- An input names its picker, or the command answering it. The schema check's
--- own fixture writes the old names on purpose, to see them refused.
+-- own fixture writes the old names on purpose, to see them refused, and the
+-- tasks extension reads them in VS Code's tasks.json, where they are the names.
 local OLD_INPUT_TYPES = { "pickItem", "pickString", "promptString", "search", "command" }
+local READS_TASKS_JSON = { ["extensions/tasks.lua"] = true }
 
 check("no extension or check writes an input's old type", (function()
         local found = {}
@@ -111,13 +113,15 @@ check("no extension or check writes an input's old type", (function()
           if path ~= "tests/schema.lua" then files[#files + 1] = { path = path, text = readSource(path) } end
         end
         for _, file in ipairs(files) do
-          eachCodeLine(file, function(code, n)
-            for _, name in ipairs(OLD_INPUT_TYPES) do
-              if code:find("type%s*=+%s*[\"']" .. name .. "[\"']") then
-                found[#found + 1] = file.path .. ":" .. n .. " " .. name
+          if not READS_TASKS_JSON[file.path] then
+            eachCodeLine(file, function(code, n)
+              for _, name in ipairs(OLD_INPUT_TYPES) do
+                if code:find("type%s*=+%s*[\"']" .. name .. "[\"']") then
+                  found[#found + 1] = file.path .. ":" .. n .. " " .. name
+                end
               end
-            end
-          end)
+            end)
+          end
         end
         return #found == 0, table.concat(found, ", ")
       end)())

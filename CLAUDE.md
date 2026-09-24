@@ -285,6 +285,23 @@ problem naming the file, and the task is left out. VS Code's own tasks.json
 files are not read. "Tasks: Open User Tasks" makes the file and opens it in
 the editor.
 
+A task using `${input:id}` asks through tasks.json's `inputs`, as VS Code's
+do: `promptString` (typed; a `password` one is a problem, since the field
+shows it), `pickString`, and `command` -- whose `tasks.pickFolder` and
+`tasks.pickFile` are the launcher's own, a folder or project row or a file
+row, answering with its path, since VS Code has no command that picks one.
+Inputs are asked in the order the task first uses them. A command's inputs
+are declared when it is registered, so each task with inputs is a command of
+its own, `tasks.run.<label>`, made at setup from the file as it was: a task
+whose inputs changed since says to reload. Its row still runs
+`tasks.runTask`, which passes on any args beside `task`, so a keybinding can
+answer the inputs too. A task taking a folder or file is on that row's cmd+k
+only when `tasks.contextMenu` lists its label -- a task is the person's own,
+and a verb on every folder is a lot to give one -- tasks.json staying in VS
+Code's shape; a label there that takes nothing is a problem. In a shell
+task's argument each literal part is quoted and every `${…}` left bare, so
+terminal.run quotes the value once.
+
 **URLs.** `extensions/urlhandler.lua` binds
 `hammerspoon://commandlayer?command=<id>&args=<JSON object>` and runs the
 command by id only when `urlhandler.allowedCommands` lists it, empty as

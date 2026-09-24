@@ -235,7 +235,7 @@ can go in your dotfiles and survive an update:
       keybindings.json     your chords, after config/defaultKeybindings.jsonc
       profile.json         which profile is active, by name or folder path
       profiles/<name>/     another profile's own settings.json and keybindings.json
-      tasks.json           tasks in VS Code's tasks.json shape, each a row in the root
+      tasks.json           tasks in VS Code's tasks.json shape, with its inputs, each a row in the root
       extensions/*.lua     your own extensions; one named like a shipped one replaces it
       sites/*.json         commands for a website, shown only while it is in front
 
