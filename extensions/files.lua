@@ -303,6 +303,7 @@ function M.extension(cl)
 
   return {
     name  = "files",
+    description = "File search through Spotlight, recent files, and the verbs on a file, folder or project",
     menus = { "files" },
     commands = commands,
 

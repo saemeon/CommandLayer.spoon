@@ -68,6 +68,7 @@ function M.extension(cl)
 
   return {
     name     = "quicklinks",
+    description = "Links you name in settings, and searches with what you typed in their URL",
     settings = {
       links = { type = "array", default = M.defaults,
                 description = "Links: { title, url, prefix }; a ${query} in the URL takes what you type" },

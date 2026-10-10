@@ -327,6 +327,7 @@ function M.extension(cl)
 
   return {
     name     = "apps",
+    description = "Every installed app, and the ones you used recently as macOS keeps it: launch, focus, hide, quit",
     viewItems = { "app" },
     rank     = 0.29,
     menus = { "root", "commandPalette", "recent" },

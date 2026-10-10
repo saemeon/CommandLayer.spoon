@@ -158,7 +158,8 @@ where luacheck is installed and fails on any warning. The launcher exists
 because luacheck 1.2.0 does not load under Lua 5.5; it patches the one
 loop that stops it, in memory, only when the file will not load as it is.
 
-`lua tests/reference.lua` writes `docs/api.md` and
+`lua tests/reference.lua` writes `docs/api.md`, the README's table of extensions (between its
+`<!-- extensions -->` markers, from each extension's `description` and verbs) and
 `config/settings.schema.json` / `config/keybindings.schema.json` from the
 descriptions in `core/schema.lua` and `core/api.lua` and from the shipped
 plugins. It is not a suite; `tests/generated.lua` is, and fails while a

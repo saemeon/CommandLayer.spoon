@@ -21,6 +21,7 @@ function M.extension(cl)
 
   return {
     name  = "context",
+    description = "What is in front of you as subjects: Finder's selection, the clipboard",
     rank  = 1,
     menus = { "root", "commandPalette", "context" },
 

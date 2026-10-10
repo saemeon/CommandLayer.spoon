@@ -35,6 +35,7 @@ function M.extension(cl)
 
   return {
     name  = "snippets",
+    description = "Raycast's snippet search",
     rank  = 0.14,
     menus = { "root", "commandPalette" },
     optionalExtensionDependencies = dependencies,

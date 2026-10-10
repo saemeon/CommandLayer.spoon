@@ -205,6 +205,7 @@ function M.extension(cl)
 
   return {
     name  = "projects",
+    description = "Recent projects from VS Code's Open Recent list, then zoxide",
     rank  = 0.57,
     menus = { "root", "recent" },
     optionalExtensionDependencies = { "vscode", "zoxide", "icons" },

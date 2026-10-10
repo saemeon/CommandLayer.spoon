@@ -599,6 +599,7 @@ function M.extension(cl)
 
   return {
     name  = "windows",
+    description = "The windows on screen, focused or moved through hs.window or a window manager",
     viewItems = { "window" },
     -- A little ahead of an app or a bookmark that also matches "left".
     rank  = 0.43,

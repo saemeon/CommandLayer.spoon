@@ -1220,6 +1220,7 @@ function M.extension(cl)
 
   return {
     name  = "browser",
+    description = "Tabs, bookmarks and history from the browsers' own files; site commands while a page is in front",
     rank  = 0.86,
     viewItems = { "url" },
     -- Its capture reads frontmostApp.

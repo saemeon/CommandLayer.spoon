@@ -287,9 +287,11 @@ Run an AppleScript
 
 #### Apps (`apps`, extension)
 
+Every installed app, and the ones you used recently as macOS keeps it: launch, focus, hide, quit
+
 | Setting | Type | Default | Description |
 |---|---|---|---|
-| `apps.enabled` | boolean | `true` | Whether Apps is on; a change applies on reload. |
+| `apps.enabled` | boolean | `true` | Whether Apps is on; a change applies on reload. Every installed app, and the ones you used recently as macOS keeps it: launch, focus, hide, quit. |
 | `apps.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 | `apps.confirmQuit` | boolean | `true` | Ask before quitting an app |
 | `apps.ignoreApps` | array | `[ "Hammerspoon", "loginwindow" ]` | Apps never listed as used recently |
@@ -307,9 +309,11 @@ Switch the sound output and input device, and mute the microphones
 
 #### Browser (`browser`, extension)
 
+Tabs, bookmarks and history from the browsers' own files; site commands while a page is in front
+
 | Setting | Type | Default | Description |
 |---|---|---|---|
-| `browser.enabled` | boolean | `true` | Whether Browser is on; a change applies on reload. |
+| `browser.enabled` | boolean | `true` | Whether Browser is on; a change applies on reload. Tabs, bookmarks and history from the browsers' own files; site commands while a page is in front. |
 | `browser.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 | `browser.bookmarks` | boolean | `true` | Bookmarks |
 | `browser.bravePaletteKeys` | string | `"ctrl+space"` | The chord that opens Brave's own command palette, pressed by Brave: Command palette |
@@ -324,9 +328,11 @@ Switch the sound output and input device, and mute the microphones
 
 #### Calculator (`calculator`, extension)
 
+Arithmetic typed into the field, answered by bc
+
 | Setting | Type | Default | Description |
 |---|---|---|---|
-| `calculator.enabled` | boolean | `true` | Whether Calculator is on; a change applies on reload. |
+| `calculator.enabled` | boolean | `true` | Whether Calculator is on; a change applies on reload. Arithmetic typed into the field, answered by bc. |
 | `calculator.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 
 #### Chooser (`chooser`, presenter)
@@ -353,9 +359,11 @@ VS Code's $(icon) names, drawn from the codicon font
 
 #### Context (`context`, extension)
 
+What is in front of you as subjects: Finder's selection, the clipboard
+
 | Setting | Type | Default | Description |
 |---|---|---|---|
-| `context.enabled` | boolean | `true` | Whether Context is on; a change applies on reload. |
+| `context.enabled` | boolean | `true` | Whether Context is on; a change applies on reload. What is in front of you as subjects: Finder's selection, the clipboard. |
 | `context.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 
 #### Developer (`developer`, extension)
@@ -378,9 +386,11 @@ Open a file or folder in the editor you have
 
 #### Files (`files`, extension)
 
+File search through Spotlight, recent files, and the verbs on a file, folder or project
+
 | Setting | Type | Default | Description |
 |---|---|---|---|
-| `files.enabled` | boolean | `true` | Whether Files is on; a change applies on reload. |
+| `files.enabled` | boolean | `true` | Whether Files is on; a change applies on reload. File search through Spotlight, recent files, and the verbs on a file, folder or project. |
 | `files.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 | `files.fileLimit` | integer | `25` | At most this many recent files, before anything is typed |
 | `files.fileWindowDays` | integer | `7` | How many days back a file counts as recently used |
@@ -390,9 +400,11 @@ Open a file or folder in the editor you have
 
 #### Finder (`finder`, extension)
 
+Finder's selection, read in a task, as context keys
+
 | Setting | Type | Default | Description |
 |---|---|---|---|
-| `finder.enabled` | boolean | `true` | Whether Finder is on; a change applies on reload. |
+| `finder.enabled` | boolean | `true` | Whether Finder is on; a change applies on reload. Finder's selection, read in a task, as context keys. |
 | `finder.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 
 #### Frecency (`frecency`, ranker)
@@ -409,9 +421,11 @@ How often and how lately you pick a row, as zoxide ranks folders
 
 #### Git (`git`, extension)
 
+Git commands on a repository: pull, push and checkout in the terminal, the rest in a task
+
 | Setting | Type | Default | Description |
 |---|---|---|---|
-| `git.enabled` | boolean | `true` | Whether Git is on; a change applies on reload. |
+| `git.enabled` | boolean | `true` | Whether Git is on; a change applies on reload. Git commands on a repository: pull, push and checkout in the terminal, the rest in a task. |
 | `git.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 | `git.cloneRoots` | array | `{}` | Folders offered to clone into; ~ is your home folder |
 | `git.confirmDestructive` | boolean | `true` | Ask before deleting a branch or dropping a stash |
@@ -420,9 +434,11 @@ How often and how lately you pick a row, as zoxide ranks folders
 
 #### GitHub (`github`, extension)
 
+Your repositories, pull requests and issues through gh
+
 | Setting | Type | Default | Description |
 |---|---|---|---|
-| `github.enabled` | boolean | `false` | Whether GitHub is on; a change applies on reload. |
+| `github.enabled` | boolean | `false` | Whether GitHub is on; a change applies on reload. Your repositories, pull requests and issues through gh. |
 | `github.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 | `github.cacheSeconds` | integer | `300` | How long gh's answers are kept, in seconds |
 | `github.issues` | boolean | `true` | Open issues assigned to you |
@@ -459,9 +475,11 @@ brew update, upgrade, outdated, doctor, cleanup, install, search and info, in th
 
 #### Icons (`icons`, extension)
 
+Icons for rows: apps' own, System Settings', and a theme icon's
+
 | Setting | Type | Default | Description |
 |---|---|---|---|
-| `icons.enabled` | boolean | `true` | Whether Icons is on; a change applies on reload. |
+| `icons.enabled` | boolean | `true` | Whether Icons is on; a change applies on reload. Icons for rows: apps' own, System Settings', and a theme icon's. |
 | `icons.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 
 #### Keep Awake (`keepawake`, extension)
@@ -495,9 +513,11 @@ Open a project or folder in lazygit, in the terminal
 
 #### Maccy (`maccy`, extension)
 
+Maccy's clipboard history, opened in its own window
+
 | Setting | Type | Default | Description |
 |---|---|---|---|
-| `maccy.enabled` | boolean | `false` | Whether Maccy is on; a change applies on reload. |
+| `maccy.enabled` | boolean | `false` | Whether Maccy is on; a change applies on reload. Maccy's clipboard history, opened in its own window. |
 | `maccy.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 | `maccy.popupChord` | string | `"cmd+shift+c"` | The chord that opens Maccy, when its own preferences cannot be read |
 
@@ -538,9 +558,11 @@ The processes running, busiest first, updated while the picker is open; Quit and
 
 #### Projects (`projects`, extension)
 
+Recent projects from VS Code's Open Recent list, then zoxide
+
 | Setting | Type | Default | Description |
 |---|---|---|---|
-| `projects.enabled` | boolean | `true` | Whether Projects is on; a change applies on reload. |
+| `projects.enabled` | boolean | `true` | Whether Projects is on; a change applies on reload. Recent projects from VS Code's Open Recent list, then zoxide. |
 | `projects.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 | `projects.cacheSeconds` | integer | `300` | How long a project scan is kept, in seconds |
 | `projects.onlyGitRepos` | boolean | `true` | Only directories that are git repositories |
@@ -553,17 +575,21 @@ The processes running, busiest first, updated while the picker is open; Quit and
 
 #### Quicklinks (`quicklinks`, extension)
 
+Links you name in settings, and searches with what you typed in their URL
+
 | Setting | Type | Default | Description |
 |---|---|---|---|
-| `quicklinks.enabled` | boolean | `true` | Whether Quicklinks is on; a change applies on reload. |
+| `quicklinks.enabled` | boolean | `true` | Whether Quicklinks is on; a change applies on reload. Links you name in settings, and searches with what you typed in their URL. |
 | `quicklinks.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 | `quicklinks.links` | array | `[ { "title": "Search GitHub", "url": "https://github.com/search?q=${query}" }, { "title": "Search GitHub repositories", "url": "https://github.com/search?type=repositories&q=${query}" }, { "title": "Search npm", "url": "https://www.npmjs.com/search?q=${query}" }, { "title": "Search MDN", "url": "https://developer.mozilla.org/en-US/search?q=${query}" }, { "title": "Search Hammerspoon docs", "url": "https://www.hammerspoon.org/search.html?q=${query}" }, { "title": "Search Stack Overflow", "url": "https://stackoverflow.com/search?q=${query}" } ]` | Links: { title, url, prefix }; a ${query} in the URL takes what you type |
 
 #### Raycast (`raycast`, extension)
 
+Raycast's deeplinks as rows, and its script commands in scripts
+
 | Setting | Type | Default | Description |
 |---|---|---|---|
-| `raycast.enabled` | boolean | `false` | Whether Raycast is on; a change applies on reload. |
+| `raycast.enabled` | boolean | `false` | Whether Raycast is on; a change applies on reload. Raycast's deeplinks as rows, and its script commands in scripts. |
 | `raycast.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 | `raycast.commands` | array | `[ { "title": "Raycast: Clipboard history", "url": "raycast://extensions/raycast/clipboard-history/clipboard-history" }, { "title": "Raycast: Search files", "url": "raycast://extensions/raycast/file-search/search-files" } ]` | Raycast deeplinks: { title, url } |
 | `raycast.scriptDirectories` | array | `{}` | The folders of script commands added in Raycast's settings: each script is a row in scripts, run through Raycast |
@@ -621,17 +647,21 @@ Run a command line
 
 #### Shortcuts (`shortcuts`, extension)
 
+Your Shortcuts, each run through the shortcuts command
+
 | Setting | Type | Default | Description |
 |---|---|---|---|
-| `shortcuts.enabled` | boolean | `true` | Whether Shortcuts is on; a change applies on reload. |
+| `shortcuts.enabled` | boolean | `true` | Whether Shortcuts is on; a change applies on reload. Your Shortcuts, each run through the shortcuts command. |
 | `shortcuts.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 | `shortcuts.limit` | integer | `30` | How many shortcuts are rows |
 
 #### Snippets (`snippets`, extension)
 
+Raycast's snippet search
+
 | Setting | Type | Default | Description |
 |---|---|---|---|
-| `snippets.enabled` | boolean | `true` | Whether Snippets is on; a change applies on reload. |
+| `snippets.enabled` | boolean | `true` | Whether Snippets is on; a change applies on reload. Raycast's snippet search. |
 | `snippets.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 
 #### Spoons (`spoon`, extension)
@@ -769,9 +799,11 @@ WezTerm's panes as rows, each focused when picked; needs WezTerm
 
 #### Windows (`windows`, extension)
 
+The windows on screen, focused or moved through hs.window or a window manager
+
 | Setting | Type | Default | Description |
 |---|---|---|---|
-| `windows.enabled` | boolean | `true` | Whether Windows is on; a change applies on reload. |
+| `windows.enabled` | boolean | `true` | Whether Windows is on; a change applies on reload. The windows on screen, focused or moved through hs.window or a window manager. |
 | `windows.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 | `windows.animationDuration` | number | `0` | Seconds a window takes to move |
 | `windows.layouts` | array | `[ { "icon": "$(screen-full)", "title": "Maximise", "unit": [ 0, 0, 1, 1 ] }, { "icon": "$(layout-sidebar-left)", "title": "Left half", "unit": [ 0, 0, 0.5, 1 ] }, { "icon": "$(layout-sidebar-right)", "title": "Right half", "unit": [ 0.5, 0, 0.5, 1 ] }, { "title": "Top half", "unit": [ 0, 0, 1, 0.5 ] }, { "title": "Bottom half", "unit": [ 0, 0.5, 1, 0.5 ] }, { "title": "Left third", "unit": [ 0, 0, 0.33333333333333331, 1 ] }, { "title": "Middle third", "unit": [ 0.33333333333333331, 0, 0.33333333333333331, 1 ] }, { "title": "Right third", "unit": [ 0.66666666666666663, 0, 0.33333333333333331, 1 ] }, { "title": "Left two thirds", "unit": [ 0, 0, 0.66666666666666663, 1 ] }, { "title": "Top left", "unit": [ 0, 0, 0.5, 0.5 ] }, { "title": "Top right", "unit": [ 0.5, 0, 0.5, 0.5 ] }, { "title": "Bottom left", "unit": [ 0, 0.5, 0.5, 0.5 ] }, { "title": "Bottom right", "unit": [ 0.5, 0.5, 0.5, 0.5 ] }, { "title": "Centre", "unit": [ 0.15, 0.1, 0.7, 0.8 ] } ]` | Window layouts: a title, and a unit of x, y, width and height in fractions of the screen, which another provider takes by the title's name where it has that layout; applies on reload |

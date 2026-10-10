@@ -474,6 +474,7 @@ function M.extension(cl)
 
   return {
     name  = "git",
+    description = "Git commands on a repository: pull, push and checkout in the terminal, the rest in a task",
     rank  = 0.43,
     menus = { "root", "commandPalette" },
     extensionDependencies = { "terminal" },

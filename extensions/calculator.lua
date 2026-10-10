@@ -95,6 +95,7 @@ function M.extension(cl)
 
   return {
     name  = "calculator",
+    description = "Arithmetic typed into the field, answered by bc",
     -- Nothing standing; it only ever answers a query.
     menus = {},
 

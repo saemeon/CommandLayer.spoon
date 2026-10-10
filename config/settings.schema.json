@@ -160,7 +160,7 @@
     },
     "apps.enabled": {
       "default": true,
-      "description": "Whether Apps is on; a change applies on reload.",
+      "description": "Whether Apps is on; a change applies on reload. Every installed app, and the ones you used recently as macOS keeps it: launch, focus, hide, quit.",
       "type": "boolean"
     },
     "apps.ignoreApps": {
@@ -230,7 +230,7 @@
     },
     "browser.enabled": {
       "default": true,
-      "description": "Whether Browser is on; a change applies on reload.",
+      "description": "Whether Browser is on; a change applies on reload. Tabs, bookmarks and history from the browsers' own files; site commands while a page is in front.",
       "type": "boolean"
     },
     "browser.favicons": {
@@ -290,7 +290,7 @@
     },
     "calculator.enabled": {
       "default": true,
-      "description": "Whether Calculator is on; a change applies on reload.",
+      "description": "Whether Calculator is on; a change applies on reload. Arithmetic typed into the field, answered by bc.",
       "type": "boolean"
     },
     "calculator.menus": {
@@ -359,7 +359,7 @@
     },
     "context.enabled": {
       "default": true,
-      "description": "Whether Context is on; a change applies on reload.",
+      "description": "Whether Context is on; a change applies on reload. What is in front of you as subjects: Finder's selection, the clipboard.",
       "type": "boolean"
     },
     "context.menus": {
@@ -400,7 +400,7 @@
     },
     "files.enabled": {
       "default": true,
-      "description": "Whether Files is on; a change applies on reload.",
+      "description": "Whether Files is on; a change applies on reload. File search through Spotlight, recent files, and the verbs on a file, folder or project.",
       "type": "boolean"
     },
     "files.fileLimit": {
@@ -437,7 +437,7 @@
     },
     "finder.enabled": {
       "default": true,
-      "description": "Whether Finder is on; a change applies on reload.",
+      "description": "Whether Finder is on; a change applies on reload. Finder's selection, read in a task, as context keys.",
       "type": "boolean"
     },
     "finder.menus": {
@@ -492,7 +492,7 @@
     },
     "git.enabled": {
       "default": true,
-      "description": "Whether Git is on; a change applies on reload.",
+      "description": "Whether Git is on; a change applies on reload. Git commands on a repository: pull, push and checkout in the terminal, the rest in a task.",
       "type": "boolean"
     },
     "git.menus": {
@@ -514,7 +514,7 @@
     },
     "github.enabled": {
       "default": false,
-      "description": "Whether GitHub is on; a change applies on reload.",
+      "description": "Whether GitHub is on; a change applies on reload. Your repositories, pull requests and issues through gh.",
       "type": "boolean"
     },
     "github.issues": {
@@ -601,7 +601,7 @@
     },
     "icons.enabled": {
       "default": true,
-      "description": "Whether Icons is on; a change applies on reload.",
+      "description": "Whether Icons is on; a change applies on reload. Icons for rows: apps' own, System Settings', and a theme icon's.",
       "type": "boolean"
     },
     "icons.menus": {
@@ -676,7 +676,7 @@
     },
     "maccy.enabled": {
       "default": false,
-      "description": "Whether Maccy is on; a change applies on reload.",
+      "description": "Whether Maccy is on; a change applies on reload. Maccy's clipboard history, opened in its own window.",
       "type": "boolean"
     },
     "maccy.menus": {
@@ -795,7 +795,7 @@
     },
     "projects.enabled": {
       "default": true,
-      "description": "Whether Projects is on; a change applies on reload.",
+      "description": "Whether Projects is on; a change applies on reload. Recent projects from VS Code's Open Recent list, then zoxide.",
       "type": "boolean"
     },
     "projects.menus": {
@@ -858,7 +858,7 @@
     },
     "quicklinks.enabled": {
       "default": true,
-      "description": "Whether Quicklinks is on; a change applies on reload.",
+      "description": "Whether Quicklinks is on; a change applies on reload. Links you name in settings, and searches with what you typed in their URL.",
       "type": "boolean"
     },
     "quicklinks.links": {
@@ -940,7 +940,7 @@
     },
     "raycast.enabled": {
       "default": false,
-      "description": "Whether Raycast is on; a change applies on reload.",
+      "description": "Whether Raycast is on; a change applies on reload. Raycast's deeplinks as rows, and its script commands in scripts.",
       "type": "boolean"
     },
     "raycast.menus": {
@@ -1021,7 +1021,7 @@
     },
     "shortcuts.enabled": {
       "default": true,
-      "description": "Whether Shortcuts is on; a change applies on reload.",
+      "description": "Whether Shortcuts is on; a change applies on reload. Your Shortcuts, each run through the shortcuts command.",
       "type": "boolean"
     },
     "shortcuts.limit": {
@@ -1038,7 +1038,7 @@
     },
     "snippets.enabled": {
       "default": true,
-      "description": "Whether Snippets is on; a change applies on reload.",
+      "description": "Whether Snippets is on; a change applies on reload. Raycast's snippet search.",
       "type": "boolean"
     },
     "snippets.menus": {
@@ -1452,7 +1452,7 @@
     },
     "windows.enabled": {
       "default": true,
-      "description": "Whether Windows is on; a change applies on reload.",
+      "description": "Whether Windows is on; a change applies on reload. The windows on screen, focused or moved through hs.window or a window manager.",
       "type": "boolean"
     },
     "windows.layouts": {

@@ -109,6 +109,7 @@ function M.extension(cl)
   layer = cl
   return {
     name  = "finder",
+    description = "Finder's selection, read in a task, as context keys",
     -- Reads frontmostApp, which ambient captures.
     after = { "ambient" },
     menus = {},

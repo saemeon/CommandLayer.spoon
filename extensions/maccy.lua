@@ -89,6 +89,7 @@ function M.extension(cl)
 
   return {
     name  = "maccy",
+    description = "Maccy's clipboard history, opened in its own window",
     rank  = 0.14,
     menus = { "root", "commandPalette" },
 

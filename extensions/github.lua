@@ -124,6 +124,7 @@ function M.extension(cl)
 
   return {
     name        = "github",
+    description = "Your repositories, pull requests and issues through gh",
     displayName = "GitHub",
     rank        = 0.23,
     menus       = { "root", "commandPalette" },

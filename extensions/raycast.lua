@@ -85,6 +85,7 @@ function M.extension(cl)
 
   return {
     name  = "raycast",
+    description = "Raycast's deeplinks as rows, and its script commands in scripts",
     rank  = 0.06,
     menus = { "commandPalette", "scripts" },
 

@@ -38,6 +38,7 @@ end
 function M.extension()
   return {
     name  = "icons",
+    description = "Icons for rows: apps' own, System Settings', and a theme icon's",
     menus = {},
 
     -- For an extension listing "icons" in optionalExtensionDependencies.

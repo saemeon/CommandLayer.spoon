@@ -28,6 +28,7 @@ function M.extension(cl)
 
   return {
     displayName = "Shortcuts",
+    description = "Your Shortcuts, each run through the shortcuts command",
     rank        = 0.29,
     menus       = { "root", "commandPalette", "scripts" },
     optionalExtensionDependencies = { "icons" },
