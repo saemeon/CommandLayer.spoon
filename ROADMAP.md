@@ -42,6 +42,9 @@ Things only the owner can do, and that other checks depend on.
   Suggested: `alt+shift+space`, added to your keybindings.json.
 - **Q5 HSKeybindings `mapping`:** drop it, or find out first what
   HSKeybindings reads from a Spoon? Recommended: drop.
+- **Q6 The old app history** (`commandlayer.appMRU` in hs.settings) is no
+  longer read since J21. Delete it, or leave it? Recommended: leave; it is
+  harmless.
 - **Q7 A promotion post for Reddit.** Write one introducing Command Layer --
   what it is (a keyboard launcher on Hammerspoon, shaped like VS Code's
   palette), what sets it apart (one context model every extension shares;
@@ -50,9 +53,6 @@ Things only the owner can do, and that other checks depend on.
   Where: r/hammerspoon first, then r/macapps. When: after Q1 and Q2, so the
   post can point at a public repository with a one-line install. An agent can
   draft it; the recording is yours.
-- **Q6 The old app history** (`commandlayer.appMRU` in hs.settings) is no
-  longer read since J21. Delete it, or leave it? Recommended: leave; it is
-  harmless.
 
 ## 3. To test on screen
 
