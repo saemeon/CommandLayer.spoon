@@ -193,7 +193,7 @@ Read from the console (or tell an agent to read it).
 | L5 | f20ea17 | The README's table of extensions, generated |
 | L4 | 3a70953 | `obj.homepage`, `logger`, `scripts/spoon-release.sh` |
 | Brave access | 6ea21aa | A refused Bookmarks file is a problem saying where to allow it |
-| Publishing | (this commit) | A GitHub Action writes the `spoons` branch SpoonInstall installs from, on a `v*` tag; the README shows how |
+| Publishing | 0fde695 | A GitHub Action writes the `spoons` branch SpoonInstall installs from, on a `v*` tag; the README shows how |
 | Answered | -- | Pushed (Q1); HSKeybindings needs nothing from the Spoon, as it reads Hammerspoon's own hotkeys (Q5); the old app history removed (Q6) |
 
 Declined the same day, with the reasons: design.md, "Declined, and why" (I2,
