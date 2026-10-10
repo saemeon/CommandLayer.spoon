@@ -131,7 +131,7 @@ reasons: design.md, "Declined, and why".
 | 3 | **C16** Slow extensions as problems | Done, 00ea3b0 -- slow at the 90th percentile of 5+ opens: named in Show Problems |
 | 4 | **N7** Finder's multiple selection | Done, 2fb4f9e -- Copy path, Reveal, Open with…, Open in editor act on every selected file |
 | 5 | **G2** Rows for Hammerspoon code | Done, a494f3b -- `layer.rows(view)`, e.g. for an `hs.menubar` |
-| 6 | **J19** Run a recent command again with its arguments | Done, see the commit below -- Rerun last command, Rerun a recent command… (`rerun.lua`) |
+| 6 | **J19** Run a recent command again with its arguments | Done, 49c1ee7 -- Rerun last command, Rerun a recent command… (`rerun.lua`) |
 | 7 | **C11** Typing that extends the last query searches only what matched it | |
 | 8 | **C15** A notification when a result lands after its picker closed | |
 | 9 | **J20** A row handing over to Brave's own command palette (`ctrl+space`) | |
