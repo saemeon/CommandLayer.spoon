@@ -140,6 +140,12 @@
   // Logs" opens the console.
   "logLevel": "warning",
 
+  // A result of work done in the background -- Git: Fetch, a script that
+  // failed -- that took this many seconds or more is a macOS notification,
+  // still there in Notification Center once you have moved on, rather than
+  // an alert that fades. 0 always alerts.
+  "notifyAfterSeconds": 5,
+
   // Where the time goes. A span -- one extension's rows, matching, drawing --
   // or a whole open taking slowMilliseconds is a warning; at "debug" every
   // open and keystroke writes one line of what it was made of, at "trace"

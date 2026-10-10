@@ -13,14 +13,16 @@ function M.extension(cl)
     return "'" .. value:gsub("'", "'\\''") .. "'"
   end
 
-  local function failed(args, line, detail)
-    hs.alert.show("Failed: " .. (args.title or "action"))
+  local function failed(args, line, detail, report)
+    local message = "Failed: " .. (args.title or "action")
+    if report then report(message) else hs.alert.show(message) end
     cl.log.e(line .. " -> " .. tostring(detail))
   end
 
   local function start(args, program, argv, line)
+    local report = cl.reporter()
     local task = tools.run(program, argv, function(code, _, stderr)
-      if code ~= 0 then failed(args, line, stderr) end
+      if code ~= 0 then failed(args, line, stderr, report) end
     end)
     if not task then return failed(args, line, "could not start " .. program) end
   end

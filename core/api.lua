@@ -22,7 +22,7 @@ local ALLOWED = {
     "buildContext", "argContext", "contextKeys", "setContext", "itemContextKey", "themeIconProvider",
     "executeCommand", "getCommand", "itemInputOf",
     "setting", "inspectSetting", "refresh", "chord", "editsText", "chordText",
-    "after", "every", "watch", "extension", "cached", "problem", "getProblems", "performance",
+    "after", "every", "watch", "extension", "cached", "problem", "getProblems", "performance", "reporter",
     "profile", "profileNames", "profileFile", "shippedFile", "reload",
     "decodeJSONC", "encodeJSON", "editJSONC", "removeJSONCElement", "appendJSONCElement",
     "settingsWritten", "keybindingsWritten",
@@ -96,6 +96,8 @@ local DESCRIPTIONS = {
                        .. "keybindings file again and binds every key again, so the reload watching the folder "
                        .. "takes the write for no change.",
   getProblems = "getProblems(): a copy of every problem reported.",
+  reporter = "reporter(): call when background work starts; it returns report(message), which alerts the "
+             .. "result, or posts a macOS notification when the work took notifyAfterSeconds or longer.",
   performance = "performance(opts): a copy of the time recorded, by span name: count, total, max, last, "
                 .. "median and p90, in milliseconds. { reset = true } clears it after copying.",
   profile = "The profile set before start, a name or a folder; unset, profile.json decides.",

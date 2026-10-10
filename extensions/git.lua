@@ -185,13 +185,14 @@ function M.run(cl, path, args, title)
   local name = path:match("([^/]+)/?$") or path
   local full = { "-C", path }
   for _, arg in ipairs(args) do full[#full + 1] = arg end
+  local report = cl.reporter()
   cl.tools.run(git, full, function(code, stdout, stderr)
     local last = ""
     for line in tostring(code == 0 and stdout or stderr or ""):gmatch("[^\r\n]+") do
       if line:match("%S") then last = line end
     end
     if last == "" then last = code == 0 and "done" or "failed" end
-    hs.alert.show(("%s %s: %s"):format(title, name, last))
+    report(("%s %s: %s"):format(title, name, last))
   end)
 end
 

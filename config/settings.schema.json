@@ -708,6 +708,11 @@
       "description": "Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none.",
       "type": "object"
     },
+    "notifyAfterSeconds": {
+      "default": 5,
+      "description": "A background result that took this long or longer is a macOS notification, kept in Notification Center, rather than an alert that fades; 0 always alerts.",
+      "type": "number"
+    },
     "performance": {
       "additionalProperties": false,
       "default": {

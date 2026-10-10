@@ -387,6 +387,23 @@ end
 
 -- One alert however a command or a row was reached: a failure looks the
 -- same once the layer has closed.
+-- For work done in the background: reporter() when it starts, and what it
+-- returns told the result when it lands. One that took notifyAfterSeconds or
+-- more is a notification, since the person has likely moved on and an alert
+-- would fade unseen; 0 always alerts.
+function M.reporter()
+  local started = M.clock()
+  return function(message)
+    local after = tonumber(M.settings and M.settings.notifyAfterSeconds) or 5
+    local took = (M.clock() - started) / 1000
+    if after > 0 and took >= after and hs.notify then
+      hs.notify.new({ title = "Command Layer", informativeText = tostring(message) }):send()
+    else
+      hs.alert.show(tostring(message))
+    end
+  end
+end
+
 function M.reportFailure(id, title, err)
   hs.alert.show("Could not run " .. tostring(title or id or "that"))
   if id then

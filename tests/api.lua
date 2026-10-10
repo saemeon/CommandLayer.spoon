@@ -351,3 +351,28 @@ do
                                         tostring(live and live.args.view), tostring(declared.default))
         end)())
 end
+
+group("reporting background results")
+do
+  local now, alerts, notes = 0, {}, {}
+  stub(cl, "clock", function() return now end)
+  stub(hs.alert, "show", function(text) alerts[#alerts + 1] = text end)
+  stub(hs, "notify", { new = function(fields)
+    return { send = function() notes[#notes + 1] = fields.informativeText end }
+  end })
+  local quick = cl.reporter()
+  now = 1000
+  quick("Fetch done")
+  local slow = cl.reporter()
+  now = 9000
+  slow("Fetch took a while")
+  local saved = cl.settings.notifyAfterSeconds
+  cl.settings.notifyAfterSeconds = 0
+  local never = cl.reporter()
+  now = 60000
+  never("Always an alert")
+  cl.settings.notifyAfterSeconds = saved
+  check("a background result is an alert, or a notification once it took notifyAfterSeconds; 0 always alerts",
+        table.concat(alerts, " | ") == "Fetch done | Always an alert" and table.concat(notes, " | ") == "Fetch took a while",
+        table.concat(alerts, " | ") .. " / " .. table.concat(notes, " | "))
+end

@@ -34,9 +34,10 @@ function M.extension(cl)
             return
           end
 
+          local report = cl.reporter()
           local function failed(why)
             cl.log.e("AppleScript failed -> " .. tostring(why))
-            if not done then hs.alert.show("AppleScript failed") end
+            if not done then report("AppleScript failed") end
           end
 
           local task = cl.tools.run(cl.tools.path("osascript") or "/usr/bin/osascript", { "-e", script },

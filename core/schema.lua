@@ -541,6 +541,10 @@ M.kernelSettings = {
   presenter = { type = "string", description = "The presenter drawing a picker that names none." },
   logLevel = { type = "string",
                description = "How much the layer writes to the Hammerspoon console, in VS Code's level names." },
+  notifyAfterSeconds = { type = "number",
+                         description = "A background result that took this long or longer is a macOS "
+                                       .. "notification, kept in Notification Center, rather than an alert "
+                                       .. "that fades; 0 always alerts." },
   performance = { type = "object",
                   description = "Where the time goes: a line per open and keystroke at debug, every span at "
                                 .. "trace, and \"Developer: Show Performance\".",

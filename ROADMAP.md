@@ -122,7 +122,7 @@ check shown to fail without its change. What an item leaves to be seen on
 screen goes to the Owner checks above. Declined on the same day, with the
 reasons: design.md, "Declined, and why".
 
-**Progress: 7 of 18 done.**
+**Progress: 8 of 18 done.**
 
 | # | Item | State |
 |---|---|---|
@@ -133,7 +133,7 @@ reasons: design.md, "Declined, and why".
 | 5 | **G2** Rows for Hammerspoon code | Done, a494f3b -- `layer.rows(view)`, e.g. for an `hs.menubar` |
 | 6 | **J19** Run a recent command again with its arguments | Done, 49c1ee7 -- Rerun last command, Rerun a recent command… (`rerun.lua`) |
 | 7 | **C11** Typing that extends the last query searches only what matched it | Done, de1118c -- the matcher is handed only the last query's matches |
-| 8 | **C15** A notification when a result lands after its picker closed | |
+| 8 | **C15** A notification when a result lands after its picker closed | Done, COMMIT -- a background result taking `notifyAfterSeconds` (5) or longer is a notification; Git's task commands, shell and AppleScript failures |
 | 9 | **J20** A row handing over to Brave's own command palette (`ctrl+space`) | |
 | 10 | **J2** Instant Send: a global key opening cmd+k on the selected text | |
 | 11 | **J18** Favicons on tab and bookmark rows, from Chromium's database | |

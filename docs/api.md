@@ -237,6 +237,7 @@ checks it when it starts with `"$schema"` naming the Spoon's `config/settings.sc
 | `defaultView` | string | `"root"` | The picker entering the layer opens. |
 | `logLevel` | string | `"warning"` | How much the layer writes to the Hammerspoon console, in VS Code's level names. |
 | `matchers` | array | `[ "fzf", "substring" ]` | The matchers used, in the order tried: the first that takes a query decides which rows stay, and one not named does not run. |
+| `notifyAfterSeconds` | number | `5` | A background result that took this long or longer is a macOS notification, kept in Notification Center, rather than an alert that fades; 0 always alerts. |
 | `performance` | object | `{ "keep": 200, "slowMilliseconds": 250 }` | Where the time goes: a line per open and keystroke at debug, every span at trace, and "Developer: Show Performance". |
 | `performance.keep` | number | `200` | How many of the latest spans are kept. |
 | `performance.slowMilliseconds` | number | `250` | A span or a whole open taking this long is a warning; 0 records nothing. |
@@ -829,6 +830,7 @@ What `cl` holds for each kind of plugin. Reading or writing any other name raise
 | `reload` | reload(opts): stops the layer and starts it again, every settings, keybindings and plugin file read anew, without restarting the rest of Hammerspoon, and returns whether it did. { ifChanged = true } reloads only when the active profile's settings.json or keybindings.json says something other than what the layer last read or wrote; one that does not parse is a problem, and no change. |
 | `removeJSONCElement` | removeJSONCElement(text, path, index): the text without the list at path's element index, its line and comment with it. Nil and why not. |
 | `removeRecentlyUsed` | removeRecentlyUsed(item): every ranker in use forgets a row's picks, so it is neither recently used nor lifted by them. |
+| `reporter` | reporter(): call when background work starts; it returns report(message), which alerts the result, or posts a macOS notification when the work took notifyAfterSeconds or longer. |
 | `resolve` | resolve(template, ctx, captures, encode): a template with ${field}, ${input:id}, ${config:name.key}, ${env:NAME} and ${command:id} filled in. |
 | `setContext` | setContext(key, value): a context key every context built afterwards carries; nil removes it. |
 | `setLogLevel` | setLogLevel(level): the log level, for the session. |
