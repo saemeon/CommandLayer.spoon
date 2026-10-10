@@ -112,3 +112,6 @@ commands reading "Brew: Update", "Brew: Upgrade" and so on.
 
 Seen on October 10: a folder opened from `files ` reaching zoxide's list
 (`zoxide query --list --score`).
+
+Seen on October 10: the VS Code bridge's rows -- Find in files searching in
+VS Code, and Run task… and Run command… running what was named.

@@ -53,11 +53,6 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
   opens remotely, and cmd+k offers Connect in terminal.
   How: open a folder over Remote - SSH in VS Code once, then type the
   folder's name: "Project on <host> -- <path>"; enter opens it remotely.
-- [ ] With the bridge installed (extension 0.1.1 or later), its four rows
-  appear within a minute; Find in files and Go to file run, and a task and a
-  command id run by name, once VS Code's prompt for the extension is accepted.
-  How: `"vscodebridge.enabled": true`, then `>` "find in files lofi": VS Code
-  searches for lofi.
 - [ ] The VS Code bridge's alerts when a bridge row runs: with VS Code quit or
   removed, with the extension not installed, and (no alert) installed from
   location.
