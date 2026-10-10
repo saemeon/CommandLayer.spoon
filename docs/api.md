@@ -312,6 +312,7 @@ Switch the sound output and input device, and mute the microphones
 | `browser.enabled` | boolean | `true` | Whether Browser is on; a change applies on reload. |
 | `browser.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 | `browser.bookmarks` | boolean | `true` | Bookmarks |
+| `browser.bravePaletteKeys` | string | `"ctrl+space"` | The chord that opens Brave's own command palette, pressed by Brave: Command palette |
 | `browser.history` | boolean | `true` | History |
 | `browser.historyLimit` | integer | `300` | How many pages of history are read from each browser |
 | `browser.historySeconds` | integer | `120` | Seconds between reading history and bookmarks again |
@@ -921,6 +922,7 @@ Every command the shipped extensions and the kernel register, by id.
 | `brew.search` | Brew: Search for “${query}” | `brew` |
 | `brew.update` | Brew: Update | `brew` |
 | `brew.upgrade` | Brew: Upgrade | `brew` |
+| `browser.bravePalette` | Brave: Command palette | `browser` |
 | `browser.copyURL` | Copy URL | `browser` |
 | `browser.goToTab` | Go to tab | `browser` |
 | `browser.js` | Run JavaScript in the page | `browser` |

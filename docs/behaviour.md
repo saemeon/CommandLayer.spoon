@@ -787,6 +787,12 @@ likewise list the window you were in last. The root lists the front browser's ta
 every running browser's (by `activeView`); context gets
 tabs, bookmarks and history only while a browser is in front.
 
+**Brave's own command palette** (`browser.bravePalette`, "Brave: Command
+palette"), offered in `cmd+.` and the palette while Brave is in front: Brave
+brought forward and `browser.bravePaletteKeys` (`ctrl+space`) pressed a tenth
+of a second later, warned rather than pressed under Secure Input. Its settings,
+Shields and tab groups are Brave's to list.
+
 ## Projects
 
 VS Code's recent projects are its Open Recent list,

@@ -1102,3 +1102,27 @@ do
         tostring(switching and switching.script and switching.script:sub(1, 70)) .. " / "
         .. table.concat(strokes, ",") .. " / " .. tostring(alerts[1]))
 end
+
+do
+  local pressed, timers = {}, {}
+  local saved = { stroke = hs.eventtap.keyStroke, after = hs.timer.doAfter, running = cl.modules.browser.runningApp }
+  hs.eventtap.keyStroke = function(mods, key) pressed[#pressed + 1] = table.concat(mods, "+") .. "+" .. key end
+  hs.timer.doAfter = function(_, fn) timers[#timers + 1] = fn; return { stop = function() end } end
+  local activated = 0
+  cl.modules.browser.runningApp = function() return { activate = function() activated = activated + 1 end } end
+  local brave = { frontmostAppID = "com.brave.Browser", frontmostApp = "Brave Browser" }
+  local offered, elsewhere = false, false
+  for _, row in ipairs(cl.gather(brave, { menus = { "context" } })) do
+    if row.command == "browser.bravePalette" then offered = true end
+  end
+  for _, row in ipairs(cl.gather({ frontmostAppID = "com.apple.Safari" }, { menus = { "context" } })) do
+    if row.command == "browser.bravePalette" then elsewhere = true end
+  end
+  cl.executeCommand("browser.bravePalette", {}, brave)
+  for _, fn in ipairs(timers) do fn() end
+  hs.eventtap.keyStroke, hs.timer.doAfter = saved.stroke, saved.after
+  cl.modules.browser.runningApp = saved.running
+  check("Brave: Command palette is offered while Brave is in front, brings it forward and presses its chord",
+        offered and not elsewhere and activated == 1 and pressed[#pressed] == "ctrl+space",
+        tostring(offered) .. " " .. tostring(elsewhere) .. " " .. table.concat(pressed, " "))
+end

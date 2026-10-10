@@ -223,6 +223,11 @@
       "description": "Bookmarks",
       "type": "boolean"
     },
+    "browser.bravePaletteKeys": {
+      "default": "ctrl+space",
+      "description": "The chord that opens Brave's own command palette, pressed by Brave: Command palette",
+      "type": "string"
+    },
     "browser.enabled": {
       "default": true,
       "description": "Whether Browser is on; a change applies on reload.",

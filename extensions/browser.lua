@@ -946,6 +946,25 @@ function M.extension(cl)
   end
 
   local commands = {
+    -- Brave's own command palette has what only Brave knows -- its settings,
+    -- its Shields, its tab groups -- so it is handed over to, not repeated.
+    { id = "browser.bravePalette", title = "Command palette", category = "Brave", icon = "$(terminal-cmd)",
+      when = "frontmostAppID == 'com.brave.Browser'", menus = { "context", "commandPalette" },
+      run = function(_, ctx)
+        local keys = cl.setting("browser", "bravePaletteKeys")
+        local mods, key = cl.chord(keys)
+        if not key then
+          hs.alert.show(("browser.bravePaletteKeys %q is not a chord"):format(tostring(keys)))
+          return
+        end
+        local secure = cl.extension("secureinput")
+        if secure and secure.warn(tostring(keys) .. " was not pressed", ctx) then return end
+        local app = M.runningApp("Brave Browser")
+        if app then app:activate() end
+        -- Once the picker has closed and Brave is key again.
+        cl.after(0.1, function() hs.eventtap.keyStroke(mods, key, 0) end)
+      end },
+
     { id = "browser.keys", title = "Press a site's keys", menus = {},
       run = function(args, ctx)
         onTab(args, ctx, function(name)
@@ -1079,6 +1098,9 @@ function M.extension(cl)
 
     settings = {
       tabs      = { type = "boolean", description = "Open tabs", default = true },
+      bravePaletteKeys = { type = "string", default = "ctrl+space",
+                           description = "The chord that opens Brave's own command palette, pressed by "
+                                         .. "Brave: Command palette" },
       tabOrder  = { type = "string", description = "Order tabs by", default = "recent",
                     enum = { "recent", "browser" },
                     enumDescriptions = { "When each was last active, from the browser's session file",

@@ -71,6 +71,10 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ### Browser, projects and remote
 
+- [ ] Brave: Command palette opens Brave's own palette (J20). If nothing
+  opens, the chord is not Brave's: set `browser.bravePaletteKeys` to the one
+  Brave shows for its command palette.
+  How: with Brave in front, `cmd+.` then "command palette".
 - [ ] Your ssh hosts in the root, changing without a reload when
   `~/.ssh/config` is edited; Connect in terminal opens `ssh <host>`; Connect
   in editor opens a remote VS Code window.

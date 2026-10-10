@@ -33,6 +33,7 @@
               "brew.search",
               "brew.update",
               "brew.upgrade",
+              "browser.bravePalette",
               "browser.copyURL",
               "browser.goToTab",
               "browser.js",
