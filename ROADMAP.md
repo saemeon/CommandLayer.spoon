@@ -16,17 +16,22 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 ### Performance
 
 - [ ] No slow `open root` line naming systemsettings any more (the panes are
-  seen listed after the change).
+  seen listed after the change). None in the console from the reload at
+  12:47 to 13:26 on October 10; the old cost came hourly, so a day is the
+  test.
   How: over the next hours, the console has no `open root … systemsettings`
   warning. (One `slow: timer.systemsettings` line two seconds after a reload
   is expected: that is the single scan.)
 
-### Search, files and selection
+### The picker
 
 - [ ] Switching pickers by chord keeps what you typed: "pull" in the root,
   then cmd+o, reads `>pull`; cmd+p from there reads `files pull`.
   How: open the launcher, type "pull", press cmd+o: the field reads ">pull"
   and the Git commands are listed. Press cmd+p: "files pull".
+
+### Search, files and selection
+
 - [ ] Text selected in TextEdit, Notes or Xcode is a subject in the root and
   `cmd+.`, with Look Up (Dictionary), Search the web and Copy.
   How: select a word in TextEdit, open the launcher: a row for the selected
@@ -50,13 +55,18 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 - [ ] Your ssh hosts in the root, changing without a reload when
   `~/.ssh/config` is edited; Connect in terminal opens `ssh <host>`; Connect
   in editor opens a remote VS Code window.
-  How: add `Host test-box` with a `HostName` to ~/.ssh/config: typing
-  "test-box" in the root shows it without a reload. Picking it connects (in
-  the editor while terminal is off); cmd+k offers Connect in editor.
+  How, against this Mac: add `Host test-box`, `HostName 127.0.0.1`,
+  `User simonniederberger` to ~/.ssh/config; "test-box" in the root shows
+  "SSH: test-box" without a reload. Picking it runs `ssh test-box` in
+  Terminal ("Connection refused" until Remote Login is on, which is enough to
+  see it sent). With System Settings ▸ General ▸ Sharing ▸ Remote Login on
+  (your user only), it connects; cmd+k ▸ Connect in editor opens a remote VS
+  Code window. Deleting the block takes the row away without a reload.
 - [ ] A remote recent reads "Project on <host>" in the root and `recent `,
   opens remotely, and cmd+k offers Connect in terminal.
-  How: open a folder over Remote - SSH in VS Code once, then type the
-  folder's name: "Project on <host> -- <path>"; enter opens it remotely.
+  How: in the remote window from the check above, File ▸ Open Folder… ~/Git,
+  close it; "Git" in the root shows "Project on test-box -- …/Git", enter
+  opens it remotely. Afterwards: Remote Login off, the block removed.
 - [ ] VS Code's menu commands find their item: Command Palette, Go to File,
   Run Task and Toggle Terminal (whose menu titles read "…" and carry a
   shortcut) select it instead of alerting "has no menu item".
@@ -97,6 +107,13 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
   discarded rows, an extension would have to say which subject kinds it
   contributes, so a question gathers only what could answer it -- a contract
   change, so a proposal first.
+- **N8** Listing windows is the root's largest cost again: after the reload
+  on October 10, opens spent 1083 ms (the first) and 184 ms in
+  `gather.windows`, on the default `ordered` source
+  (`hs.window.orderedWindows()`), where it had been about 25 ms that
+  morning. Worth a look at which app answers slowly -- the windows extension
+  names the slowest window when a read is slow -- and whether C17 (draw the
+  rest first) is the answer, since the call blocks and cannot be streamed.
 - **N7** Finder's multiple selection is captured (`finderSelectedFiles`) and
   shown in Inspect Context Keys, but no command reads it, so it does nothing
   you can see. Either verbs that take several files (Open with…, Reveal in
@@ -106,7 +123,8 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 Read from the console on October 10: the root's slow opens were
 systemsettings (about 200 ms, its hourly re-scan) and windows (about 200 ms
-on October 7, 25 ms since). systemsettings now scans once per start, and
+on October 7, 25 ms that morning, 184-1083 ms after a reload that
+afternoon: N8). systemsettings now scans once per start, and
 `cached` no longer refreshes inside an open. Hammerspoon has one Lua thread,
 so a hook stuck in a blocking call cannot be interrupted; what remains is
 how the picker copes with one.
@@ -163,14 +181,12 @@ how the picker copes with one.
 - Ideas: a hand-off to Brave's own command palette (`ctrl+space`); `yabai`,
   `wezterm cli`, `mas`, `docker` as sources of rows.
 
-### Watch
-
-- Hammerspoon went away twice on September 15: once killed by SIGPIPE,
-  fixed in ed37df6 (a task's input goes through a file, and the harness
-  forbids writing stdin), and once on a reload with no crash report, more
-  likely a hang. Note it here if it happens again.
 
 ### Yours to decide
 
+- Merge `docs-and-slow-opens` into main, the work of October 10 -- the
+  docs split and README, the cached / systemsettings / apps fixes, zoxide no
+  longer learning apps, VS Code's menu commands, picker chords keeping what
+  was typed. Hammerspoon already runs it, from this working copy.
 - Before publishing: `obj.homepage` once the repository is public, and
   whether init.lua should offer a `logger` and an HSKeybindings `mapping`.
