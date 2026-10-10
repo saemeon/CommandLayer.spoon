@@ -197,3 +197,17 @@ Done before the plan, the same day: the user folder moved to
   fixed in ed37df6 (a task's input goes through a file, and the harness
   forbids writing stdin), and once on a reload with no crash report, more
   likely a hang. Note it here if it happens again.
+
+### Yours to decide
+
+- Publishing for SpoonInstall: `scripts/spoon-release.sh <folder>` writes
+  `Spoons/CommandLayer.spoon.zip` and `docs/docs.json`; pushed as a branch
+  (say `spoons`), SpoonInstall can install from it. Who pushes it -- by hand
+  per release, or a GitHub Action -- and whether the README then shows the
+  SpoonInstall lines.
+- An HSKeybindings `mapping`: not added; what HSKeybindings would read from a
+  Spoon is to be checked first.
+- Settings per machine: settings.json now lives in shared dotfiles, so a
+  setting meant for one Mac (`mediacontrol` on the media Mac only) needs a
+  way to differ by machine. Today init.lua decides it by the Mac's name.
+- A chord for Instant Send (`selection.showActions`): none ships.
