@@ -105,9 +105,16 @@ local listings, listingTimer = {}, nil
 -- The window objects last listed, by id.
 local byId = {}
 
+-- The last list read, by source, which the next open shows at once while it
+-- reads the windows again a turn later, once the picker is on screen: a
+-- listing waits on every app answering, and an app woken from App Nap once
+-- held an open for a second.
+local lastList, rereads = {}, {}
+
 function M.forget()
   if listingTimer then listingTimer.dispose() end
-  listings, listingTimer = {}, nil
+  for _, reread in pairs(rereads) do reread.dispose() end
+  listings, listingTimer, lastList, rereads = {}, nil, {}, {}
 end
 
 -- What windows.sourceByPicker names for the picker gathering, else
@@ -121,8 +128,15 @@ function M.sourceFor(ctx)
   return M.sources[source] and source or "ordered"
 end
 
+local readList
+
 function M.start()
   if not layer then return M end
+  -- Read once off the startup path, so the first open has a list to show.
+  layer.after(2, function()
+    local source = M.sourceFor(nil)
+    if not lastList[source] then lastList[source] = readList(source) end
+  end)
   local provider = M.provider
   if provider and not provider.always then
     local installed = provider.installed(layer) == true
@@ -141,9 +155,16 @@ function M.stop()
   return M
 end
 
-function M.windows(ctx)
-  local source = M.sourceFor(ctx)
-  if listings[source] then return listings[source] end
+-- Whether two lists show the same windows, in the same order, titled alike.
+local function sameWindows(a, b)
+  if #a ~= #b then return false end
+  for i = 1, #a do
+    if a[i].id ~= b[i].id or a[i].title ~= b[i].title then return false end
+  end
+  return true
+end
+
+function readList(source)
   -- Every read below waits on an app answering; one busy app holds up the
   -- open, and the kernel's slow line cannot say which app it was.
   local clock = hs.timer.secondsSinceEpoch
@@ -173,6 +194,27 @@ function M.windows(ctx)
   if total >= M.slowSeconds then
     layer.log.w(("windows: reading the %s list took %.0f ms: %.0f ms listing, the slowest window %.0f ms (%s)")
                 :format(source, total * 1000, (listed - started) * 1000, slowest * 1000, tostring(slowestApp)))
+  end
+  return out
+end
+
+function M.windows(ctx)
+  local source = M.sourceFor(ctx)
+  if listings[source] then return listings[source] end
+  local out = lastList[source]
+  if out then
+    if not rereads[source] then
+      rereads[source] = layer.after(0, function()
+        rereads[source] = nil
+        local now = readList(source)
+        local changed = not sameWindows(now, lastList[source] or {})
+        lastList[source] = now
+        if changed then layer.refresh() end
+      end)
+    end
+  else
+    out = readList(source)
+    lastList[source] = out
   end
   listings[source] = out
   if not listingTimer then

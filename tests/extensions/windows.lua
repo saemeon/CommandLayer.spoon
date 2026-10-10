@@ -154,9 +154,13 @@ cl.gather({}, { menus = { "windows" } })
 cl.gather({}, { menus = { "root" } })
 local once = asked.all == allBefore + 1
 for i = timersBefore + 1, #timers do timers[i]() end
+local nextTimers = #timers
 cl.gather({}, { menus = { "windows" } })
-check("one open reads the list once, however many views gather it, and the next open reads it again",
-      once and asked.all == allBefore + 2, tostring(asked.all - allBefore) .. " reads")
+local readOnOpen = asked.all ~= allBefore + 1
+for i = nextTimers + 1, #timers do timers[i]() end
+check("one open reads the list once, however many views gather it; the next open shows that list and reads it "
+        .. "again a turn later, once the picker is up",
+      once and not readOnOpen and asked.all == allBefore + 2, tostring(asked.all - allBefore) .. " reads")
 M.forget()
 
 local function rowIds(ctx)

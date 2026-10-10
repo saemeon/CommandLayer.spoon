@@ -25,6 +25,11 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ### The picker
 
+- [ ] Opening the launcher no longer waits on the window list (N8): no `slow:
+  gather.windows` or `windows: reading the … list` warning on an open; the
+  windows rows are there, and a window opened since appears a moment later.
+  How: use it for a day, then look in the console for those lines. A reread
+  that is slow may still log, after the picker is up.
 - [ ] "Search Text in…" opens at once (N6): it no longer gathers windows,
   apps or tabs to throw them away.
   How: `>` "search text in", enter: the folders are listed without a pause,
@@ -109,9 +114,6 @@ check shown to fail without its change. What an item leaves to be seen on
 screen goes to the Owner checks above. Declined on the same day, with the
 reasons: design.md, "Declined, and why".
 
-2. **N8** Listing windows took 184-1083 ms after a reload on the default
-   `ordered` source, where it had been about 25 ms; Mail was the slowest
-   window once. Find which app answers slowly, and fix or route around it.
 3. **C16** An extension whose `gather.<name>` stays over a budget is listed in
    Show Problems with its time, switching it off the way out.
 4. **N7** Finder's multiple selection (`finderSelectedFiles`): Copy path,

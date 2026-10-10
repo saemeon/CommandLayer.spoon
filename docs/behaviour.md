@@ -559,8 +559,13 @@ not do is not taken as a text command's answer, so picking asks.
   window not in it (minimised, another Space) after the rest; `ordered` keeps
   its own order. Each source is read once per open -- kept until a turn later,
   since every section gathers through a context of its own -- and the window
-  objects of the last listing are what focus and close act on. The order is
-  z-order, not focus history: nothing watches focus.
+  objects of the last listing are what focus and close act on. An open shows
+  the list the last one read, and reads it again a turn later, once the picker
+  is on screen, redrawing only if a window came, went or was renamed: a
+  listing waits on every app, and an app woken from App Nap -- Script Editor,
+  Mail -- held opens for up to a second, where every app answers in a few
+  milliseconds once awake. The first list is read two seconds after start.
+  The order is z-order, not focus history: nothing watches focus.
 - **Paths** (`files.lua`): Open in terminal, Open in editor, Reveal in
   Finder, Copy path, on a file, folder or project, preferring Finder's
   selection. No other extension writes its own copy; the harness counts.
