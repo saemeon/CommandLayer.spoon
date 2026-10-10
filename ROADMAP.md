@@ -98,92 +98,68 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ## What is left
 
-### Found on screen
+### The plan, agreed on October 10
 
-- **N6** "Search Text in…" takes long enough to open that a second enter --
-  pressed because nothing had happened yet -- lands on the first folder and
-  opens it. The question gathers every extension feeding `files` and
-  `recent` -- tabs, apps and windows included -- and its clause keeps only
-  files, folders and projects. Not yet measured: open it, then "Developer:
-  Show Performance"; the `gather.<extension>` names say who. If it is the
-  discarded rows, an extension would have to say which subject kinds it
-  contributes, so a question gathers only what could answer it -- a contract
-  change, so a proposal first.
-- **N8** Listing windows is the root's largest cost again: after the reload
-  on October 10, opens spent 1083 ms (the first) and 184 ms in
-  `gather.windows`, on the default `ordered` source
-  (`hs.window.orderedWindows()`), where it had been about 25 ms that
-  morning. Worth a look at which app answers slowly -- the windows extension
-  names the slowest window when a read is slow -- and whether C17 (draw the
-  rest first) is the answer, since the call blocks and cannot be streamed.
-- **N7** Finder's multiple selection is captured (`finderSelectedFiles`) and
-  shown in Inspect Context Keys, but no command reads it, so it does nothing
-  you can see. Either verbs that take several files (Open with…, Reveal in
-  Finder, Copy paths, Open in editor), or the key goes.
+In this order, one commit each, the harness green after each and every new
+check shown to fail without its change. What an item leaves to be seen on
+screen goes to the Owner checks above. Declined on the same day, with the
+reasons: design.md, "Declined, and why".
 
-### Slow extensions
+1. **N6** "Search Text in…" opens slowly enough that a second enter lands on
+   the first folder. Measured first, from the console's open trace; then
+   either one slow extension is fixed or, if it is the rows the question
+   throws away, extensions declare the subject kinds they produce (a contract
+   change).
+2. **N8** Listing windows took 184-1083 ms after a reload on the default
+   `ordered` source, where it had been about 25 ms; Mail was the slowest
+   window once. Find which app answers slowly, and fix or route around it.
+3. **C16** An extension whose `gather.<name>` stays over a budget is listed in
+   Show Problems with its time, switching it off the way out.
+4. **N7** Finder's multiple selection (`finderSelectedFiles`): Copy path,
+   Reveal in Finder, Open with… and Open in editor act on every selected file
+   when several are selected.
+5. **G2** `layer.rows(view)` on the public layer: each row's label, subtitle
+   and a function running it, so Hammerspoon code -- an `hs.menubar`, the
+   owner's menubar.lua -- can show a picker's rows. No menu bar of our own.
+6. **J19** Run a recent command again with the arguments it had.
+7. **C11** Typing that extends the last query searches only what matched it.
+8. **C15** A notification when a result lands after its picker closed.
+9. **J20** A row handing over to Brave's own command palette (`ctrl+space`).
+10. **J2** Instant Send: a global key opening the cmd+k panel on the selected
+    text.
+11. **J18** Favicons on tab and bookmark rows, from Chromium's own database.
+12. **J17** The loaded Spoons: their hotkeys and the commands they expose.
+13. **J21** App-usage history from macOS -- `lsappinfo`'s front-to-back order
+    and Spotlight's last-used date -- in place of the launcher's own, one of
+    the two exceptions to dispatch.
+14. **J11** A live picker: running processes with Quit on cmd+k, its rows
+    redrawn while it is open, the timer stopped by `left`.
+15. **J4** A Scripts picker that extensions feed (Shortcuts, tasks, Raycast);
+    the raycast extension lists Raycast's script commands from
+    `raycast.scriptDirectories` and runs them through Raycast. Tried with a
+    dummy script.
+16. **J22** yabai spaces and WezTerm panes as rows, each focused when picked.
+17. **L5** A README table, one row per extension: what picking a row does,
+    what cmd+k offers.
+18. **L4** Installable with SpoonInstall, with `obj.homepage`, and a decision
+    on an init.lua `logger` and an HSKeybindings `mapping`; needs the
+    repository public.
 
-Read from the console on October 10: the root's slow opens were
-systemsettings (about 200 ms, its hourly re-scan) and windows (about 200 ms
-on October 7, 25 ms that morning, 184-1083 ms after a reload that
-afternoon: N8). systemsettings now scans once per start, and
-`cached` no longer refreshes inside an open. Hammerspoon has one Lua thread,
-so a hook stuck in a blocking call cannot be interrupted; what remains is
-how the picker copes with one.
+### Not planned
 
-- **C16** Slow extensions named as a problem: an extension whose
-  `gather.<name>` p90 stays over a budget is listed in Show Problems with
-  its time, switching it off the way out. The spans exist; only the report
-  is missing.
 - **C17** Draw the fast rows first: gather the extensions known to be fast,
   draw, then gather the slow ones a turn later and redraw, keeping the
-  highlight. Kernel only. Rows arriving late below the highlighted one, so
-  enter never lands on a row that just moved.
+  highlight. Kernel only. The answer for a blocking source if N8 finds no
+  other.
 - **C18** Streaming `items`: a hook may return a function (how to stop)
-  instead of rows and answer through `done`, as `search` does. Per-extension
-  row slots, so a late answer still wins dedupe in extension order; a stale
-  answer dropped once its level is left. Only helps an extension that moves
-  its slow part into a task. A contract change, so a proposal first; worth
-  it once an extension needs it.
-
-### Later
-
-- **C11** Narrow the previous results when the query extends the last one.
-- **C14** Safer paste: focus the captured window first; apps where only
-  copying makes sense.
-- **C15** Notifications for results that land after the picker closed.
-- **G2** A menu bar icon whose menu is a picker's rows, through the popup.
-- **I2** appmenus: a path with alternatives (Play or Pause), so one key
-  toggles. The menu says which of the two is there now, and the row clicks
-  that one; nothing is remembered between presses.
-- **J2** Instant Send: a global chord that opens the cmd+k panel straight on
-  the selected text (Look Up, Search the web, Copy), skipping the picker in
-  between -- Raycast's Instant Send, Alfred's Universal Actions. Needs only a
-  keybinding running `quickOpen` with the actions picker and the selection as
-  subject. Worth it only if you act on selected text often.
-- **J4** Script commands in any language: a folder of executables that
-  become rows, each saying in a comment block at its top what it is called
-  and what it takes, as Raycast's Script Commands do. Run through
-  `shell.run` or `terminal.run` by its mode; a verb without writing Lua.
-- **J11** Live pickers, whose rows keep changing while open -- running
-  processes with Quit on cmd+k, or CPU, memory and battery. The extension
-  starts a timer when its picker opens and calls `refresh()`; the `left` hook
-  stops it.
-- **J17** Loaded Spoons: their hotkeys and the commands they expose.
-- **J18** Favicons for tabs and bookmarks from Chromium's local database.
-- **J19** Replay a recent command with its arguments.
-- **L4** Installable with SpoonInstall.
-- **L5** A README table per extension: what return does, what cmd+k offers.
-- **M1** Share `tasks.json` with the zsh palette, which stays for Windows.
-- App-usage history: try `lsappinfo`'s front-to-back order plus Spotlight's
-  last-used date in its place.
+  instead of rows and answer through `done`, as `search` does. A contract
+  change; worth it once an extension needs it.
 - Window focus order: the lists are z-order, not focus history. Nothing
   watches focus; a source that does is still to be judged worth its cost.
-- Ideas: a hand-off to Brave's own command palette (`ctrl+space`); `yabai`,
-  `wezterm cli`, `mas`, `docker` as sources of rows.
 
+### Watch
 
-### Yours to decide
-
-- Before publishing: `obj.homepage` once the repository is public, and
-  whether init.lua should offer a `logger` and an HSKeybindings `mapping`.
+- Hammerspoon went away twice on September 15: once killed by SIGPIPE,
+  fixed in ed37df6 (a task's input goes through a file, and the harness
+  forbids writing stdin), and once on a reload with no crash report, more
+  likely a hang. Note it here if it happens again.

@@ -693,6 +693,19 @@ From the September reviews, so they are not proposed again:
 - **VS Code's own tasks.json files**, for now. The launcher's `tasks.json`
   sits beside settings.json in VS Code's shape, so a task copies either way.
 
+From the October 10 planning:
+
+- **Menu items that flip under one key** (I2: Music's Play becoming Pause).
+  Only felt with a key bound to such an item, and the players used toggle by
+  their own state (`media_control.lua`), which is the better way.
+- **Sharing tasks.json with the zsh palette** (M1). The palette is not in
+  this repository.
+- **A safer paste** (C14). Not wanted.
+- **Docker and mas as sources of rows.** Already reached another way.
+- **A runner for script commands of our own** (J4 as first written).
+  Scripts are dispatched to what runs them -- Shortcuts, Raycast, tasks.json
+  -- and those extensions feed a Scripts picker.
+
 ## What this is not
 
 Not a reimplementation of every service integration. Those are reached
