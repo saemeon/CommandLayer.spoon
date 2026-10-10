@@ -137,7 +137,7 @@ check shown to fail without its change. What an item leaves to be seen on
 screen goes to the Owner checks above. Declined on the same day, with the
 reasons: design.md, "Declined, and why".
 
-**Progress: 11 of 18 done.**
+**Progress: 12 of 18 done.**
 
 | # | Item | State |
 |---|---|---|
@@ -152,7 +152,7 @@ reasons: design.md, "Declined, and why".
 | 9 | **J20** A row handing over to Brave's own command palette (`ctrl+space`) | Done, 0ec3439 -- Brave: Command palette, chord in `browser.bravePaletteKeys` |
 | 10 | **J2** Instant Send: a global key opening cmd+k on the selected text | Done, de5caba -- `selection.showActions` for a global key; no chord shipped |
 | 11 | **J18** Favicons on tab and bookmark rows, from Chromium's database | Done, 4516721 -- site icons from Chromium's Favicons database; `browser.favicons` |
-| 12 | **J17** The loaded Spoons: their hotkeys and the commands they expose | |
+| 12 | **J17** The loaded Spoons: their hotkeys and the commands they expose | Done, ac91938 -- `spoons ` picker: other Spoons' methods and every hotkey |
 | 13 | **J21** App history from macOS (`lsappinfo`, Spotlight's last-used date) in place of the launcher's own | |
 | 14 | **J11** A live picker: running processes with Quit, redrawn while open | |
 | 15 | **J4** A Scripts picker fed by extensions (Shortcuts, tasks, Raycast script commands), tried with a dummy script | |
