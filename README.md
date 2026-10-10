@@ -49,6 +49,19 @@ spoon.CommandLayer:start()
 
 Reload Hammerspoon and press `alt+space`.
 
+Or with [SpoonInstall](https://www.hammerspoon.org/Spoons/SpoonInstall.html),
+which also updates it:
+
+```lua
+hs.loadSpoon("SpoonInstall")
+spoon.SpoonInstall.repos.CommandLayer = {
+  url = "https://github.com/saemeon/CommandLayer.spoon",
+  desc = "Command Layer",
+  branch = "spoons",
+}
+spoon.SpoonInstall:andUse("CommandLayer", { repo = "CommandLayer", start = true })
+```
+
 If Raycast or Alfred already uses `alt+space`, free it there first, or pick
 another key (see [Changing the entry key](#changing-the-entry-key)).
 

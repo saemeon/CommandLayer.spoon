@@ -21,38 +21,26 @@ Things only the owner can do, and that other checks depend on.
   Directories ▸ `~/.hammerspoon/commandlayer/scripts`.
 - [ ] **Commit the dotfiles.** Uncommitted there: the config folder moved
   from `.config/commandlayer` to `.hammerspoon/commandlayer`, the
-  `init.lua` changes (addExtension, mediacontrol on the media Mac only), the
-  dummy script, `raycast.scriptDirectories` and `wezterm.enabled`.
+  `init.lua` changes (addExtension; mediacontrol only on a Mac whose name
+  holds "Air"), the dummy script, `raycast.scriptDirectories` and
+  `wezterm.enabled`.
+- [ ] **On the MacBook Air, once:** remove the old app history the layer no
+  longer reads -- in the Hammerspoon console,
+  `hs.settings.clear("commandlayer.appMRU")`. Done on the MacBook Pro.
 - [ ] **Delete the old config folder** once all is well:
   `~/.config/commandlayer.backup-2026-10-10`.
 
-## 2. Open questions
+## 2. Later
 
-- **Q1 Push main?** Everything since October 10 is committed but not pushed.
-- **Q2 SpoonInstall:** `scripts/spoon-release.sh <folder>` writes
-  `Spoons/CommandLayer.spoon.zip` and `docs/docs.json`. Publish it as a
-  `spoons` branch -- by hand per release, or a GitHub Action -- and add the
-  SpoonInstall lines to the README? Recommended: a GitHub Action on each tag.
-- **Q3 Settings per machine:** settings.json is now in shared dotfiles, so a
-  setting for one Mac only needs a way to differ. Today init.lua checks the
-  Mac's name (mediacontrol). Keep that, or support something like
-  `settings.<machine name>.json` applied on top? Recommended: keep init.lua's
-  way until a second setting needs it.
-- **Q4 Instant Send's key:** which global chord runs `selection.showActions`?
-  Suggested: `alt+shift+space`, added to your keybindings.json.
-- **Q5 HSKeybindings `mapping`:** drop it, or find out first what
-  HSKeybindings reads from a Spoon? Recommended: drop.
-- **Q6 The old app history** (`commandlayer.appMRU` in hs.settings) is no
-  longer read since J21. Delete it, or leave it? Recommended: leave; it is
-  harmless.
-- **Q7 A promotion post for Reddit.** Write one introducing Command Layer --
-  what it is (a keyboard launcher on Hammerspoon, shaped like VS Code's
-  palette), what sets it apart (one context model every extension shares;
-  everything is plain-text settings and Lua; it routes to the tools you have
-  rather than replacing them), a short screen recording, and how to install.
-  Where: r/hammerspoon first, then r/macapps. When: after Q1 and Q2, so the
-  post can point at a public repository with a one-line install. An agent can
-  draft it; the recording is yours.
+- **A promotion post for Reddit.** Introduce Command Layer -- a keyboard
+  launcher on Hammerspoon shaped like VS Code's palette; one context model
+  every extension shares; plain-text settings and Lua; routing to the tools
+  you have rather than replacing them -- with a short screen recording and
+  the SpoonInstall lines. r/hammerspoon first, then r/macapps. Nothing to do
+  yet.
+- **Instant Send's key:** `selection.showActions` is installed with no key;
+  bind one in keybindings.json when wanted, e.g. `{ "key":
+  "alt+shift+space", "command": "selection.showActions", "global": true }`.
 
 ## 3. To test on screen
 
@@ -78,8 +66,8 @@ Each needs a reload of Hammerspoon first (cmd+alt+ctrl+R).
   launcher: a row for it; `cmd+.` offers Look Up, Search the web and Copy.
 - [ ] **No selection** where there should be none: a password field, Brave, VS
   Code; and no `slow: capture.selection` line in the console.
-- [ ] **Instant Send** (J2), once Q4 has a key: select a word in TextEdit,
-  press the key: Look Up, Search the web and Copy, for that word.
+- [ ] **Instant Send** (J2), once it has a key (section 2): select a word in
+  TextEdit, press the key: Look Up, Search the web and Copy, for that word.
 
 ### Apps, windows and system
 
@@ -140,6 +128,13 @@ Needs Full Disk Access (section 1).
   and save: "where am I" in the root runs in the terminal and prints ~/Git; a
   task without "command" is in Show Problems.
 
+### SpoonInstall
+
+- [ ] **The spoons branch installs.** After a version tag (or Actions ▸
+  Publish for SpoonInstall ▸ Run workflow), the `spoons` branch holds
+  `docs/docs.json` and `Spoons/CommandLayer.spoon.zip`, and the README's
+  SpoonInstall lines install it into a fresh `~/.hammerspoon/Spoons/`.
+
 ### URL handler
 
 - [ ] **Only allowed commands run.** Add `"urlhandler.allowedCommands": [
@@ -198,6 +193,8 @@ Read from the console (or tell an agent to read it).
 | L5 | f20ea17 | The README's table of extensions, generated |
 | L4 | 3a70953 | `obj.homepage`, `logger`, `scripts/spoon-release.sh` |
 | Brave access | 6ea21aa | A refused Bookmarks file is a problem saying where to allow it |
+| Publishing | (this commit) | A GitHub Action writes the `spoons` branch SpoonInstall installs from, on a `v*` tag; the README shows how |
+| Answered | -- | Pushed (Q1); HSKeybindings needs nothing from the Spoon, as it reads Hammerspoon's own hotkeys (Q5); the old app history removed (Q6) |
 
 Declined the same day, with the reasons: design.md, "Declined, and why" (I2,
 M1, C14, Docker and mas, a script runner and a menu bar of our own).
