@@ -152,7 +152,7 @@ check shown to fail without its change. What an item leaves to be seen on
 screen goes to the Owner checks above. Declined on the same day, with the
 reasons: design.md, "Declined, and why".
 
-**Progress: 17 of 18 done.**
+**Progress: 18 of 18 done.**
 
 | # | Item | State |
 |---|---|---|
@@ -173,7 +173,7 @@ reasons: design.md, "Declined, and why".
 | 15 | **J4** A Scripts picker fed by extensions (Shortcuts, tasks, Raycast script commands), tried with a dummy script | Done, 9f1ba55 -- `scripts ` picker; Raycast script commands from `raycast.scriptDirectories`; a dummy script in your dotfiles |
 | 16 | **J22** yabai spaces and WezTerm panes as rows | Done, 903c553 -- `wezterm` and `yabai` extensions (off as shipped; WezTerm switched on in your settings) |
 | 17 | **L5** A README table, one row per extension | Done, f20ea17 -- generated from each extension's description and verbs, kept current by the harness |
-| 18 | **L4** SpoonInstall, `obj.homepage`, logger and hotkey mapping; needs the repository public | |
+| 18 | **L4** SpoonInstall, `obj.homepage`, logger and hotkey mapping; needs the repository public | Done, 3a70953 -- homepage, `logger`, `scripts/spoon-release.sh`; publishing the branch is yours to decide |
 
 Done before the plan, the same day: the user folder moved to
 `~/.hammerspoon/commandlayer` (7d014b5), extensions added from init.lua
