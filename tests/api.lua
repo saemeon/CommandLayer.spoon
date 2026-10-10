@@ -150,6 +150,16 @@ do
 
   local now, asked, answer = 1000, 0, nil
   stub(os, "time", function() return now end)
+  local turns = {}
+  stub(hs.timer, "doAfter", function(_, fn)
+    turns[#turns + 1] = fn
+    return { stop = function() end }
+  end)
+  local function nextTurn()
+    local due = turns
+    turns = {}
+    for _, fn in ipairs(due) do fn() end
+  end
   local function slow()
     return { seconds = 60, initial = "initial",
              refresh = function(done) asked = asked + 1; answer = done end }
@@ -162,11 +172,29 @@ do
   local askedWithin = asked
   now = 1061
   ecl.cached("slow", slow())
+  nextTurn()
   local atOnce = ecl.cached("quick", { seconds = 60, refresh = function(done) done("now") end })
   check("cl.cached answers at once, asks once while a refresh is out, and keeps even an empty answer",
         first == "initial" and second == "initial" and type(empty) == "table" and next(empty) == nil
         and askedWithin == 1 and asked == 2 and atOnce == "now",
         ("%s %s asked %d then %d"):format(tostring(first), tostring(atOnce), askedWithin, asked))
+
+  -- A refresh that answers at once is still not paid inside the call that
+  -- found the answer stale: that call is an open, waiting to draw.
+  local scans = 0
+  local function scanned()
+    return { seconds = 60, refresh = function(done) scans = scans + 1; done("fresh " .. scans) end }
+  end
+  now = 3000
+  ecl.cached("scanned", scanned())
+  now = 3061
+  local stale = ecl.cached("scanned", scanned())
+  local scansInCall = scans
+  nextTurn()
+  local fresh = ecl.cached("scanned", scanned())
+  check("a stale answer is given at once and refreshed a turn later, never inside the call",
+        stale == "fresh 1" and scansInCall == 1 and fresh == "fresh 2" and scans == 2,
+        ("%s, %d scans in the call, then %s"):format(tostring(stale), scansInCall, tostring(fresh)))
 
   -- done(nil) is a call that did not work: the last good answer stays, and
   -- the next ask tries again rather than waiting out `seconds`.
@@ -180,8 +208,10 @@ do
   reply({ "mine" })
   now = 2400
   ecl.cached("flaky", flaky())
+  nextTurn()
   reply(nil)
   local kept = ecl.cached("flaky", flaky())
+  nextTurn()
   check("a refresh answering nil keeps the last answer and is asked again at once",
         type(kept) == "table" and kept[1] == "mine" and tries == 3,
         ("%s after %d tries"):format(tostring(type(kept) == "table" and kept[1] or kept), tries))

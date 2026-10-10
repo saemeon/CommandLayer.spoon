@@ -19,10 +19,16 @@ local ext
 for _, e in ipairs(cl.extensions) do
   if e.name == "systemsettings" then ext = e end
 end
+local early = ext and ext.items({}) or {}
+local scansBefore = scans
+M.load()
 local rows = ext and ext.items({}) or {}
 local again = ext and ext.items({}) or {}
 M.scan = saved.scan
 cl.stopRunning("systemsettings")
+
+check("an open before the first scan shows no panes rather than waiting for one",
+      #early == 0 and scansBefore == 0, tostring(scansBefore) .. " scans")
 
 local row = rows[1]
 local verbs = {}
@@ -31,7 +37,7 @@ for _, verb in ipairs(row and cl.itemActions(row.subject, {}) or {}) do
     verbs[verb.label] = verb.args.pane == row.subject
   end
 end
-check("a settings pane is a row opening its URL, scanned once while the cache is fresh",
+check("a settings pane is a row opening its URL, and opens read the one scan",
       row ~= nil and row.label == "Wi-Fi" and row.command == "system.open"
       and row.args.target == "x-apple.systempreferences:com.apple.wifi-settings-extension"
       and #again == 1 and scans == 1,

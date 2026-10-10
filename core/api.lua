@@ -299,7 +299,8 @@ local function ownFunctions(owner)
 
   -- Stale-while-revalidate: the last answer at once, and when it is older
   -- than `seconds` -- an empty answer counts -- `refresh(done)` asked once,
-  -- the picker redrawn when it lands. A refresh unanswered for `timeout`
+  -- a turn later when there is an answer to show, the picker redrawn when
+  -- it lands. A refresh unanswered for `timeout`
   -- seconds is given up.
   --
   -- `done(nil)` says it did not work rather than that there is nothing: the
@@ -318,25 +319,32 @@ local function ownFunctions(owner)
     if stale and not pending and type(opts.refresh) == "function" then
       local caches, started = owner.caches, {}
       entry.started, entry.generation = now, started
-      local answered
-      -- From asking to the answer, which is where a cache's time goes.
-      local stopSpan = M.span("cache." .. name .. "." .. tostring(key))
-      local ok, err = pcall(opts.refresh, function(value)
-        if stopSpan then
-          stopSpan()
-          stopSpan = nil
+      -- With a value to show, the refresh waits a turn: a refresh that answers
+      -- at once -- a few hundred plist reads -- would otherwise be paid inside
+      -- the open that asked, which is what stale-while-revalidate is to avoid.
+      local later = entry.value ~= nil
+      local function ask()
+        local answered
+        -- From asking to the answer, which is where a cache's time goes.
+        local stopSpan = M.span("cache." .. name .. "." .. tostring(key))
+        local ok, err = pcall(opts.refresh, function(value)
+          if stopSpan then
+            stopSpan()
+            stopSpan = nil
+          end
+          if owner.caches ~= caches or entry.generation ~= started then return end
+          entry.started = nil
+          if value == nil then return end
+          entry.value, entry.stamp = value, os.time()
+          if answered ~= nil or later then M.refresh() end
+        end)
+        answered = true
+        if not ok then
+          entry.started, entry.stamp = nil, now
+          M.log.e(where .. " cache '" .. tostring(key) .. "' -> " .. tostring(err))
         end
-        if owner.caches ~= caches or entry.generation ~= started then return end
-        entry.started = nil
-        if value == nil then return end
-        entry.value, entry.stamp = value, os.time()
-        if answered ~= nil then M.refresh() end
-      end)
-      answered = true
-      if not ok then
-        entry.started, entry.stamp = nil, now
-        M.log.e(where .. " cache '" .. tostring(key) .. "' -> " .. tostring(err))
       end
+      if later then own.after(0, ask) else ask() end
     end
     if entry.value == nil then return opts.initial end
     return entry.value

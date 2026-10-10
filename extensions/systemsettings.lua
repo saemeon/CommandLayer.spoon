@@ -60,18 +60,21 @@ function M.scan()
   return found
 end
 
+-- The panes from the last scan; none until the first.
+M.panes = {}
+
 function M.extension(cl)
-  local function panes()
-    return cl.cached("panes", {
-      seconds = cl.setting("systemsettings", "cacheSeconds"),
-      initial = {},
-      refresh = function(done) done(M.scan()) end,
-    })
+  -- The folder is on the sealed system volume, which only a macOS update
+  -- changes, and an update restarts the Mac: one scan per start is enough,
+  -- and no open ever waits for one.
+  function M.load()
+    M.panes = M.scan()
+    cl.refresh()
   end
 
-  -- Scanned off the startup path rather than paid on the first keystroke.
+  -- Off the startup path, and never on an open's.
   M.start = function()
-    cl.after(2, panes)
+    cl.after(2, M.load)
   end
 
   local takesPane = {
@@ -85,12 +88,6 @@ function M.extension(cl)
     rank        = 0,
     menus       = { "root" },
     optionalExtensionDependencies = { "icons" },
-
-    settings = {
-      -- Rarely changes. Long enough that it is scanned about once per session.
-      cacheSeconds = { type = "integer", default = 3600,
-                       description = "How long the list of panes is kept before it is read again, in seconds" },
-    },
 
     commands = {
       { id = "systemsettings.openPane", title = "Open pane", category = "System Settings",
@@ -112,7 +109,7 @@ function M.extension(cl)
       local icons = cl.extension("icons")
       local image = icons and icons.settings()
       local items = {}
-      for _, pane in ipairs(panes()) do
+      for _, pane in ipairs(M.panes) do
         items[#items + 1] = {
           label       = pane.name,
           description = "System Settings",

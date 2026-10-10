@@ -116,3 +116,19 @@ check("Quit and Hide take the app you were in, asking among running apps; on one
       front ~= nil and front.id == "com.apple.mail" and fromHammerspoon == nil and quitInput.preferCurrent == true
       and notRunning["apps.launchOrFocus"] and not notRunning["apps.quit"] and not notRunning["apps.hide"]
       and notRunning["apps.revealInFinder"] ~= nil)
+
+T.group("an app quitting")
+local function app(id, name)
+  return { kind = function() return 1 end, bundleID = function() return id end,
+           name = function() return name end }
+end
+T.stub(hs.application, "runningApplications", function()
+  return { app(nil, nil), app("com.apple.mail", "Mail") }
+end)
+local listed, all = pcall(M.apps)
+local mail = false
+for _, entry in ipairs(listed and all or {}) do
+  if entry.id == "com.apple.mail" and entry.running then mail = true end
+end
+check("an app that answers neither a bundle id nor a name, as one quitting may, is left out and the rest listed",
+      listed and mail, tostring(all))

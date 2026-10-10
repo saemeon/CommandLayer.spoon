@@ -78,9 +78,10 @@ end
 function M.apps()
   local running = {}
   for _, app in ipairs(hs.application.runningApplications()) do
-    if app:kind() == 1 then
-      running[app:bundleID() or app:name()] = app
-    end
+    -- An app that is quitting can answer neither, and a nil key would
+    -- throw away every row of the open.
+    local key = app:kind() == 1 and (app:bundleID() or app:name())
+    if key then running[key] = app end
   end
 
   local items = {}

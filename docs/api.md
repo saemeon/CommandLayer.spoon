@@ -644,7 +644,6 @@ Open and reveal things, Open With, lock the screen, macOS's Emoji & Symbols and 
 |---|---|---|---|
 | `systemsettings.enabled` | boolean | `true` | Whether System Settings is on; a change applies on reload. |
 | `systemsettings.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
-| `systemsettings.cacheSeconds` | integer | `3600` | How long the list of panes is kept before it is read again, in seconds |
 
 #### Tasks (`tasks`, extension)
 

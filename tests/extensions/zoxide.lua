@@ -8,7 +8,13 @@ local M = cl.modules.zoxide
 
 local ran = {}
 local saved = { new = hs.task.new, path = cl.tools.path, settings = cl.userSettings,
-                attributes = hs.fs.attributes }
+                attributes = hs.fs.attributes, doAfter = hs.timer.doAfter }
+-- A stale cache asks again a turn later (tests/api.lua checks when); here
+-- the turn is now, so each ask reaches the task stub where the check is.
+hs.timer.doAfter = function(_, fn)
+  fn()
+  return { stop = function() end }
+end
 -- The harness's own stub opens a path to see whether it exists, and a
 -- directory opens too, so it calls every folder a file.
 hs.fs.attributes = function(path)
@@ -85,8 +91,13 @@ check("opening a folder tells zoxide, whichever way it was opened; a file does n
 local asked = #ran
 for i = before + 1, #ran do ran[i].done(0, "", "") end
 ext.items(cl.buildContext())
-check("and zoxide is asked again once it has counted one", #ran == asked + 1
-      and ran[#ran].args[1] == "query", tostring(#ran - asked) .. " asks")
+-- Finder's selection is read in a task too, now that timers fire at once.
+local queries = 0
+for i = asked + 1, #ran do
+  if ran[i].args[1] == "query" then queries = queries + 1 end
+end
+check("and zoxide is asked again once it has counted one", queries == 1
+      and ran[#ran].args[1] == "query", tostring(queries) .. " asks")
 ran[#ran].done(0, dir .. "/one/\n" .. dir .. "/two\n")
 
 cl.userSettings = { ["zoxide.learn"] = false }
@@ -115,6 +126,7 @@ check("projects come from zoxide's list, git repositories only",
 os.execute(("rm -rf %q"):format(dir))
 hs.task.new, cl.tools.path = saved.new, saved.path
 hs.fs.attributes = saved.attributes
+hs.timer.doAfter = saved.doAfter
 cl.stopRunning("zoxide")
 cl.stopRunning("projects")
 M.forget()
