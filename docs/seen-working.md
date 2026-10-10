@@ -109,3 +109,6 @@ are scanned once per start rather than on an open.
 
 Seen on October 10: ssh host rows reading "SSH: <name>" and the Homebrew
 commands reading "Brew: Update", "Brew: Upgrade" and so on.
+
+Seen on October 10: a folder opened from `files ` reaching zoxide's list
+(`zoxide query --list --score`).

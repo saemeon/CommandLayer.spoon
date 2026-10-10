@@ -23,14 +23,6 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ### Search, files and selection
 
-- [ ] zoxide's folders in `files ` before and while typing, cmd+k on one; a
-  folder opened here reaches zoxide's list, and an app opened here does not
-  (writes your real database; `zoxide.learn` off stops it).
-  How: cmd+p, open a folder, then in a terminal
-  `zoxide query --list --score | grep <folder name>`: it is there, at a low
-  score after one visit (`zoxide query` alone prints only the best match).
-  Open an app from the launcher: `zoxide query --list | grep '\.app$'` lists
-  nothing new.
 - [ ] Text selected in TextEdit, Notes or Xcode is a subject in the root and
   `cmd+.`, with Look Up (Dictionary), Search the web and Copy.
   How: select a word in TextEdit, open the launcher: a row for the selected
