@@ -84,7 +84,12 @@
     // chord to find, not a sum to work out.
     { "name": "keybindings", "title": "Keyboard Shortcuts", "icon": "$(keyboard)", "prefix": "keybindings ",
       "placeholder": "Keyboard Shortcuts", "menus": [ "keybindings" ], "answers": false,
-      "empty": "Keyboard Shortcuts is switched off: \"keybindings.enabled\": true in settings.json switches it back on" }
+      "empty": "Keyboard Shortcuts is switched off: \"keybindings.enabled\": true in settings.json switches it back on" },
+    // The other Spoons loaded and every Hammerspoon hotkey, from the spoons
+    // extension: a Spoon's methods to run, a hotkey's chord to press.
+    { "name": "spoons", "title": "Spoons and hotkeys", "icon": "$(extensions)", "prefix": "spoons ",
+      "placeholder": "Spoons and hotkeys", "menus": [ "spoons" ],
+      "empty": "No other Spoon is loaded and no hotkey is bound" }
   ],
 
   // The matchers used, in the order tried: the first that takes a query

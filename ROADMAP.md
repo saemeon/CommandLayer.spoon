@@ -67,6 +67,10 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ### Apps, windows and system
 
+- [ ] `spoons ` lists the Hammerspoon hotkeys, and picking one presses it
+  (J17); another Spoon's methods are rows once one is loaded.
+  How: type `spoons ` then "f13": picking Hotkey F13 does what the remote's
+  Home key does.
 - [ ] In a password field, Paste, Emoji & Symbols and a YouTube key alert
   that Secure Input is on, naming the app, and the key presses nothing.
   How: click into a password field (e.g. a login page in Safari), open the

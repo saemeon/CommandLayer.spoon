@@ -4,7 +4,7 @@
   "additionalProperties": false,
   "description": "settings.json, over the Spoon's config/defaults.jsonc.",
   "patternProperties": {
-    "^(?!(?:ambient|applescript|appmenus|apps|audio|brew|browser|calculator|chooser|codicons|context|developer|editor|files|finder|frecency|git|github|grep|hammerspoon|help|icons|keepawake|keybindings|lazygit|maccy|media|popup|projects|quicklinks|raycast|relevance|rerun|secureinput|selection|settings|shell|shortcuts|snippets|spoon|ssh|system|systemsettings|tasks|terminal|url|urlhandler|vscode|vscodebridge|webview|windows|workbench|zoxide)\\.)[A-Za-z0-9_-]+\\.": {
+    "^(?!(?:ambient|applescript|appmenus|apps|audio|brew|browser|calculator|chooser|codicons|context|developer|editor|files|finder|frecency|git|github|grep|hammerspoon|help|icons|keepawake|keybindings|lazygit|maccy|media|popup|projects|quicklinks|raycast|relevance|rerun|secureinput|selection|settings|shell|shortcuts|snippets|spoon|spoons|ssh|system|systemsettings|tasks|terminal|url|urlhandler|vscode|vscodebridge|webview|windows|workbench|zoxide)\\.)[A-Za-z0-9_-]+\\.": {
       "description": "A setting of an extension, presenter or ranker that does not ship with the Spoon."
     }
   },
@@ -1038,6 +1038,18 @@
       "type": "boolean"
     },
     "spoon.menus": {
+      "additionalProperties": {
+        "type": "boolean"
+      },
+      "description": "Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none.",
+      "type": "object"
+    },
+    "spoons.enabled": {
+      "default": true,
+      "description": "Whether Spoons is on; a change applies on reload. The other Spoons loaded, their methods to run, and every Hammerspoon hotkey to press.",
+      "type": "boolean"
+    },
+    "spoons.menus": {
       "additionalProperties": {
         "type": "boolean"
       },

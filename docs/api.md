@@ -633,6 +633,15 @@ Call another Spoon, or open a fallback when it is not loaded
 | `spoon.enabled` | boolean | `true` | Whether Spoons is on; a change applies on reload. Call another Spoon, or open a fallback when it is not loaded. |
 | `spoon.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 
+#### Spoons (`spoons`, extension)
+
+The other Spoons loaded, their methods to run, and every Hammerspoon hotkey to press
+
+| Setting | Type | Default | Description |
+|---|---|---|---|
+| `spoons.enabled` | boolean | `true` | Whether Spoons is on; a change applies on reload. The other Spoons loaded, their methods to run, and every Hammerspoon hotkey to press. |
+| `spoons.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
+
 #### SSH (`ssh`, extension)
 
 The hosts in ~/.ssh/config: ssh in the terminal, or a remote window in the editor

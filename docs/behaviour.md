@@ -829,6 +829,16 @@ a user as hex-encoded JSON; `vscode.remoteHost` reads it as `user@host`.
 The same path on two hosts is two projects. The `projects` export stays
 local, and `projects.remoteProjects` off leaves the rows out.
 
+## Spoons and hotkeys
+
+`spoons ` (`spoons.lua`, declared in `defaults.jsonc`) lists, as it opens,
+the other Spoons loaded -- every method of each, its class's included, but
+`init`, `bindHotkeys` and those starting with `_`, run on the Spoon when
+picked -- and every Hammerspoon hotkey (`hs.hotkey.getHotkeys()`), by its
+message when it has one, its chord pressed a tenth of a second after the
+launcher closes. A hotkey whose key hs.keycodes does not know is left out;
+this Spoon is too, its commands being rows already. Nothing is kept.
+
 ## Commands that take text
 
 An input with `fromQuery`, its picker `typed`, is answered by what was
