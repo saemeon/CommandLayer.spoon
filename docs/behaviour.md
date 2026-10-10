@@ -1022,6 +1022,12 @@ term, and its order decides within a grade. Each matcher lowers or builds
 a row's text once per row table, in a weak table, since a view's rows stay
 the same tables while you type.
 
+Typing on searches only what the last query kept (`narrowed` in
+`core/stack.lua`): whatever matches "pul" matched "pu", fuzzily or as a
+substring, word by word. Deleting, a query holding fzf's `|` (which can
+widen), or a list built again (a refresh) searches every row. No setting: the
+rows are the same, only fewer are handed to the matcher.
+
 A row's `alwaysShow` is VS Code's QuickPickItem field: no matcher drops it.
 `rankItems` does not send it to a matcher or rank it either. Whoever marked
 it placed it -- a status line such as grep's "No results", or another

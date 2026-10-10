@@ -323,12 +323,33 @@ local function rememberSections(view, shown)
   view.sectioned = { from = view.items, searched = searched, first = first }
 end
 
+-- What the last query kept, so typing on searches only that: whatever matches
+-- "pul" matched "pu", fuzzily or as a substring, word by word. fzf's `|` can
+-- widen a query, so one holding it searches everything. A refresh's new rows
+-- are another list, and searched whole.
+local function narrowed(view, list, query)
+  local last = view.narrowedBy
+  if not last or last.from ~= list or last.query == "" or query:find("|", 1, true)
+     or query:sub(1, #last.query) ~= last.query then
+    return list
+  end
+  local out = {}
+  for _, item in ipairs(list) do
+    if last.kept[item] then out[#out + 1] = item end
+  end
+  return out
+end
+
 local function listQuery(view, query, present)
   local direct = view.answers and queryItems(view.ctx, query) or {}
   local sectioned = query ~= "" and view.sectioned
   if sectioned and sectioned.from ~= view.items then sectioned = nil end
 
-  rankItems(sectioned and sectioned.searched or view.items or {}, query, function(ranked, aliased)
+  local list = sectioned and sectioned.searched or view.items or {}
+  rankItems(narrowed(view, list, query), query, function(ranked, aliased)
+    local kept = {}
+    for _, item in ipairs(ranked) do kept[item] = true end
+    view.narrowedBy = { from = list, query = query, kept = kept }
     if sectioned then ranked = leading(ranked, sectioned.first, aliased or 0) end
     -- Typing keeps what you used lately first among what matched, as VS
     -- Code's palette does, though still after the rows made from the text,

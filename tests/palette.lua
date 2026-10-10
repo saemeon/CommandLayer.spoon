@@ -682,3 +682,35 @@ check("cmd+k's picker, given nothing to act on, opens nothing", (function()
         hs.alert.show = realAlert
         return opened == false, tostring(opened)
       end)())
+
+group("typing on searches only what matched")
+do
+  local substring = substringOnly()[1]
+  local handed = {}
+  local saved = cl.matchers
+  cl.matchers = { { name = "counting", match = function(items, query, callback)
+    handed[#handed + 1] = #items
+    return substring.match(items, query, callback)
+  end } }
+  cl.register({ name = "test-narrowing", menus = { "test-narrowing" }, items = function()
+    return { { label = "apple" }, { label = "apricot" }, { label = "banana" }, { label = "abacus" },
+             { label = "cherry" } }
+  end })
+  cl.view({ name = "test-narrowing", menus = { "test-narrowing" }, presenter = "recording" })
+  local p = openRecorded("test-narrowing")
+  handed = {}
+  p.type("a")
+  p.type("ap")
+  p.type("apr")
+  p.type("ap")
+  p.type("ap|b")
+  local shownLast = {}
+  for _, row in ipairs(p.shown or {}) do shownLast[#shownLast + 1] = row.label end
+  cl.matchers = saved
+  removeView("test-narrowing")
+  cl.unregisterExtension("test-narrowing")
+  layerModal:exit()
+  check("typing on hands the matcher only what the shorter query kept; deleting, or a query with |, "
+          .. "searches every row",
+        table.concat(handed, " ") == "5 4 2 5 5", table.concat(handed, " ") .. " / " .. table.concat(shownLast, " "))
+end
