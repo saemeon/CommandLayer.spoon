@@ -497,10 +497,13 @@ contributes its rows to the pickers that stayed.
 ## Recents: track what nothing else tracks
 
 **Recent apps.** macOS keeps this in a binary `.sfl2` plist that is awkward and
-version-fragile to parse. An `hs.application.watcher` recording activation order
-is less code, more reliable, and more accurate to how you actually work. It
-persists through `hs.settings` and seeds from running apps on load, so the list
-is useful immediately rather than after a warm-up period.
+version-fragile to parse, so at first an `hs.application.watcher` recorded
+activation order in `hs.settings` -- the one exception to dispatch beside
+frecency. Since October 10 macOS is asked instead: `lsappinfo
+visibleProcessList` gives the running apps front to back, in 4 ms, in a task
+whenever an app comes to the front, and Spotlight's `kMDItemLastUsedDate`,
+which the app query already returns, orders the apps you quit. Nothing is
+recorded; the old `commandlayer.appMRU` key is no longer read.
 
 **Recent projects.** The first instinct was to scan for `.git` directories.
 Wrong: `zoxide` is already installed, already tracks every directory you visit,

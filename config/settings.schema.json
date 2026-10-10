@@ -168,7 +168,7 @@
         "Hammerspoon",
         "loginwindow"
       ],
-      "description": "Apps never recorded as used",
+      "description": "Apps never listed as used recently",
       "type": "array"
     },
     "apps.menus": {
@@ -180,7 +180,7 @@
     },
     "apps.mruLimit": {
       "default": 30,
-      "description": "How many apps to remember having used",
+      "description": "How many apps you quit are listed as used recently, by Spotlight's last-used date",
       "type": "integer"
     },
     "apps.searchPaths": {

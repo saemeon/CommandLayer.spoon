@@ -292,8 +292,8 @@ Run an AppleScript
 | `apps.enabled` | boolean | `true` | Whether Apps is on; a change applies on reload. |
 | `apps.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 | `apps.confirmQuit` | boolean | `true` | Ask before quitting an app |
-| `apps.ignoreApps` | array | `[ "Hammerspoon", "loginwindow" ]` | Apps never recorded as used |
-| `apps.mruLimit` | integer | `30` | How many apps to remember having used |
+| `apps.ignoreApps` | array | `[ "Hammerspoon", "loginwindow" ]` | Apps never listed as used recently |
+| `apps.mruLimit` | integer | `30` | How many apps you quit are listed as used recently, by Spotlight's last-used date |
 | `apps.searchPaths` | array | `[ "/Applications", "/System/Applications", "~/Applications", "/System/Library/CoreServices/Applications", "/Applications/Xcode.app/Contents/Applications" ]` | The folders apps are listed from |
 
 #### Audio (`audio`, extension)

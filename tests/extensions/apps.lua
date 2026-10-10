@@ -132,3 +132,55 @@ for _, entry in ipairs(listed and all or {}) do
 end
 check("an app that answers neither a bundle id nor a name, as one quitting may, is left out and the rest listed",
       listed and mail, tostring(all))
+
+T.group("which apps you used, as macOS keeps it")
+do
+  local names = M.parseOrder('ASN:0x0-0x13013-"Brave_Browser": ASN:0x0-0x1c31c3-"Code": ASN:0x0-0x2b02b-"Finder":')
+  local callback
+  T.stub(hs.spotlight, "new", function()
+    local q = {}
+    for _, method in ipairs({ "queryString", "callbackMessages", "searchScopes" }) do q[method] = function() return q end end
+    function q.setCallback(_, fn) callback = fn; return q end
+    function q.start() return q end
+    function q.stop() return q end
+    return q
+  end)
+  local completes = {}
+  T.stub(cl.tools.paths, "lsappinfo", "/usr/bin/lsappinfo")
+  T.stub(hs.task, "new", function(_, complete)
+    completes[#completes + 1] = complete
+    return { start = function(t) return t end, terminate = function() end }
+  end)
+  local written = 0
+  T.stub(hs.settings, "set", function() written = written + 1 end)
+  M.stop()
+  M.start()
+  if completes[1] then completes[1](0, 'ASN:0x0-1-"Code": ASN:0x0-2-"Brave_Browser": ASN:0x0-3-"Hammerspoon":', "") end
+  if callback then
+    callback(nil, nil, { kMDQueryUpdateAddedItems = {
+      { kMDItemPath = "/Applications/Old.app", kMDItemDisplayName = "Old", kMDItemCFBundleIdentifier = "x.old",
+        kMDItemLastUsedDate = 100 },
+      { kMDItemPath = "/Applications/Newer.app", kMDItemDisplayName = "Newer", kMDItemCFBundleIdentifier = "x.newer",
+        kMDItemLastUsedDate = 200 },
+      { kMDItemPath = "/Applications/Never.app", kMDItemDisplayName = "Never", kMDItemCFBundleIdentifier = "x.never" },
+      { kMDItemPath = "/Applications/Brave Browser.app", kMDItemDisplayName = "Brave Browser",
+        kMDItemCFBundleIdentifier = "com.brave.Browser", kMDItemLastUsedDate = 300 },
+    } })
+  end
+  local function app(id, name)
+    return { kind = function() return 1 end, bundleID = function() return id end, name = function() return name end }
+  end
+  T.stub(hs.application, "runningApplications", function()
+    return { app("com.brave.Browser", "Brave Browser"), app("org.hammerspoon.Hammerspoon", "Hammerspoon"),
+             app("com.microsoft.VSCode", "Code") }
+  end)
+  local order = {}
+  for _, entry in ipairs(M.apps()) do order[#order + 1] = entry.name .. (entry.running and "*" or "") end
+  M.stop()
+  check("an app list reads as lsappinfo writes it",
+        table.concat(names, "|") == "Brave Browser|Code|Finder", table.concat(names, "|"))
+  check("the running apps come front to back as macOS keeps them, then those quit, last used first by "
+          .. "Spotlight; an ignored app is left out, and nothing is written to hs.settings",
+        table.concat(order, " ") == "Code* Brave Browser* Newer Old" and written == 0,
+        table.concat(order, " ") .. " / " .. written .. " writes")
+end

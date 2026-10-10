@@ -478,13 +478,8 @@ its own. Reading the environment -- session files, VS Code's recents, the
 apps and windows there are -- is not command logic, and neither is the
 launcher's own machinery, such as ranking. Anything needing state or an
 algorithm of its own is routed to a tool, or dropped; design.md lists what
-the rule dropped and why. The exceptions, each kept because no tool holds it:
+the rule dropped and why. The exception, kept because no tool holds it:
 
-- **App-usage history** (`commandlayer.appMRU` in `hs.settings`,
-  `extensions/apps.lua`). No tool keeps an app-activation history, and it
-  is what finds an app you quit by a name you forgot. Later: try
-  lsappinfo's front-to-back order plus Spotlight's kMDItemLastUsedDate in
-  its place.
 - **Frecency** (`rankers/frecency.lua`). Nothing outside counts what is
   picked in the palette; the algorithm is zoxide's, copied.
 

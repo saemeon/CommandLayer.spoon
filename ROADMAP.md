@@ -67,6 +67,9 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ### Apps, windows and system
 
+- [ ] Recent apps come from macOS (J21): `recent ` lists the running apps front
+  to back and then apps you quit, most recently used first.
+  How: quit an app, open `recent `: it is listed under the running ones.
 - [ ] `spoons ` lists the Hammerspoon hotkeys, and picking one presses it
   (J17); another Spoon's methods are rows once one is loaded.
   How: type `spoons ` then "f13": picking Hotkey F13 does what the remote's

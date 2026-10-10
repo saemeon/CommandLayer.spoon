@@ -1,4 +1,4 @@
--- Every installed application, and which you used most recently.
+-- Every installed application, and which you used most recently, as macOS keeps it.
 --
 -- A live hs.spotlight query keeps itself current and hands back the
 -- bundle id, which is the only identity the catalogue and the running
@@ -24,27 +24,11 @@ local function expand(path)
   return (path:gsub("^~", os.getenv("HOME")))
 end
 
--- Recorded here, against the rule of dispatching to what already keeps a
--- thing: no tool keeps an app-activation history, and it is what finds an
--- app you quit by a name you forgot. macOS's own recents list is a binary
--- .sfl2 plist that is version-fragile to parse.
-local SETTINGS_KEY = "commandlayer.appMRU"
-
--- Entries are { name = , id = }; older settings held bare strings, which
--- are read as name-only and rewritten on first touch.
-local mru = {}
-
-local function loadMRU()
-  local list = {}
-  for _, entry in ipairs(hs.settings.get(SETTINGS_KEY) or {}) do
-    if type(entry) == "string" then
-      list[#list + 1] = { name = entry }
-    elseif type(entry) == "table" and entry.name then
-      list[#list + 1] = entry
-    end
-  end
-  return list
-end
+-- Which apps you used is macOS's to know, not this file's: the running ones
+-- in its own front-to-back order (`lsappinfo visibleProcessList`), the ones
+-- you quit by Spotlight's kMDItemLastUsedDate, which the query below keeps.
+-- The order is asked again in a task whenever an app comes to the front.
+local front = {}
 
 local function ignored(name)
   for _, other in ipairs(setting("ignoreApps") or {}) do
@@ -53,59 +37,62 @@ local function ignored(name)
   return false
 end
 
-local function touch(name, id)
-  if not name or name == "" then return end
-  if ignored(name) then return end
-
-  for i, existing in ipairs(mru) do
-    if (id and existing.id == id) or existing.name == name then
-      table.remove(mru, i)
-      break
-    end
+-- "ASN:0x0-0x13013-"Brave_Browser": ..." -> { "Brave Browser", ... }
+function M.parseOrder(stdout)
+  local names = {}
+  for name in tostring(stdout or ""):gmatch('ASN:[^"]*"([^"]*)"') do
+    names[#names + 1] = (name:gsub("_", " "))
   end
-
-  table.insert(mru, 1, { name = name, id = id })
-
-  local limit = setting("mruLimit")
-  while #mru > limit do
-    table.remove(mru)
-  end
-
-  hs.settings.set(SETTINGS_KEY, mru)
+  return names
 end
 
--- Returns apps in most-recently-used order, marking which are running.
+local orderTask
+function M.readOrder()
+  local lsappinfo = layer and layer.tools.path("lsappinfo")
+  if not lsappinfo or orderTask then return end
+  orderTask = layer.tools.run(lsappinfo, { "visibleProcessList" }, function(code, stdout)
+    orderTask = nil
+    if code == 0 then front = M.parseOrder(stdout) end
+  end)
+end
+
+-- The running apps front to back, then those you quit, last used first:
+-- each { name, id, running, app }.
 function M.apps()
+  local position = {}
+  for i, name in ipairs(front) do
+    if not position[name] then position[name] = i end
+  end
+
   local running = {}
-  for _, app in ipairs(hs.application.runningApplications()) do
+  for i, app in ipairs(hs.application.runningApplications()) do
     -- An app that is quitting can answer neither, and a nil key would
     -- throw away every row of the open.
     local key = app:kind() == 1 and (app:bundleID() or app:name())
-    if key then running[key] = app end
+    if key and not ignored(app:name()) then
+      running[#running + 1] = { app = app, at = position[app:name()] or (#front + i) }
+    end
+  end
+  table.sort(running, function(a, b) return a.at < b.at end)
+
+  local items, seen = {}, {}
+  for _, entry in ipairs(running) do
+    local app = entry.app
+    local id = app:bundleID()
+    items[#items + 1] = { name = app:name(), id = id, running = true, app = app }
+    seen[id or app:name()] = true
   end
 
-  local items = {}
-  for _, entry in ipairs(mru) do
-    local key = entry.id or entry.name
-    items[#items + 1] = {
-      name    = entry.name,
-      id      = entry.id,
-      running = running[key] ~= nil,
-      app     = running[key],
-    }
-    running[key] = nil
+  local quit = {}
+  for _, app in pairs(byName) do
+    if app.lastUsed and not seen[app.bundleID or app.name] and not ignored(app.name) then
+      quit[#quit + 1] = app
+    end
   end
-
-  -- Anything running that the MRU has not seen yet.
-  for key, app in pairs(running) do
-    items[#items + 1] = {
-      name    = app:name(),
-      id      = app:bundleID() or key,
-      running = true,
-      app     = app,
-    }
+  table.sort(quit, function(a, b) return a.lastUsed > b.lastUsed end)
+  for i = 1, math.min(#quit, setting("mruLimit") or 0) do
+    items[#items + 1] = { name = quit[i].name, id = quit[i].bundleID, running = false }
   end
-
   return items
 end
 
@@ -121,7 +108,9 @@ local function modify(items, add)
       local id = item.kMDItemCFBundleIdentifier
 
       if add then
-        local app = { name = name, path = path, bundleID = id }
+        -- A date as seconds, however hs.spotlight hands it over.
+        local used = item.kMDItemLastUsedDate
+        local app = { name = name, path = path, bundleID = id, lastUsed = tonumber(used) }
         byName[name] = app
         if id then byBundle[id] = app end
       else
@@ -145,14 +134,11 @@ end
 function M.start()
   if watcher or not layer then return M end
 
-  mru = loadMRU()
-
-  -- Two independent things: the watcher records what you use, the
-  -- Spotlight query records what you have.
-  watcher = layer.watch(hs.application.watcher.new(function(name, event, app)
-    if event == hs.application.watcher.activated then
-      touch(name, app and app:bundleID())
-    end
+  -- Two independent things: the order macOS keeps, asked again when an app
+  -- comes to the front, and the Spotlight query of what you have.
+  M.readOrder()
+  watcher = layer.watch(hs.application.watcher.new(function(_, event)
+    if event == hs.application.watcher.activated then M.readOrder() end
   end))
 
   -- Makes hs.application's name lookups consult Spotlight too, so
@@ -177,7 +163,7 @@ function M.stop()
   for _, d in ipairs({ watcher or false, spotlight or false }) do
     if d then d.dispose() end
   end
-  watcher, spotlight = nil, nil
+  watcher, spotlight, orderTask, front = nil, nil, nil, {}
   byName, byBundle, sorted, dirty = {}, {}, {}, true
   return M
 end
@@ -229,13 +215,14 @@ end
 function M.inFront(app, ctx)
   if type(ctx) == "table" and ctx.frontmostAppID then return ctx.frontmostAppID == app:bundleID() end
   if type(ctx) == "table" and ctx.frontmostApp then return ctx.frontmostApp == app:name() end
-  local front = hs.application.frontmostApplication()
-  return front ~= nil and front:bundleID() == app:bundleID() and front:name() == app:name()
+  local inFront = hs.application.frontmostApplication()
+  return inFront ~= nil and inFront:bundleID() == app:bundleID() and inFront:name() == app:name()
 end
 
 function M.extension(cl)
   layer = cl
   cl.tools.register("open", { "/usr/bin/open" })
+  cl.tools.register("lsappinfo", { "/usr/bin/lsappinfo" })
 
   -- Three identities, tried best first. The bundle id is the only one that
   -- always works: an app's display name and its running-process name can
@@ -351,9 +338,9 @@ function M.extension(cl)
                     "/Applications/Xcode.app/Contents/Applications" },
         description = "The folders apps are listed from" },
       mruLimit = { type = "integer", default = 30,
-        description = "How many apps to remember having used" },
+        description = "How many apps you quit are listed as used recently, by Spotlight's last-used date" },
       ignoreApps = { type = "array", default = { "Hammerspoon", "loginwindow" },
-        description = "Apps never recorded as used" },
+        description = "Apps never listed as used recently" },
       confirmQuit = { type = "boolean", default = true,
         description = "Ask before quitting an app" },
     },
