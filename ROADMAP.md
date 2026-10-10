@@ -23,6 +23,10 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ### Search, files and selection
 
+- [ ] Switching pickers by chord keeps what you typed: "pull" in the root,
+  then cmd+o, reads `>pull`; cmd+p from there reads `files pull`.
+  How: open the launcher, type "pull", press cmd+o: the field reads ">pull"
+  and the Git commands are listed. Press cmd+p: "files pull".
 - [ ] Text selected in TextEdit, Notes or Xcode is a subject in the root and
   `cmd+.`, with Look Up (Dictionary), Search the web and Copy.
   How: select a word in TextEdit, open the launcher: a row for the selected

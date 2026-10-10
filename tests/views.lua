@@ -201,10 +201,40 @@ check("a longer prefix takes over from a shorter one", (function()
 check("a chord on a view with a prefix opens the root with it typed", (function()
         recordedSpec("root")
         local paletteSpec = recordedSpec("palette")
+        -- From a closed layer: from an open one, what was typed comes along.
+        cl.clearStack()
         cl.quickOpen("palette")
         local root, p = cl.viewNamed("root").picker, paletteSpec.picker
         return root ~= nil and root.query == ">" and p ~= nil and p.query == ">",
                ("%s / %s"):format(tostring(root and root.query), tostring(p and p.query))
+      end)())
+
+check("a chord switching pickers keeps what was being searched for, after the new prefix", (function()
+        local rootSpec = recordedSpec("root")
+        local paletteSpec = recordedSpec("palette")
+        local nestedSpec = recordedSpec("test-nested")
+        cl.open("root")
+        rootSpec.picker.type("pull")
+        cl.quickOpen("palette")
+        local inPalette = paletteSpec.picker and paletteSpec.picker.query
+        paletteSpec.picker.type(">pull origin")
+        cl.quickOpen("test-nested")
+        local inNested = nestedSpec.picker and nestedSpec.picker.query
+        cl.quickOpen("root")
+        local backInRoot = rootSpec.picker.query
+        return inPalette == ">pull" and inNested == "nest pull origin" and backInRoot == "pull origin",
+               ("%s / %s / %s"):format(tostring(inPalette), tostring(inNested), tostring(backInRoot))
+      end)())
+
+check("but not out of a question or the cmd+k panel, whose text is not a search", (function()
+        local rootSpec = recordedSpec("root")
+        local paletteSpec = recordedSpec("palette")
+        cl.open("root")
+        cl.push({ typed = true }, { placeholder = "Name", answering = { input = { id = "name" } } })
+        T.lastRecorded().type("my-branch")
+        cl.quickOpen("palette")
+        local p = paletteSpec.picker
+        return rootSpec.picker ~= nil and p ~= nil and p.query == ">", tostring(p and p.query)
       end)())
 
 check("a quickOpen keybinding with a query opens the view it names", (function()

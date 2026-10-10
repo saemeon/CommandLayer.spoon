@@ -842,7 +842,10 @@ starts with, and Cmd+Shift+P only opens it with `>` typed. A view's
   another prefix of the same view keeps the view.
 - A chord bound to a view with a prefix opens the entry picker with the
   prefix typed, so `cmd+o` is the root with `>`, and deleting it leaves
-  you searching everything.
+  you searching everything. From an open picker, what was being searched
+  for comes along after the new prefix: "pull" then `cmd+o` is `>pull`, and
+  `cmd+p` from there `files pull`. Not out of a question, the cmd+k panel
+  or a text command's picker, whose text is an answer or a verb.
 - Only declared pickers switch; in the cmd+k panel and argument prompts
   `>` is text. A view reached by its prefix always watches for its
   deletion.

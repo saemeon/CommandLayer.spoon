@@ -304,13 +304,20 @@ session.push = M.push
 -- entry picker, the way Cmd+Shift+P is Quick Open with ">" typed: the chord opens
 -- that picker with the prefix already in the field, so deleting the prefix
 -- leaves you in the entry picker rather than closing anything.
+--
+-- What is being searched for in the picker on screen comes along: "pull" then
+-- cmd+o is ">pull", as if the prefix had been typed in front of it. Not out
+-- of a question, the cmd+k panel or a text command's picker, whose text is an
+-- answer or a verb rather than a search.
 function M.quickOpen(name)
+  local top = topView()
+  local text = top and top.answers and top.query or ""
   local spec = M.viewNamed(name)
   local prefix = spec and M.prefixesOf(spec)[1]
   if prefix and name ~= M.defaultView then
-    return M.open(M.defaultView, { query = prefix })
+    return M.open(M.defaultView, { query = prefix .. text })
   end
-  return M.open(name)
+  return M.open(name, text ~= "" and { query = text } or nil)
 end
 
 -- A text command may have a prefix of its own -- "youtube lofi" -- and that
