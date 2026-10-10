@@ -28,7 +28,7 @@ Things only the owner can do, and that other checks depend on.
 
 ## 2. Open questions
 
-- **Q1 Push main?** 41 commits ahead of GitHub, none pushed yet.
+- **Q1 Push main?** Everything since October 10 is committed but not pushed.
 - **Q2 SpoonInstall:** `scripts/spoon-release.sh <folder>` writes
   `Spoons/CommandLayer.spoon.zip` and `docs/docs.json`. Publish it as a
   `spoons` branch -- by hand per release, or a GitHub Action -- and add the
@@ -42,6 +42,14 @@ Things only the owner can do, and that other checks depend on.
   Suggested: `alt+shift+space`, added to your keybindings.json.
 - **Q5 HSKeybindings `mapping`:** drop it, or find out first what
   HSKeybindings reads from a Spoon? Recommended: drop.
+- **Q7 A promotion post for Reddit.** Write one introducing Command Layer --
+  what it is (a keyboard launcher on Hammerspoon, shaped like VS Code's
+  palette), what sets it apart (one context model every extension shares;
+  everything is plain-text settings and Lua; it routes to the tools you have
+  rather than replacing them), a short screen recording, and how to install.
+  Where: r/hammerspoon first, then r/macapps. When: after Q1 and Q2, so the
+  post can point at a public repository with a one-line install. An agent can
+  draft it; the recording is yours.
 - **Q6 The old app history** (`commandlayer.appMRU` in hs.settings) is no
   longer read since J21. Delete it, or leave it? Recommended: leave; it is
   harmless.
