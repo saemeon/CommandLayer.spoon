@@ -307,7 +307,9 @@ One file per extension in `extensions/`, owning its whole feature,
 returning a module with `extension(cl)`. The folder is loaded and
 registered automatically, so adding an extension is adding a file. Its
 name is its file's; a `name` that differs is a problem and it is not
-registered.
+registered. An extension whose rows are all of known subject kinds declares
+them (`viewItems`), so a question asking for other kinds never runs its
+`items`; one that declares nothing is always gathered.
 
 `extension(cl)` gets the extension's own API, never the kernel. As VS
 Code's `context.subscriptions`, it records what the extension does through

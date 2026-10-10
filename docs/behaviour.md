@@ -499,6 +499,17 @@ the clause holds for offers the command with that row given -- VS Code's
 `view/item/context` entry in `menus` narrows it with a `when` over the same
 row and is in no picker unless the command also names one.
 
+Asked from search, such a question gathers only what could answer it. An
+extension may declare `viewItems`, every subject kind its rows carry (windows
+`window`, apps `app`, the browser `url`, app menus `menu`, System Settings
+`systemsettings`); a question whose clause names its kinds plainly --
+alternatives each requiring `viewItem == '<kind>'` (`M.acceptedViewItems`) --
+does not gather one declaring none of them, nor the command rows, which no
+such clause takes. A clause it cannot be sure of -- a negation, parentheses,
+an alternative naming no kind -- gathers everything, and so does an extension
+declaring nothing. "Search Text in…" spent 104 of its 147 ms gathering
+windows and apps it then threw away, before this.
+
 Which verbs are rows too: a verb that repeats what picking the row already
 does -- Launch or focus on an app, Open in browser on a bookmark, Toggle --
 has the `view/item/context` entry alone. Any other is also a palette row

@@ -160,3 +160,45 @@ check("textCommands first puts the text commands, filled in, before the picker's
                ("bare %d rows, text %s; typed own at %s, last text at %s of %d"):format(#bare, tostring(bareText),
                  tostring(own), tostring(lastText), #typed)
       end)())
+
+group("questions gather only what can answer them")
+do
+  local function kinds(clause)
+    local set = cl.acceptedViewItems(clause)
+    if not set then return "nil" end
+    local out = {}
+    for kind in pairs(set) do out[#out + 1] = kind end
+    table.sort(out)
+    return table.concat(out, " ")
+  end
+  check("a clause naming its kinds plainly gives them; one it cannot be sure of gives nil",
+        kinds("viewItem == 'file' || viewItem == 'folder' || viewItem == 'project'") == "file folder project"
+        and kinds("viewItem == 'url' && gitRepository") == "url"
+        and kinds("viewItem != 'window'") == "nil"
+        and kinds("(viewItem == 'file') || viewItem == 'folder'") == "nil"
+        and kinds("viewItem == 'file' || appRunning") == "nil"
+        and kinds(nil) == "nil",
+        kinds("viewItem == 'file' || viewItem == 'folder' || viewItem == 'project'"))
+
+  local asked = { windowsLike = 0, undeclared = 0 }
+  cl.register({ name = "test-windowslike", menus = { "test-question" }, viewItems = { "window" },
+    items = function()
+      asked.windowsLike = asked.windowsLike + 1
+      return { { label = "A window", subject = { kind = "window", id = 1 } } }
+    end })
+  cl.register({ name = "test-undeclared", menus = { "test-question" },
+    items = function()
+      asked.undeclared = asked.undeclared + 1
+      return { { label = "notes.md", subject = { kind = "file", path = "/tmp/notes.md" } } }
+    end })
+  local rows = cl.rowsForItemInput({ when = "viewItem == 'file' || viewItem == 'folder'",
+                                     menus = { "test-question" } }, cl.buildContext())
+  local everything = cl.gather(cl.buildContext(), { menus = { "test-question" } })
+  cl.unregisterExtension("test-windowslike")
+  cl.unregisterExtension("test-undeclared")
+  check("a question asking for files does not gather an extension whose rows are windows; one declaring "
+          .. "nothing is gathered, and a list gathers both",
+        #rows == 1 and rows[1].label == "notes.md" and asked.windowsLike == 1 and asked.undeclared == 2
+        and #everything >= 2,
+        ("%d rows, windows-like asked %d, undeclared %d"):format(#rows, asked.windowsLike, asked.undeclared))
+end

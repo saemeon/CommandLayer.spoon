@@ -557,6 +557,7 @@ function M.extension(cl)
 
   return {
     name  = "windows",
+    viewItems = { "window" },
     -- A little ahead of an app or a bookmark that also matches "left".
     rank  = 0.43,
     menus = { "root", "recent", "windows" },

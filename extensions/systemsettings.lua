@@ -85,6 +85,7 @@ function M.extension(cl)
   return {
     name        = "systemsettings",
     displayName = "System Settings",
+    viewItems = { "systemsettings" },
     rank        = 0,
     menus       = { "root" },
     optionalExtensionDependencies = { "icons" },

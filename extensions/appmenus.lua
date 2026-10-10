@@ -200,6 +200,7 @@ function M.extension(cl)
   return {
     name  = "appmenus",
     displayName = "App menus",
+    viewItems = { "menu" },
     rank  = 0,
 
     -- Not in the root. An app's menus are several hundred rows that

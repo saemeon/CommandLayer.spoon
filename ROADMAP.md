@@ -25,6 +25,10 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ### The picker
 
+- [ ] "Search Text in…" opens at once (N6): it no longer gathers windows,
+  apps or tabs to throw them away.
+  How: `>` "search text in", enter: the folders are listed without a pause,
+  and a second enter is not needed. Before: 147 ms, 104 of it windows and apps.
 - [ ] Switching pickers by chord keeps what you typed: "pull" in the root,
   then cmd+o, reads `>pull`; cmd+p from there reads `files pull`.
   How: open the launcher, type "pull", press cmd+o: the field reads ">pull"
@@ -105,11 +109,6 @@ check shown to fail without its change. What an item leaves to be seen on
 screen goes to the Owner checks above. Declined on the same day, with the
 reasons: design.md, "Declined, and why".
 
-1. **N6** "Search Text in…" opens slowly enough that a second enter lands on
-   the first folder. Measured first, from the console's open trace; then
-   either one slow extension is fixed or, if it is the rows the question
-   throws away, extensions declare the subject kinds they produce (a contract
-   change).
 2. **N8** Listing windows took 184-1083 ms after a reload on the default
    `ordered` source, where it had been about 25 ms; Mail was the slowest
    window once. Find which app answers slowly, and fix or route around it.

@@ -54,6 +54,7 @@ One file in extensions/, returning a module whose extension(cl) gives this spec.
 | `search` | function |  | function(query, ctx, done): rows found by asking again as you type, in a picker whose kind is search; returns a function that stops it. |
 | `settings` | table of settings by key |  | The settings it declares, by key. |
 | `subjects` | function |  | function(ctx): what is in front of you, as subjects. |
+| `viewItems` | list of strings |  | The subject kinds its items carry, every one: a question asking only for others does not gather it. Absent, it is always gathered. |
 
 ### input
 

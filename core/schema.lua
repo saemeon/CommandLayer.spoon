@@ -292,6 +292,9 @@ SCHEMAS.extension = {
     description = { type = S, description = "What the extension is for; heads its part of Default Settings." },
     menus = { type = T, items = S, description = "The menus its items feed." },
     rank = { type = N, description = "How particular its rows are to now, 0..1, for the specificity ranker." },
+    viewItems = { type = T, items = S,
+                  description = "The subject kinds its items carry, every one: a question asking only for "
+                                .. "others does not gather it. Absent, it is always gathered." },
     before = { type = { S, T }, items = S, description = "Extensions it runs before, in capture, gather and search." },
     after = { type = { S, T }, items = S, description = "Extensions it runs after." },
     extensionDependencies = { type = T, items = S,

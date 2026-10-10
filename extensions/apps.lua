@@ -340,6 +340,7 @@ function M.extension(cl)
 
   return {
     name     = "apps",
+    viewItems = { "app" },
     rank     = 0.29,
     menus = { "root", "commandPalette", "recent" },
 

@@ -1067,6 +1067,7 @@ function M.extension(cl)
   return {
     name  = "browser",
     rank  = 0.86,
+    viewItems = { "url" },
     -- Its capture reads frontmostApp.
     after = { "ambient" },
     optionalExtensionDependencies = { "secureinput" },

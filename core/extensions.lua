@@ -356,6 +356,16 @@ end
 -- One pass over the extensions, in order. The first row for a subject
 -- wins, so an extension lists what matters first -- recently used apps,
 -- then every app -- and never has to filter one list by the other.
+-- Whether an extension can feed a question asking for these kinds: one that
+-- declares the kinds its rows carry is left out when none is asked for.
+local function feeds(ext, viewItems)
+  if type(viewItems) ~= "table" or type(ext.viewItems) ~= "table" then return true end
+  for _, kind in ipairs(ext.viewItems) do
+    if viewItems[kind] then return true end
+  end
+  return false
+end
+
 local function gather(ctx, opts)
   opts = opts or {}
 
@@ -364,7 +374,8 @@ local function gather(ctx, opts)
   local overrides = {}
 
   for _, ext in ipairs(sortedExtensions()) do
-    if ext.items and M.onOwnMenu(ext.menus or DEFAULT_MENUS, ext.name, wanted, ctx, overrides) then
+    if ext.items and feeds(ext, opts.viewItems)
+       and M.onOwnMenu(ext.menus or DEFAULT_MENUS, ext.name, wanted, ctx, overrides) then
       local stop = M.span("gather." .. ext.name)
       local ok, produced = pcall(ext.items, ctx, opts)
       stop(ok and type(produced) == "table" and (#produced .. " rows") or nil)
@@ -387,6 +398,9 @@ local function gather(ctx, opts)
       end
     end
   end
+
+  -- A question asking for kinds of row takes no command row.
+  if type(opts.viewItems) == "table" then return items end
 
   -- An empty menus list is a command meant only to be called or bound.
   local stopCommands = M.span("gather.commands")
@@ -412,6 +426,21 @@ local function gather(ctx, opts)
 end
 
 M.gather = gather
+
+-- The kinds of row a clause accepts, when it says so plainly: alternatives
+-- each requiring `viewItem == '<kind>'`. Anything it cannot be sure of -- a
+-- negation, parentheses, an alternative naming no kind -- is nil, and every
+-- extension is gathered.
+function M.acceptedViewItems(clause)
+  if type(clause) ~= "string" or clause:find("[()!]") then return nil end
+  local kinds = {}
+  for term in (clause .. "||"):gmatch("(.-)||") do
+    local kind = term:match("viewItem%s*==%s*'([^']*)'") or term:match('viewItem%s*==%s*"([^"]*)"')
+    if not kind then return nil end
+    kinds[kind] = true
+  end
+  return kinds
+end
 
 -- What a `when` about one row reads: the row's subject, `viewItem` its kind
 -- -- VS Code's name for a tree item's contextValue in view/item/context
@@ -477,7 +506,7 @@ function M.rowsForItemInput(spec, ctx)
   end
 
   local out = {}
-  for _, row in ipairs(gather(ctx, { menus = menus })) do
+  for _, row in ipairs(gather(ctx, { menus = menus, viewItems = M.acceptedViewItems(spec.when) })) do
     local subject = row.subject
     if subject and subject.kind ~= "command" and subject.kind ~= "view"
        and M.when(spec.when, M.itemContext(subject, ctx)) then
