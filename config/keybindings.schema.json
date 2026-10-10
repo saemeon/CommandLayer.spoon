@@ -117,6 +117,8 @@
               "quicklinks.searchNpm",
               "quicklinks.searchStackOverflow",
               "raycast.open",
+              "rerun.last",
+              "rerun.recent",
               "selection.copy",
               "selection.lookUp",
               "selection.searchWeb",

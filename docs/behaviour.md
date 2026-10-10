@@ -430,6 +430,14 @@ also run by id; a function returning nil runs without asking, which is how
 `git.confirmPush` and `apps.confirmQuit` switch it off. No steps back, as
 escape does.
 
+**Running one again** (`rerun.lua`, through its `picked` hook): every
+command row picked is kept with the arguments it ran with, latest first, the
+same command with the same arguments once, twenty at most, in memory only --
+an argument may be a window or an app object nothing outside the layer can
+keep, so a reload empties it. The picker's own controls (`quickOpen*`) and
+rerun's commands are not kept. "Rerun last command" runs the latest again;
+"Rerun a recent command…" lists them, the arguments as the second line.
+
 Dynamic rows -- menu items, apps, tabs, files -- stay plain rows with no
 id, as VS Code's quick pick items do, and reach the registry through a
 parameterised command: a menu row runs `appmenus.select` with `{ app, path

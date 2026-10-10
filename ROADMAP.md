@@ -25,6 +25,10 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ### The picker
 
+- [ ] Rerun last command and Rerun a recent command… (J19).
+  How: run Git: Checkout… and pick a branch, then `>` "rerun last": the same
+  checkout runs again without asking. `>` "rerun a recent" lists what ran,
+  each with its arguments below it.
 - [ ] Opening the launcher no longer waits on the window list (N8): no `slow:
   gather.windows` or `windows: reading the … list` warning on an open; the
   windows rows are there, and a window opened since appears a moment later.
@@ -118,7 +122,7 @@ check shown to fail without its change. What an item leaves to be seen on
 screen goes to the Owner checks above. Declined on the same day, with the
 reasons: design.md, "Declined, and why".
 
-**Progress: 5 of 18 done.**
+**Progress: 6 of 18 done.**
 
 | # | Item | State |
 |---|---|---|
@@ -127,7 +131,7 @@ reasons: design.md, "Declined, and why".
 | 3 | **C16** Slow extensions as problems | Done, 00ea3b0 -- slow at the 90th percentile of 5+ opens: named in Show Problems |
 | 4 | **N7** Finder's multiple selection | Done, 2fb4f9e -- Copy path, Reveal, Open with…, Open in editor act on every selected file |
 | 5 | **G2** Rows for Hammerspoon code | Done, a494f3b -- `layer.rows(view)`, e.g. for an `hs.menubar` |
-| 6 | **J19** Run a recent command again with its arguments | In progress |
+| 6 | **J19** Run a recent command again with its arguments | Done, see the commit below -- Rerun last command, Rerun a recent command… (`rerun.lua`) |
 | 7 | **C11** Typing that extends the last query searches only what matched it | |
 | 8 | **C15** A notification when a result lands after its picker closed | |
 | 9 | **J20** A row handing over to Brave's own command palette (`ctrl+space`) | |

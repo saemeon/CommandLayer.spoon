@@ -561,6 +561,15 @@ Open the settings and keybindings files, switch profile, list problems, and forg
 |---|---|---|---|
 | `relevance.exactMatchBoost` | number | `0` | 0..1: how much more a row counts when its label is exactly what was typed |
 
+#### Rerun (`rerun`, extension)
+
+Run a command picked before again, with the arguments it had
+
+| Setting | Type | Default | Description |
+|---|---|---|---|
+| `rerun.enabled` | boolean | `true` | Whether Rerun is on; a change applies on reload. Run a command picked before again, with the arguments it had. |
+| `rerun.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
+
 #### Secure Input (`secureinput`, extension)
 
 Notice when macOS's Secure Input would drop the keys a command presses, and say which app holds it
@@ -993,6 +1002,8 @@ Every command the shipped extensions and the kernel register, by id.
 | `quicklinks.searchNpm` | Search npm for “${query}” | `quicklinks` |
 | `quicklinks.searchStackOverflow` | Search Stack Overflow for “${query}” | `quicklinks` |
 | `raycast.open` | Open in Raycast | `raycast` |
+| `rerun.last` | Command: Rerun last command | `rerun` |
+| `rerun.recent` | Command: Rerun a recent command… | `rerun` |
 | `selection.copy` | Copy | `selection` |
 | `selection.lookUp` | Look Up | `selection` |
 | `selection.searchWeb` | Search the web | `selection` |
