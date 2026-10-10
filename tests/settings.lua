@@ -12,7 +12,7 @@ local recordedSpec = T.recordedSpec
 local layerModal = T.layerModal
 
 group("user config")
--- Real folders, as ~/.config/commandlayer would be, loaded into layers of
+-- Real folders, as ~/.hammerspoon/commandlayer would be, loaded into layers of
 -- their own.
 do
   local userDir = os.tmpname() .. "-user"

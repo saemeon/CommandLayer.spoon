@@ -48,7 +48,7 @@ end
 -- Commands that exist only while a particular page is in front: the site's
 -- own shortcuts, or JavaScript run in the tab. Data, never code: loading a
 -- Lua file runs whatever it holds. The shipped ones are sites.jsonc beside
--- this file; a person's are JSONC files in ~/.config/commandlayer/sites/,
+-- this file; a person's are JSONC files in ~/.hammerspoon/commandlayer/sites/,
 -- each one site or a list of them.
 ----------------------------------------------------------------------
 

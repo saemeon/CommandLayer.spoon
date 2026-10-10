@@ -172,7 +172,7 @@ them. Both are JSONC, read by `core/jsonc.lua` (hs.json reads neither
 comments nor trailing commas, and the harness has no hs.json).
 
 - **Which profile:** `spoon.CommandLayer.profile`, else
-  `~/.config/commandlayer/profile.json`'s `profile`, else `default`. A
+  `~/.hammerspoon/commandlayer/profile.json`'s `profile`, else `default`. A
   name is the Spoon's `config/profiles/<name>/` then the user's
   `profiles/<name>/`; `default` is the user folder itself; a path is that
   folder.
@@ -704,7 +704,7 @@ extension's options, or write the command with `js` instead.
 
 Sites are data, never Lua, which would run whatever a file holds: the
 shipped ones are `extensions/browser/sites.jsonc`, a person's are `*.json`
-or `*.jsonc` files in `~/.config/commandlayer/sites/`, each one site or a
+or `*.jsonc` files in `~/.hammerspoon/commandlayer/sites/`, each one site or a
 list, read with `readJSONC`. Each is checked as it is read -- a field a site
 or command cannot have, a name or title without a letter or digit, a `match`
 that is not a Lua pattern, `commands` not a list, a command with neither or
@@ -917,8 +917,8 @@ One that throws is logged as an error naming it, and the rest still hear.
 
 ## User config
 
-Everything personal lives in `~/.config/commandlayer/`
-(`$XDG_CONFIG_HOME/commandlayer` when set; `userDir` before `start()`),
+Everything personal lives in `~/.hammerspoon/commandlayer/` (`hs.configdir`'s;
+`userDir` before `start()`),
 found in `setup()`, never at load. Every folder the Spoon loads --
 `extensions/`, `presenters/`, `matchers/`, `rankers/` -- is read from there
 too, after the Spoon's, and a file named like a shipped one
@@ -969,7 +969,7 @@ are in use; it stays listed so it can be switched back on.
 
 Recents and frecency stay in `hs.settings`: what the launcher records, not
 what a person configures. The harness points every layer at a folder that
-does not exist, so a real `~/.config/commandlayer` cannot change a check.
+does not exist, so a real `~/.hammerspoon/commandlayer` cannot change a check.
 
 ## Matching and ordering
 

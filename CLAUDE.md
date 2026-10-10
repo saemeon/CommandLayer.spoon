@@ -71,7 +71,7 @@ file and in docs/behaviour.md.
 | VS Code's recents, zoxide, remote projects | Projects |
 | text commands, `fromQuery`, question pickers | Commands that take text |
 | prefixes, submenus, pickers as data, cmd+k, `left` | Prefixes, menus and views |
-| `~/.config/commandlayer/`, `<ext>.enabled`, `<ext>.menus`, the settings picker | User config |
+| `~/.hammerspoon/commandlayer/`, `<ext>.enabled`, `<ext>.menus`, the settings picker | User config |
 | matchers, rankers, frecency, aliases, `alwaysShow` | Matching and ordering |
 | `search` hooks, file and text search | Search pickers |
 | ambient context, Finder's selection | Context from the world |
@@ -373,7 +373,7 @@ should still not fire when nothing was scanned.
 What a feature offers lives in the extension that owns it, never in a
 shared list (Lock screen is `system.lua`, Show Logs `developer.lua`).
 There is no `cl.config` for hand-written actions; a person's own are an
-extension file in `~/.config/commandlayer/extensions/`.
+extension file in `~/.hammerspoon/commandlayer/extensions/`.
 
 If a new extension needs a change to the interface, say so rather than
 widening it quietly — that is the signal the model is wrong.
@@ -441,7 +441,7 @@ solved this" questions without a web search.
 
 Also outside this repo: `~/dotfiles/Library/Application Support/Code/User/`
 holds the VS Code `keybindings.json` the `cmd+e`/`cmd+d`/`tab` navigation
-in `~/.config/commandlayer/keybindings.json` was copied from, under its
+in `~/.hammerspoon/commandlayer/keybindings.json` was copied from, under its
 `inQuickOpen` bindings.
 
 The field survey and credits are in [PRIOR_ART.md](PRIOR_ART.md): nothing

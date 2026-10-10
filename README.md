@@ -110,10 +110,10 @@ Nothing runs until you pick it.
 
 ## Configuring it
 
-Your files live in `~/.config/commandlayer/`, outside the Spoon, so they can
+Your files live in `~/.hammerspoon/commandlayer/`, outside the Spoon, so they can
 go in your dotfiles and survive updates:
 
-    ~/.config/commandlayer/
+    ~/.hammerspoon/commandlayer/
       settings.json        your settings, over the shipped defaults
       keybindings.json     your keys, added after the shipped ones
       tasks.json           VS Code-style tasks, each a row
@@ -134,7 +134,7 @@ loads, and the rest of the file still applies.
 ### Settings
 
 ```jsonc
-// ~/.config/commandlayer/settings.json
+// ~/.hammerspoon/commandlayer/settings.json
 {
   // Completion and error underlining in VS Code
   "$schema": "file:///Users/you/.hammerspoon/Spoons/CommandLayer.spoon/config/settings.schema.json",
@@ -152,7 +152,7 @@ a list that never reorders itself.
 ### Keybindings
 
 ```jsonc
-// ~/.config/commandlayer/keybindings.json
+// ~/.hammerspoon/commandlayer/keybindings.json
 [
   // VS Code's quick open navigation
   { "key": "cmd+e", "command": "quickOpen.selectPrevious" },
@@ -216,7 +216,7 @@ Commands that only appear while a website is in front, either as the site's
 own keyboard shortcuts or as JavaScript run in the tab:
 
 ```jsonc
-// ~/.config/commandlayer/sites/github.json
+// ~/.hammerspoon/commandlayer/sites/github.json
 {
   "name": "GitHub",
   "match": "github%.com/[^/]+/[^/]+/pulls",   // a Lua pattern over the URL
@@ -242,7 +242,7 @@ spoon.CommandLayer:addExtension("example", require("example"))
 spoon.CommandLayer:start()
 ```
 
-Or put the file in `~/.config/commandlayer/extensions/`, where it's picked up
+Or put the file in `~/.hammerspoon/commandlayer/extensions/`, where it's picked up
 on its own, named after the file. Either way, one named like a shipped
 extension replaces it. Installing someone else's extension is the same:
 clone it anywhere Hammerspoon can `require` it, and add one line.

@@ -261,7 +261,7 @@ mechanism of their own. The extension contributes:
 - sites as data. A site is a name, a `match` pattern and its commands,
   each with `keys` or `js`, written in JSONC. The shipped sites live with
   the browser extension (`extensions/browser/sites.jsonc`), and the user's
-  own go in `~/.config/commandlayer/sites/`, so adding one needs no code
+  own go in `~/.hammerspoon/commandlayer/sites/`, so adding one needs no code
   and loading one runs none.
 
 Prefer keystrokes wherever the site has a shortcut: they need no
@@ -294,7 +294,7 @@ on no browser-specific API.
 
 The shipped settings and chords are `config/defaults.jsonc` and
 `config/defaultKeybindings.jsonc`; a person's are `settings.json` and
-`keybindings.json` in `~/.config/commandlayer/`, outside the repository,
+`keybindings.json` in `~/.hammerspoon/commandlayer/`, outside the repository,
 because a setting is a machine's answer. The arrangement is VS Code's on
 purpose -- the same file names, the same merge, the same command ids to
 open them -- so nothing has to be learned twice.
@@ -612,6 +612,16 @@ a repository: a clone where `require` finds it and one line, pinned by
 whatever pins the rest of a person's dotfiles. Both ways build the same
 extension, by the same contract, and the one in init.lua replaces a file of
 the same name.
+
+## Your files in ~/.hammerspoon
+
+The person's folder is `~/.hammerspoon/commandlayer/` (`hs.configdir`'s),
+beside the init.lua that starts the layer and the code an extension added
+there requires -- the place a Hammerspoon user looks first, decided on
+October 10 for the same reason as extensions from init.lua. It was
+`~/.config/commandlayer` (`$XDG_CONFIG_HOME`'s), as VS Code and the XDG tools
+keep theirs; `userDir` still points anywhere, so one spelling is kept rather
+than both defaults.
 
 ## Fast where it is felt
 

@@ -4,7 +4,7 @@
 // every launcher has. Moving and opening inside a picker --
 // quickOpen.selectNext, quickOpen.accept, quickOpen.back, quickOpen.hide --
 // is yours to bind: arrows, return and escape work without a binding. Yours
-// go in ~/.config/commandlayer/keybindings.json, added after these; a
+// go in ~/.hammerspoon/commandlayer/keybindings.json, added after these; a
 // command starting with "-" removes earlier entries for it -- only that key
 // when it names one.
 //

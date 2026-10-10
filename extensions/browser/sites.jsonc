@@ -1,5 +1,5 @@
 // The sites that ship. A person's own are files shaped the same in
-// ~/.config/commandlayer/sites/: one site, or a list of them.
+// ~/.hammerspoon/commandlayer/sites/: one site, or a list of them.
 //
 // "keys" are the page's own shortcuts, pressed into it: a keyboard extension
 // in the page (Vimium) takes them first. Exclude the site there, or write

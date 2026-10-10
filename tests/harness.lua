@@ -373,7 +373,7 @@ do
 end
 
 
--- Never the real ~/.config/commandlayer: a folder there on this machine
+-- Never the real ~/.hammerspoon/commandlayer: a folder there on this machine
 -- would change what every check sees.
 local NO_USER_DIR = os.tmpname() .. "-no-user-config"
 

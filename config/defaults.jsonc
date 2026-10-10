@@ -1,9 +1,9 @@
 // The launcher's default settings, as VS Code ships its own.
 //
-// Yours go in ~/.config/commandlayer/settings.json, which overrides only
+// Yours go in ~/.hammerspoon/commandlayer/settings.json, which overrides only
 // the keys it names; keys are these, and an extension's switch is
 // "<extension>.<setting>": "browser.tabOrder": "browser". Another profile
-// keeps its own settings.json in ~/.config/commandlayer/profiles/<name>/.
+// keeps its own settings.json in ~/.hammerspoon/commandlayer/profiles/<name>/.
 // Keybindings are a separate file: defaultKeybindings.jsonc.
 //
 // An extension for a tool not everyone has ships switched off:

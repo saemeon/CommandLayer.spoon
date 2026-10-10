@@ -15,7 +15,7 @@
 --- alt+space opens it -- Raycast's and Alfred's default too, so whichever of
 --- them holds it has to give it up first.
 ---
---- Settings, keybindings and profiles are JSONC files in ~/.config/commandlayer/,
+--- Settings, keybindings and profiles are JSONC files in ~/.hammerspoon/commandlayer/,
 --- over the Spoon's own in config/. Anything needing code is a file in
 --- extensions/, matchers/, rankers/ or presenters/, or an extension added
 --- from init.lua with addExtension -- see README.md.
@@ -53,10 +53,10 @@ obj.defaultHotkeys = { enter = { { "alt" }, "space" } }
 --- Which profile's settings.json and keybindings.json apply over the shipped defaults, or nil.
 ---
 --- Notes:
----  * A name is the Spoon's config/profiles/<name>/, then ~/.config/commandlayer/profiles/<name>/; a path
+---  * A name is the Spoon's config/profiles/<name>/, then ~/.hammerspoon/commandlayer/profiles/<name>/; a path
 ---    is that folder.
----  * Left nil, ~/.config/commandlayer/profile.json decides, then "default", whose files are
----    ~/.config/commandlayer/settings.json and keybindings.json.
+---  * Left nil, ~/.hammerspoon/commandlayer/profile.json decides, then "default", whose files are
+---    ~/.hammerspoon/commandlayer/settings.json and keybindings.json.
 ---  * Read at the first start(); set it before.
 obj.profile = nil
 
@@ -65,7 +65,7 @@ obj.profile = nil
 --- The folder holding your settings, keybindings, profiles and plugin files, or nil.
 ---
 --- Notes:
----  * Left nil, it is $XDG_CONFIG_HOME/commandlayer when that is set, else ~/.config/commandlayer.
+---  * Left nil, it is commandlayer/ in Hammerspoon's own folder: ~/.hammerspoon/commandlayer.
 ---  * Read at the first start(); set it before.
 obj.userDir = nil
 

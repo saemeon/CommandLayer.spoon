@@ -12,17 +12,17 @@ local M = ...
 ----------------------------------------------------------------------
 
 -- Set before start() to choose one: spoon.CommandLayer.profile = "raycast",
--- or a folder's path. Unset, ~/.config/commandlayer/profile.json decides,
+-- or a folder's path. Unset, ~/.hammerspoon/commandlayer/profile.json decides,
 -- and then "default".
 M.profile = nil
 
--- ~/.config/commandlayer, or $XDG_CONFIG_HOME's. Set before start() to use
--- another; setup() fills it in, never loading, which reads nothing.
+-- commandlayer/ in Hammerspoon's own folder, ~/.hammerspoon, beside the
+-- init.lua that starts the layer. Set before start() to use another; setup()
+-- fills it in, never loading, which reads nothing.
 M.userDir = nil
 
 function M.defaultUserDir()
-  local base = os.getenv("XDG_CONFIG_HOME")
-  if not base or base == "" then base = os.getenv("HOME") .. "/.config" end
+  local base = hs.configdir or ((os.getenv("HOME") or "") .. "/.hammerspoon")
   return base .. "/commandlayer"
 end
 

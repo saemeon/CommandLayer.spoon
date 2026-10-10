@@ -262,3 +262,18 @@ check("a table chord still works", (function()
         return key == "j" and mods[1] == "ctrl"
       end)())
 check("nonsense is refused", cl.chord("cmd+") == nil and cl.chord(nil) == nil)
+
+group("the user folder")
+do
+  local kernel = T.loadKernel()
+  local savedDir = hs.configdir
+  hs.configdir = "/Users/someone/.hammerspoon"
+  local inConfigDir = kernel.defaultUserDir()
+  hs.configdir = nil
+  local withoutIt = kernel.defaultUserDir()
+  hs.configdir = savedDir
+  check("the user folder is commandlayer/ in Hammerspoon's own folder, ~/.hammerspoon without hs.configdir",
+        inConfigDir == "/Users/someone/.hammerspoon/commandlayer"
+        and withoutIt == (os.getenv("HOME") or "") .. "/.hammerspoon/commandlayer",
+        tostring(inConfigDir) .. " / " .. tostring(withoutIt))
+end
