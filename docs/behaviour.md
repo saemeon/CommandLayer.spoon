@@ -572,7 +572,8 @@ not do is not taken as a text command's answer, so picking asks.
   is on screen, redrawing only if a window came, went or was renamed: a
   listing waits on every app, and an app woken from App Nap -- Script Editor,
   Mail -- held opens for up to a second, where every app answers in a few
-  milliseconds once awake. The first list is read two seconds after start.
+  milliseconds once awake. The first list is read two seconds after start. `windows.reuseLastList: false`
+  reads the windows as an open opens, as before.
   The order is z-order, not focus history: nothing watches focus.
 - **Paths** (`files.lua`): Open in terminal, Open in editor, Reveal in
   Finder, Copy path, on a file, folder or project, preferring Finder's

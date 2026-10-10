@@ -201,7 +201,7 @@ end
 function M.windows(ctx)
   local source = M.sourceFor(ctx)
   if listings[source] then return listings[source] end
-  local out = lastList[source]
+  local out = layer.setting("windows", "reuseLastList") ~= false and lastList[source] or nil
   if out then
     if not rereads[source] then
       rereads[source] = layer.after(0, function()
@@ -635,6 +635,10 @@ function M.extension(cl)
                    .. "uses windows.source" },
       limit = { type = "integer", default = 50,
         description = "At most this many windows listed" },
+      reuseLastList = { type = "boolean", default = true,
+        description = "Open on the windows the last open listed and read them again once the picker is up, "
+                      .. "rather than waiting for every app to answer first; a window closed since shows "
+                      .. "for a moment" },
       -- A launcher should feel instant.
       animationDuration = { type = "number", default = 0,
         description = "Seconds a window takes to move" },

@@ -1566,6 +1566,11 @@
       ],
       "type": "string"
     },
+    "windows.reuseLastList": {
+      "default": true,
+      "description": "Open on the windows the last open listed and read them again once the picker is up, rather than waiting for every app to answer first; a window closed since shows for a moment",
+      "type": "boolean"
+    },
     "windows.source": {
       "default": "ordered",
       "description": "Which windows are listed, read as a picker lists them, once per open; windows.sourceByPicker chooses another for a picker",

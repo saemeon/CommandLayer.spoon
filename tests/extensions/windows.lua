@@ -161,6 +161,14 @@ for i = nextTimers + 1, #timers do timers[i]() end
 check("one open reads the list once, however many views gather it; the next open shows that list and reads it "
         .. "again a turn later, once the picker is up",
       once and not readOnOpen and asked.all == allBefore + 2, tostring(asked.all - allBefore) .. " reads")
+
+cl.userSettings = { ["windows.source"] = "all", ["windows.reuseLastList"] = false }
+for i = nextTimers + 1, #timers do timers[i]() end
+local offBefore = asked.all
+cl.gather({}, { menus = { "windows" } })
+check("with reuseLastList off, an open reads the windows itself, as it opens",
+      asked.all == offBefore + 1, tostring(asked.all - offBefore) .. " reads")
+cl.userSettings = { ["windows.source"] = "all" }
 M.forget()
 
 local function rowIds(ctx)
