@@ -1,6 +1,7 @@
 # Roadmap -- working file
 
-What is left to do, decide, test and watch. Decisions and their reasons are in
+What is left to do, test and watch: a reference for the owner. What was
+done is in git's history and [docs/seen-working.md](docs/seen-working.md). Decisions and their reasons are in
 [design.md](design.md), the contract in [CLAUDE.md](CLAUDE.md), how the code
 behaves in [docs/behaviour.md](docs/behaviour.md), credits in
 [PRIOR_ART.md](PRIOR_ART.md). An id (Q2, C17) is stable, so "Q2 yes, Q5 no"
@@ -166,35 +167,3 @@ Read from the console (or tell an agent to read it).
   contract change; worth it once an extension needs it.
 - **Window focus order:** the lists are z-order, not focus history; a source
   that watches focus is still to be judged worth its cost.
-
-## 6. Done on October 10
-
-| Item | Commit | What changed |
-|---|---|---|
-| User folder | 7d014b5 | `~/.hammerspoon/commandlayer` by default |
-| addExtension | 518b1f3 | Extensions handed over from init.lua; replaced L6 |
-| Picker chords | 8e55074, f93f5ef, 172b83b | Keep what was typed; fzf's late answer no longer lost |
-| N6 | 188a216 | A question gathers only extensions that can answer it (`viewItems`): 147 ms to 64 ms |
-| N8 | 60556d8, 0cf7862 | The window list opens from the last read and rereads after drawing; `windows.reuseLastList` |
-| C16 | 00ea3b0 | An extension slow in 1 of 10 opens is named in Show Problems |
-| N7 | 2fb4f9e | Verbs on every file selected in Finder |
-| G2 | a494f3b | `layer.rows(view)` for an hs.menubar or a menu of your own |
-| J19 | 49c1ee7 | Rerun last command, Rerun a recent command… |
-| C11 | de1118c | Typing on searches only the last query's matches |
-| C15 | 4f393b3 | A background result taking 5 s or more is a notification (`notifyAfterSeconds`) |
-| J20 | 0ec3439 | Brave: Command palette (`browser.bravePaletteKeys`) |
-| J2 | de5caba | Instant Send, `selection.showActions` |
-| J18 | 4516721 | Site icons on tab, bookmark and history rows (`browser.favicons`) |
-| J17 | ac91938 | `spoons `: other Spoons' methods and every hotkey |
-| J21 | 6c0460f | Recent apps from macOS; the layer's own record gone |
-| J11 | 6b18366 | `processes `, a live picker |
-| J4 | 9f1ba55 | `scripts `: Shortcuts, tasks and Raycast script commands |
-| J22 | 903c553 | `wezterm` and `yabai` extensions, off as shipped |
-| L5 | f20ea17 | The README's table of extensions, generated |
-| L4 | 3a70953 | `obj.homepage`, `logger`, `scripts/spoon-release.sh` |
-| Brave access | 6ea21aa | A refused Bookmarks file is a problem saying where to allow it |
-| Publishing | 0fde695 | A GitHub Action writes the `spoons` branch SpoonInstall installs from, on a `v*` tag; the README shows how |
-| Answered | -- | Pushed (Q1); HSKeybindings needs nothing from the Spoon, as it reads Hammerspoon's own hotkeys (Q5); the old app history removed (Q6) |
-
-Declined the same day, with the reasons: design.md, "Declined, and why" (I2,
-M1, C14, Docker and mas, a script runner and a menu bar of our own).
