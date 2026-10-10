@@ -144,7 +144,7 @@ check shown to fail without its change. What an item leaves to be seen on
 screen goes to the Owner checks above. Declined on the same day, with the
 reasons: design.md, "Declined, and why".
 
-**Progress: 13 of 18 done.**
+**Progress: 14 of 18 done.**
 
 | # | Item | State |
 |---|---|---|
@@ -161,7 +161,7 @@ reasons: design.md, "Declined, and why".
 | 11 | **J18** Favicons on tab and bookmark rows, from Chromium's database | Done, 4516721 -- site icons from Chromium's Favicons database; `browser.favicons` |
 | 12 | **J17** The loaded Spoons: their hotkeys and the commands they expose | Done, ac91938 -- `spoons ` picker: other Spoons' methods and every hotkey |
 | 13 | **J21** App history from macOS (`lsappinfo`, Spotlight's last-used date) in place of the launcher's own | Done, 6c0460f -- `lsappinfo` order and Spotlight's last-used date; the layer's own record is gone |
-| 14 | **J11** A live picker: running processes with Quit, redrawn while open | |
+| 14 | **J11** A live picker: running processes with Quit, redrawn while open | Done, 6b18366 -- `processes ` updates every 2 s while open; Quit, Force quit |
 | 15 | **J4** A Scripts picker fed by extensions (Shortcuts, tasks, Raycast script commands), tried with a dummy script | |
 | 16 | **J22** yabai spaces and WezTerm panes as rows | |
 | 17 | **L5** A README table, one row per extension | |
