@@ -118,29 +118,32 @@ check shown to fail without its change. What an item leaves to be seen on
 screen goes to the Owner checks above. Declined on the same day, with the
 reasons: design.md, "Declined, and why".
 
-6. **J19** Run a recent command again with the arguments it had.
-7. **C11** Typing that extends the last query searches only what matched it.
-8. **C15** A notification when a result lands after its picker closed.
-9. **J20** A row handing over to Brave's own command palette (`ctrl+space`).
-10. **J2** Instant Send: a global key opening the cmd+k panel on the selected
-    text.
-11. **J18** Favicons on tab and bookmark rows, from Chromium's own database.
-12. **J17** The loaded Spoons: their hotkeys and the commands they expose.
-13. **J21** App-usage history from macOS -- `lsappinfo`'s front-to-back order
-    and Spotlight's last-used date -- in place of the launcher's own, one of
-    the two exceptions to dispatch.
-14. **J11** A live picker: running processes with Quit on cmd+k, its rows
-    redrawn while it is open, the timer stopped by `left`.
-15. **J4** A Scripts picker that extensions feed (Shortcuts, tasks, Raycast);
-    the raycast extension lists Raycast's script commands from
-    `raycast.scriptDirectories` and runs them through Raycast. Tried with a
-    dummy script.
-16. **J22** yabai spaces and WezTerm panes as rows, each focused when picked.
-17. **L5** A README table, one row per extension: what picking a row does,
-    what cmd+k offers.
-18. **L4** Installable with SpoonInstall, with `obj.homepage`, and a decision
-    on an init.lua `logger` and an HSKeybindings `mapping`; needs the
-    repository public.
+**Progress: 5 of 18 done.**
+
+| # | Item | State |
+|---|---|---|
+| 1 | **N6** "Search Text in…" slow to open | Done, 188a216 -- a question gathers only extensions that can answer it (`viewItems`); 147 ms to 64 ms |
+| 2 | **N8** Window list slow (up to 1.3 s) | Done, 60556d8 -- apps woken from App Nap were the cause; an open shows the last list and rereads it after drawing |
+| 3 | **C16** Slow extensions as problems | Done, 00ea3b0 -- slow at the 90th percentile of 5+ opens: named in Show Problems |
+| 4 | **N7** Finder's multiple selection | Done, 2fb4f9e -- Copy path, Reveal, Open with…, Open in editor act on every selected file |
+| 5 | **G2** Rows for Hammerspoon code | Done, a494f3b -- `layer.rows(view)`, e.g. for an `hs.menubar` |
+| 6 | **J19** Run a recent command again with its arguments | In progress |
+| 7 | **C11** Typing that extends the last query searches only what matched it | |
+| 8 | **C15** A notification when a result lands after its picker closed | |
+| 9 | **J20** A row handing over to Brave's own command palette (`ctrl+space`) | |
+| 10 | **J2** Instant Send: a global key opening cmd+k on the selected text | |
+| 11 | **J18** Favicons on tab and bookmark rows, from Chromium's database | |
+| 12 | **J17** The loaded Spoons: their hotkeys and the commands they expose | |
+| 13 | **J21** App history from macOS (`lsappinfo`, Spotlight's last-used date) in place of the launcher's own | |
+| 14 | **J11** A live picker: running processes with Quit, redrawn while open | |
+| 15 | **J4** A Scripts picker fed by extensions (Shortcuts, tasks, Raycast script commands), tried with a dummy script | |
+| 16 | **J22** yabai spaces and WezTerm panes as rows | |
+| 17 | **L5** A README table, one row per extension | |
+| 18 | **L4** SpoonInstall, `obj.homepage`, logger and hotkey mapping; needs the repository public | |
+
+Done before the plan, the same day: the user folder moved to
+`~/.hammerspoon/commandlayer` (7d014b5), extensions added from init.lua
+(518b1f3), picker chords keeping what was typed (8e55074, f93f5ef).
 
 ### Not planned
 
