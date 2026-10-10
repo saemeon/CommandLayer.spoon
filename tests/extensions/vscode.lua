@@ -171,8 +171,16 @@ check("cmd+k on a file offers Open file at line with the file given, and not on 
       and offers({ kind = "folder", path = "/a" }, "vscode.openAtLine") == nil)
 
 local asked, selected, activated, lookups = {}, {}, 0, 0
+-- Titles as VS Code's menu bar shows them: "…", and a shortcut it cannot
+-- draw natively appended to one.
+local function menu(title, children)
+  return { AXTitle = title, AXChildren = children and { children } or nil }
+end
 local app = {
   activate = function() activated = activated + 1 end,
+  getMenuItems = function()
+    return { menu("View", { menu("Command Palette…"), menu("Terminal [⌃⇧,]") }) }
+  end,
   selectMenuItem = function(_, path) selected[#selected + 1] = table.concat(path, " > "); return true end,
 }
 local running = true
@@ -187,16 +195,21 @@ hs.timer.doAfter = function(_, fn) fn(); return { stop = function() end } end
 local told = {}
 hs.alert.show = function(message) told[#told + 1] = message end
 cl.executeCommand("vscode.toggleTerminal")
+cl.executeCommand("vscode.commandPalette")
+cl.executeCommand("vscode.extensions")
 running = false
 cl.executeCommand("vscode.commandPalette")
 hs.application.applicationsForBundleID, hs.application.get = savedApp.forBundle, savedApp.get
 hs.timer.doAfter, hs.alert.show = savedApp.doAfter, savedApp.alert
-check("a menu command selects its item in VS Code's menu bar, finding VS Code by bundle id",
-      selected[1] == "View > Terminal" and #selected == 1 and activated == 1
-      and asked[1] == "com.microsoft.VSCode" and lookups == 0,
-      ("%s, %d asked, %d lookups"):format(tostring(selected[1]), #asked, lookups))
+check("a menu command selects its item in VS Code's menu bar by the title shown there, \"…\" for \"...\" "
+        .. "and a shortcut appended, finding VS Code by bundle id",
+      selected[1] == "View > Terminal [⌃⇧,]" and selected[2] == "View > Command Palette…"
+      and #selected == 2 and activated == 3 and asked[1] == "com.microsoft.VSCode" and lookups == 0,
+      ("%s | %s, %d asked, %d lookups"):format(tostring(selected[1]), tostring(selected[2]), #asked, lookups))
+check("an item the menu bar does not have is said, and nothing selected",
+      (told[1] or ""):find("has no menu item View > Extensions", 1, true) ~= nil, tostring(told[1]))
 check("and says so when VS Code is not running",
-      #asked == 2 and (told[#told] or ""):find("not running", 1, true) ~= nil, tostring(told[#told]))
+      #asked == 4 and (told[#told] or ""):find("not running", 1, true) ~= nil, tostring(told[#told]))
 
 local savedPath = cl.tools.path
 local codeInstalled = true

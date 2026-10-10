@@ -128,16 +128,6 @@ function M.extension(cl)
         command = "vscodebridge.run",
         args = { command = "workbench.action.tasks.runTask", args = { "${input:label}" } } },
 
-      -- Choosing is VS Code's: its own lists have every task and command, with
-      -- titles, which nothing outside VS Code can read.
-      { id = "vscodebridge.chooseTask", title = "Choose task…", category = "VS Code",
-        icon = "$(run-all)", menus = { "commandPalette" },
-        command = "vscodebridge.run", args = { command = "workbench.action.tasks.runTask" } },
-
-      { id = "vscodebridge.showCommands", title = "Show all commands", category = "VS Code",
-        icon = "$(list-flat)", menus = { "commandPalette" },
-        command = "vscodebridge.run", args = { command = "workbench.action.showCommands" } },
-
       { id = "vscodebridge.runCommand", title = "Run command…", category = "VS Code",
         icon = "$(terminal-cmd)", menus = { "commandPalette" },
         inputs = { { id = "vscodeCommand", picker = { typed = true }, pattern = "^[%w_%.%-]+$",

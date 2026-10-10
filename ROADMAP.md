@@ -53,10 +53,11 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
   opens remotely, and cmd+k offers Connect in terminal.
   How: open a folder over Remote - SSH in VS Code once, then type the
   folder's name: "Project on <host> -- <path>"; enter opens it remotely.
-- [ ] VS Code: Show all commands opens VS Code's own command palette, and
-  VS Code: Choose task… its task list, so nothing has to be typed.
-  How: `>` "show all commands", enter: VS Code comes forward with its
-  palette open. `>` "choose task", enter: VS Code lists the workspace's tasks.
+- [ ] VS Code's menu commands find their item: Command Palette, Go to File,
+  Run Task and Toggle Terminal (whose menu titles read "…" and carry a
+  shortcut) select it instead of alerting "has no menu item".
+  How: `>` "command palette", enter: VS Code comes forward with its palette
+  open. Likewise "run task", "go to file" and "toggle terminal".
 - [ ] The VS Code bridge's alerts when a bridge row runs: with VS Code quit or
   removed, with the extension not installed, and (no alert) installed from
   location.

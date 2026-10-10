@@ -248,8 +248,8 @@ end
 -- Found by bundle id: a lookup by name searches every window when it misses.
 M.bundleID = "com.microsoft.VSCode"
 
--- Paths as VS Code's macOS menu bar spells them, "..." included. A VS Code
--- in another language has other titles, and says so when one is picked.
+-- Paths as VS Code's macOS menu bar names them. A VS Code in another
+-- language has other titles, and says so when one is picked.
 M.menuCommands = {
   { id = "commandPalette", title = "Command Palette", path = { "View", "Command Palette..." } },
   { id = "goToFile",       title = "Go to File",      path = { "Go", "Go to File..." } },
@@ -261,6 +261,33 @@ M.menuCommands = {
   { id = "sourceControl",  title = "Source Control",  path = { "View", "Source Control" } },
   { id = "extensions",     title = "Extensions",      path = { "View", "Extensions" } },
 }
+
+-- A title as written here and as the menu bar shows it: VS Code writes "…"
+-- for "...", and appends a shortcut it cannot draw natively ("Terminal
+-- [⌃⇧,]"), which depends on the person's own keybindings.
+local function plainTitle(title)
+  title = tostring(title or ""):gsub("%.%.%.", "…")
+  return (title:gsub("%s+%[[^%]]*%]$", ""))
+end
+
+-- The titles the menu bar has for a path, for selectMenuItem, which takes
+-- them exactly; nil when an item is not there.
+function M.menuTitles(items, path)
+  local titles = {}
+  for depth, wanted in ipairs(path) do
+    local match
+    for _, item in ipairs(type(items) == "table" and items or {}) do
+      if plainTitle(item.AXTitle) == plainTitle(wanted) then
+        match = item
+        break
+      end
+    end
+    if not match then return nil end
+    titles[depth] = match.AXTitle
+    items = type(match.AXChildren) == "table" and match.AXChildren[1] or nil
+  end
+  return titles
+end
 
 -- The menu bar belongs to the app in front, and while the picker closes
 -- that is Hammerspoon.
@@ -311,7 +338,8 @@ function M.extension(cl)
     if menuTimer then menuTimer.dispose() end
     menuTimer = cl.after(M.menuDelay, function()
       menuTimer = nil
-      if not app:selectMenuItem(path) then
+      local titles = M.menuTitles(app:getMenuItems(), path)
+      if not (titles and app:selectMenuItem(titles)) then
         hs.alert.show("VS Code has no menu item " .. table.concat(path, " > "))
       end
     end)

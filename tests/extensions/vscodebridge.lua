@@ -37,8 +37,7 @@ check("the bridge's rows are there whenever it is switched on, nothing looked fo
         .. "too, and none while off",
       absent == "" and looked == 0
       and shown == "text vscodebridge.findInFiles text vscodebridge.quickOpen "
-        .. "vscodebridge.chooseTask vscodebridge.findInFiles vscodebridge.quickOpen vscodebridge.runCommand "
-        .. "vscodebridge.runTask vscodebridge.showCommands",
+        .. "vscodebridge.findInFiles vscodebridge.quickOpen vscodebridge.runCommand vscodebridge.runTask",
       absent .. " | " .. shown .. " | looked " .. looked)
 
 -- Enough JSON for these arguments, keys sorted, as hs.json is not in the harness.
@@ -120,8 +119,6 @@ cl.executeCommand("vscodebridge.findInFiles", { query = typed }, { clipboard = "
 cl.executeCommand("vscodebridge.quickOpen", { query = "main.lua" }, {})
 cl.executeCommand("vscodebridge.runTask", { label = "npm: build" }, {})
 cl.executeCommand("vscodebridge.runCommand", zen, {})
-cl.executeCommand("vscodebridge.showCommands", {}, {})
-cl.executeCommand("vscodebridge.chooseTask", {}, {})
 os.execute(("rm -rf %q"):format(folder))
 local base = "vscode://saemeon.command-layer?"
 local find = base .. "command=workbench.action.findInFiles&args0="
@@ -134,12 +131,6 @@ check("Go to file sends its text as quick open's argument, Run task the runTask 
       and urls[3] == base .. "command=workbench.action.tasks.runTask&args0=" .. percent(percent('"npm: build"'))
       and urls[4] == base .. "command=workbench.action.toggleZenMode",
       table.concat({ tostring(urls[2]), tostring(urls[3]), tostring(urls[4]) }, " | "))
-
-check("Show all commands opens VS Code's command palette, and Choose task… Run Task with no label, so VS Code "
-        .. "lists them",
-      urls[5] == base .. "command=workbench.action.showCommands"
-      and urls[6] == base .. "command=workbench.action.tasks.runTask",
-      tostring(urls[5]) .. " | " .. tostring(urls[6]))
 
 -- The owner's rule: nothing may need the extension in VS Code but these rows.
 local mentions = {}

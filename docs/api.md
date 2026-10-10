@@ -1033,13 +1033,11 @@ Every command the shipped extensions and the kernel register, by id.
 | `vscode.splitEditor` | VS Code: Split Editor | `vscode` |
 | `vscode.toggleSidebar` | VS Code: Toggle Sidebar | `vscode` |
 | `vscode.toggleTerminal` | VS Code: Toggle Terminal | `vscode` |
-| `vscodebridge.chooseTask` | VS Code: Choose task… | `vscodebridge` |
 | `vscodebridge.findInFiles` | VS Code: Find in files for “${query}” | `vscodebridge` |
 | `vscodebridge.quickOpen` | VS Code: Go to file “${query}” | `vscodebridge` |
 | `vscodebridge.run` | Run in VS Code | `vscodebridge` |
 | `vscodebridge.runCommand` | VS Code: Run command… | `vscodebridge` |
 | `vscodebridge.runTask` | VS Code: Run task… | `vscodebridge` |
-| `vscodebridge.showCommands` | VS Code: Show all commands | `vscodebridge` |
 | `webview.open` | Open in a window | `webview` |
 | `windows.bottomHalf` | Window: Bottom half | `windows` |
 | `windows.bottomLeft` | Window: Bottom left | `windows` |
