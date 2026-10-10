@@ -867,6 +867,31 @@ do
         ("%d decodes, %d bookmarks, %d warnings for %d files"):format(decodes - decodesBefore, #keptMarks,
           warned, decodedFirst))
 
+  -- macOS refusing to let Hammerspoon open another app's file is not a file
+  -- cut short: it says where to allow it, as a problem.
+  local profilesBefore = browser.profiles
+  browser.profiles = { { name = "Denied Browser", dir = "CommandLayerTest/Denied" } }
+  T.stub(io, "open", function(path, mode)
+    if tostring(path):find("CommandLayerTest/Denied", 1, true) then return nil, path .. ": Operation not permitted" end
+    return savedOpen(path, mode)
+  end)
+  stamp = 5
+  local lines, restorePrint = T.capturingPrint()
+  browser.refreshBookmarks()
+  stamp = 6
+  browser.refreshBookmarks()
+  restorePrint()
+  T.stub(io, "open", savedOpen)
+  browser.profiles = profilesBefore
+  local named = {}
+  for _, problem in ipairs(cl.getProblems()) do
+    if problem.message:find("does not let Hammerspoon read Denied Browser's files", 1, true) then
+      named[#named + 1] = problem.message
+    end
+  end
+  check("a Bookmarks file macOS will not let Hammerspoon open is a problem once, saying where to allow it",
+        #named == 1 and named[1]:find("Full Disk Access", 1, true) ~= nil and #lines >= 1, tostring(named[1]))
+
   hs.task.new, hs.execute, hs.json.decode = savedHistory.new, savedHistory.execute, savedHistory.decode
   hs.fs.attributes, hs.timer.doAfter = savedHistory.attributes, savedHistory.doAfter
   hs.timer.doEvery, hs.application.watcher = savedHistory.doEvery, savedHistory.watcher

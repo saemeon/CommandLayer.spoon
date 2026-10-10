@@ -717,11 +717,12 @@ local unreadable = {}
 -- Per Bookmarks file: when it was written and its size, and what it held.
 local bookmarkFiles = {}
 
--- nil when the file did not read as bookmarks.
+-- nil when the file did not read as bookmarks; nil and true when macOS
+-- would not let Hammerspoon open it at all.
 local function readBookmarks(path, profile)
   local entries = {}
-  local handle = io.open(path, "r")
-  if not handle then return nil end
+  local handle, err = io.open(path, "r")
+  if not handle then return nil, tostring(err):find("not permitted", 1, true) ~= nil end
   local body = handle:read("a")
   handle:close()
   local data = M.decodeJSON(body)
@@ -744,11 +745,19 @@ function M.refreshBookmarks()
       local stamp = tostring(attributes.modification) .. ":" .. tostring(attributes.size)
       local kept = bookmarkFiles[path]
       if not kept or kept.stamp ~= stamp then
-        local entries = readBookmarks(path, profile)
+        local entries, denied = readBookmarks(path, profile)
         if not entries and not unreadable[path] then
           unreadable[path] = true
-          layer.log.w(("browser: %s's Bookmarks file did not read as JSON; its last bookmarks are kept")
-                      :format(tostring(profile.name)))
+          if denied then
+            -- macOS protects one app's data from another: the file is there,
+            -- and opening it is refused.
+            layer.problem(("macOS does not let Hammerspoon read %s's files, so its bookmarks, history and "
+              .. "tabs are missing: allow Hammerspoon in System Settings > Privacy & Security > Full Disk "
+              .. "Access (or App Data)"):format(tostring(profile.name)))
+          else
+            layer.log.w(("browser: %s's Bookmarks file did not read as JSON; its last bookmarks are kept")
+                        :format(tostring(profile.name)))
+          end
         end
         -- Read again only once it is written again.
         bookmarkFiles[path] = { stamp = stamp, entries = entries or (kept and kept.entries) or {} }

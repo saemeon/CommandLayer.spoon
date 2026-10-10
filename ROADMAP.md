@@ -86,6 +86,11 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ### Browser, projects and remote
 
+- [ ] Brave's bookmarks, history and tabs readable again: since October 7 macOS
+  refuses Hammerspoon opening Brave's files ("Operation not permitted"), and
+  Show Problems now says so.
+  How: System Settings > Privacy & Security > Full Disk Access (or App Data),
+  allow Hammerspoon, reload: the problem is gone and bookmarks are rows again.
 - [ ] Tab, bookmark and history rows show their site's icon (J18).
   How: a few minutes after a reload, `recent ` or `context ` with Brave in
   front: tabs carry their sites' icons. `"browser.favicons": false` removes them.
