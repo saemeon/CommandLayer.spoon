@@ -184,9 +184,5 @@ how the picker copes with one.
 
 ### Yours to decide
 
-- Merge `docs-and-slow-opens` into main, the work of October 10 -- the
-  docs split and README, the cached / systemsettings / apps fixes, zoxide no
-  longer learning apps, VS Code's menu commands, picker chords keeping what
-  was typed. Hammerspoon already runs it, from this working copy.
 - Before publishing: `obj.homepage` once the repository is public, and
   whether init.lua should offer a `logger` and an HSKeybindings `mapping`.
