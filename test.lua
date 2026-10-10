@@ -140,6 +140,7 @@ local expectedLogs = {
   "%-globalkeys/", "keybindings: no global keybinding runs quickOpen",  -- the global keys' checks
   "key hyper%+7 %-> test%.first",                      -- a press explained at debug
   '"open" is not a hotkey',
+  "extension not a name: is not a name addExtension", "extension misnamed: is named",  -- addExtension's
   "%-reload/", "%-workbench/",                        -- the reload checks' files
   "no%-such%-presenter", "no command named 'no%.such",
   "'test%-picked%-loud' picked", 'extension test%-ns: command "other%.bad" is outside',

@@ -599,6 +599,20 @@ profile has no `viewsOnly` list: the defaults stay lean, shipping only the
 pickers that add something (Which pickers ship), and one nobody wants is
 removed with `"enabled": false`.
 
+## Extensions from init.lua
+
+An extension can be handed over in init.lua --
+`spoon.CommandLayer:addExtension(name, require(...))` -- as well as kept as a
+file in `extensions/`. Two ways in was the cost; it was decided for on October
+10 because Hammerspoon code lives in `~/.hammerspoon`, a Spoon is configured
+from init.lua, and code shared with the rest of a config (the remote's keys and
+the media pickers in `media_control.lua`) needs to be one module, which a file
+the layer `dofile`s cannot be. It also answers L6, installing extensions from
+a repository: a clone where `require` finds it and one line, pinned by
+whatever pins the rest of a person's dotfiles. Both ways build the same
+extension, by the same contract, and the one in init.lua replaces a file of
+the same name.
+
 ## Fast where it is felt
 
 Opening a picker and typing must stay snappy; starting may take longer. The

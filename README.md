@@ -232,8 +232,20 @@ Events** (Chrome and Brave: View ▸ Developer; Safari: Develop).
 
 ## Writing an extension
 
-Put a Lua file in `~/.config/commandlayer/extensions/`. It's picked up on
-reload; there's no list to register it in.
+An extension is a Lua module. Keep it wherever you keep your Hammerspoon
+code, e.g. `~/.hammerspoon/example.lua`, and hand it over in `init.lua`
+before `start()`:
+
+```lua
+hs.loadSpoon("CommandLayer")
+spoon.CommandLayer:addExtension("example", require("example"))
+spoon.CommandLayer:start()
+```
+
+Or put the file in `~/.config/commandlayer/extensions/`, where it's picked up
+on its own, named after the file. Either way, one named like a shipped
+extension replaces it. Installing someone else's extension is the same:
+clone it anywhere Hammerspoon can `require` it, and add one line.
 
 ```lua
 local M = {}

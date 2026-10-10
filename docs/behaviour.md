@@ -922,7 +922,14 @@ Everything personal lives in `~/.config/commandlayer/`
 found in `setup()`, never at load. Every folder the Spoon loads --
 `extensions/`, `presenters/`, `matchers/`, `rankers/` -- is read from there
 too, after the Spoon's, and a file named like a shipped one
-replaces it, so a changed copy never runs beside the original. Its
+replaces it, so a changed copy never runs beside the original. An extension
+can also be handed over from init.lua, kept wherever Hammerspoon loads it:
+`spoon.CommandLayer:addExtension("mediacontrol", require("media_control"))`
+(`M.addExtension`, kept in `M.addedExtensions` across reloads). It is built
+with the folders' at setup, replacing a file of the same name, which is then
+never loaded; the name is the one given, a letter then letters, digits or
+`_`, and a spec naming another, or a name it cannot be, is a problem. Given
+after start, it reloads the layer. Its
 `settings.json` and `keybindings.json` are the default profile's;
 `"<ext>.enabled": false` drops an extension, and then anything requiring
 it. `"<ext>.menus"` moves its rows and commands between pickers, as VS Code

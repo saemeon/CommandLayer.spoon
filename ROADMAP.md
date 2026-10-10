@@ -174,7 +174,6 @@ how the picker copes with one.
 - **J19** Replay a recent command with its arguments.
 - **L4** Installable with SpoonInstall.
 - **L5** A README table per extension: what return does, what cmd+k offers.
-- **L6** Installing extensions from a repository, pinned by commit.
 - **M1** Share `tasks.json` with the zsh palette, which stays for Windows.
 - App-usage history: try `lsappinfo`'s front-to-back order plus Spotlight's
   last-used date in its place.

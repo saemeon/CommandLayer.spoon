@@ -108,6 +108,15 @@ function M.bindHotkeys(mapping)
   return M
 end
 
+-- An extension kept in ~/.hammerspoon rather than as a file in a folder the
+-- layer reads: built at setup with the folders' extensions, and again on
+-- every reload. After setup it applies at once, through a reload.
+function M.addExtension(name, module)
+  M.addedExtensions[tostring(name)] = module
+  if ready then M.reload() end
+  return M
+end
+
 function M.start()
   M.setup()
 
@@ -154,7 +163,7 @@ end
 -- choosing a profile first, and running a command.
 ----------------------------------------------------------------------
 
-local PUBLIC = { start = true, stop = true, bindHotkeys = true, executeCommand = true,
+local PUBLIC = { start = true, stop = true, bindHotkeys = true, addExtension = true, executeCommand = true,
                  setLogLevel = true, apiVersion = true }
 local SETTABLE = { profile = true, userDir = true }
 

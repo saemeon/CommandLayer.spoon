@@ -22,14 +22,14 @@ end
 -- does not depend on the filesystem. dofile rather than require: nothing
 -- is cached in package.loaded, so a file wanting another asks
 -- cl.modules, and two layers never share a module by accident.
-local function eachModule(folder, kind, use)
+local function eachModule(folder, kind, use, skip)
   local paths = {}
   for _, root in ipairs(roots()) do
     local ok, iter, dirObj = pcall(hs.fs.dir, root .. folder)
     if ok and iter then
       for entry in iter, dirObj do
         local name = entry:match("^(.+)%.lua$")
-        if name and entry:sub(1, 1) ~= "." then
+        if name and entry:sub(1, 1) ~= "." and not (skip and skip[name] ~= nil) then
           paths[name] = root .. folder .. "/" .. entry
         end
       end
@@ -89,28 +89,51 @@ end
 
 M.modules = {}
 
+-- Extensions handed over in init.lua (addExtension) rather than kept as
+-- files, by name. Not plugins setup loaded, so a reload builds them again.
+M.addedExtensions = {}
+
+-- What its API, its settings and its commands' namespace are keyed by.
+local EXTENSION_NAME = "^[%a][%w_]*$"
+
+local function buildExtension(name, mod, added)
+  if type(mod) ~= "table" or type(mod.extension) ~= "function" then
+    M.problem("extension " .. name, "has no extension(cl)")
+    return
+  end
+
+  M.modules[name] = mod
+
+  local built, ext = pcall(mod.extension, M.pluginAPI("extension", name))
+  if built and type(ext) == "table" and ext.name ~= nil and ext.name ~= name then
+    M.problem("extension " .. name, ("is named %q; an extension's name is %s"):format(tostring(ext.name),
+      added and "the one addExtension gives it" or "its file's"))
+    M.disposeExtension(name)
+  elseif built and type(ext) == "table" then
+    ext.name = name
+    M.register(ext, mod)
+  else
+    M.problem("extension " .. name, "did not build: " .. tostring(ext))
+  end
+end
+
+-- The folders' files, then those added in init.lua, which replace a file of
+-- the same name as a user's file replaces a shipped one: never loaded beside it.
 function M.loadExtensions()
-  eachModule("extensions", "extension", function(name, mod)
-    if type(mod) ~= "table" or type(mod.extension) ~= "function" then
-      M.problem("extension " .. name, "has no extension(cl)")
-      return
-    end
+  local added = M.addedExtensions
+  eachModule("extensions", "extension", function(name, mod) buildExtension(name, mod, false) end, added)
 
-    M.modules[name] = mod
-
-    -- Named by its file, which is what its API, its settings and its
-    -- commands' namespace are keyed by.
-    local built, ext = pcall(mod.extension, M.pluginAPI("extension", name))
-    if built and type(ext) == "table" and ext.name ~= nil and ext.name ~= name then
-      M.problem("extension " .. name, ("is named %q; an extension's name is its file's"):format(tostring(ext.name)))
-      M.disposeExtension(name)
-    elseif built and type(ext) == "table" then
-      ext.name = name
-      M.register(ext, mod)
+  local names = {}
+  for name in pairs(added) do names[#names + 1] = name end
+  table.sort(names)
+  for _, name in ipairs(names) do
+    if name:match(EXTENSION_NAME) then
+      buildExtension(name, added[name], true)
     else
-      M.problem("extension " .. name, "did not build: " .. tostring(ext))
+      M.problem("extension " .. name, "is not a name addExtension can give: a letter, then letters, "
+        .. "digits or _")
     end
-  end)
+  end
 
   M.resolveRequires()
   return M

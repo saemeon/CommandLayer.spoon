@@ -17,7 +17,8 @@
 ---
 --- Settings, keybindings and profiles are JSONC files in ~/.config/commandlayer/,
 --- over the Spoon's own in config/. Anything needing code is a file in
---- extensions/, matchers/, rankers/ or presenters/ -- see README.md.
+--- extensions/, matchers/, rankers/ or presenters/, or an extension added
+--- from init.lua with addExtension -- see README.md.
 
 local obj = {}
 obj.__index = obj
@@ -78,7 +79,7 @@ obj.userDir = nil
 ---  * `setLogLevel(level)` takes VS Code's level names: "off", "trace", "debug", "info", "warning", "error".
 ---  * `problems` is a copy of what is wrong in your files, each `{ file, message }`.
 ---  * `apiVersion` is the plugin contract's version, 0 while in development.
----  * `start`, `stop` and `bindHotkeys` are what the methods of the same names call.
+---  * `start`, `stop`, `bindHotkeys` and `addExtension` are what the methods of the same names call.
 ---  * Reading or setting any other name raises.
 obj.layer = nil
 
@@ -120,6 +121,30 @@ end
 ---  * `CommandLayer.defaultHotkeys` is the shipped chord in this shape.
 function obj:bindHotkeys(mapping)
   self.layer.bindHotkeys(mapping)
+  return self
+end
+
+--- CommandLayer:addExtension(name, module)
+--- Method
+--- Adds an extension kept anywhere Hammerspoon can load it, such as ~/.hammerspoon, under a name.
+---
+--- Parameters:
+---  * name - The extension's name: a letter, then letters, digits or _. Its settings are `<name>.enabled` and
+---    the rest under `<name>.`, and its commands' ids start with `<name>.`
+---  * module - What an extension file returns: a table whose `extension(cl)` gives the extension, as
+---    `require("media_control")` does
+---
+--- Returns:
+---  * The CommandLayer object
+---
+--- Notes:
+---  * It is an extension like any file in extensions/: switched off with `"<name>.enabled": false`, and a
+---    mistake in it is shown with the problems in your files. One named like a file in extensions/
+---    replaces that file.
+---  * Before start() it applies at start; after, at once, by reloading the layer. Kept across reloads.
+---  * Example: `spoon.CommandLayer:addExtension("mediacontrol", require("media_control"))`
+function obj:addExtension(name, module)
+  self.layer.addExtension(name, module)
   return self
 end
 

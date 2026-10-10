@@ -158,3 +158,49 @@ do
   kernel.stop()
   os.execute(("rm -rf %q"):format(folder))
 end
+
+group("extensions added in init.lua")
+do
+  local function extension(fields)
+    return { extension = function()
+      local spec = { menus = { "commandPalette" },
+                     commands = { { id = "fromInit.hello", title = "Hello from init.lua", run = function() end } } }
+      for k, v in pairs(fields or {}) do spec[k] = v end
+      return spec
+    end }
+  end
+  local calculator = { extension = function() return { menus = {} } end }
+
+  local kernel = T.loadKernel()
+  kernel.public.addExtension("fromInit", extension())
+  kernel.public.addExtension("calculator", calculator)
+  T.adopt(T.setup(kernel, { tools = { loginShell = false } }))
+
+  local function registered(name)
+    for _, ext in ipairs(kernel.extensions) do
+      if ext.name == name then return true end
+    end
+    return false
+  end
+  check("an extension added before start is registered as the folders' are, its commands with it",
+        registered("fromInit") and kernel.getCommand("fromInit.hello") ~= nil and #kernel.problems == 0,
+        kernel.problems[1] and kernel.problems[1].message)
+  check("one named like a shipped extension replaces it, which is never loaded beside it",
+        kernel.modules.calculator == calculator and kernel.getCommand("calculator.copy") == nil,
+        tostring(kernel.modules.calculator == calculator))
+
+  kernel.reload()
+  check("and it is still there after a reload",
+        registered("fromInit") and kernel.getCommand("fromInit.hello") ~= nil and #kernel.problems == 0)
+
+  kernel.public.addExtension("not a name", extension())
+  kernel.public.addExtension("misnamed", extension({ name = "other" }))
+  local said = {}
+  for _, problem in ipairs(kernel.problems) do said[#said + 1] = problem.file .. ": " .. problem.message end
+  check("added after start it applies at once; a name it cannot have, or a spec naming another, is a problem",
+        #said == 2 and table.concat(said, " | "):find("extension not a name: is not a name", 1, true) ~= nil
+        and table.concat(said, " | "):find("the one addExtension gives it", 1, true) ~= nil
+        and not registered("misnamed"),
+        table.concat(said, " | "))
+  kernel.stop()
+end
