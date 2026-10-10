@@ -313,6 +313,7 @@ Switch the sound output and input device, and mute the microphones
 | `browser.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 | `browser.bookmarks` | boolean | `true` | Bookmarks |
 | `browser.bravePaletteKeys` | string | `"ctrl+space"` | The chord that opens Brave's own command palette, pressed by Brave: Command palette |
+| `browser.favicons` | boolean | `true` | Each site's icon on its tab, bookmark and history rows, from the browser's own Favicons database |
 | `browser.history` | boolean | `true` | History |
 | `browser.historyLimit` | integer | `300` | How many pages of history are read from each browser |
 | `browser.historySeconds` | integer | `120` | Seconds between reading history and bookmarks again |

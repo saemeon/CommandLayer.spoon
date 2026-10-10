@@ -779,9 +779,137 @@ function M.refreshBookmarks()
   return items
 end
 
+----------------------------------------------------------------------
+-- FAVICONS
+--
+-- A site's icon from Chromium's own Favicons database, one per host: read as
+-- the history is -- copied, then queried in a process -- and only once the
+-- file was written since. Each icon is a small PNG in $TMPDIR, written once,
+-- and an image is made from it once per host, when a row first wants it.
+----------------------------------------------------------------------
+
+M.faviconLimit = 500
+
+local faviconFiles, faviconImages, faviconStamps = {}, {}, {}
+local faviconRun
+
+-- example.com from https://example.com:8080/path, as the icons are kept.
+function M.hostOf(url)
+  local host = type(url) == "string" and url:match("^%a[%w+.-]*://([^/?#]+)")
+  return host and host:gsub(":%d+$", ""):lower() or nil
+end
+
+function M.faviconFor(url)
+  local host = M.hostOf(url)
+  if not host then return nil end
+  local picture = faviconImages[host]
+  if picture == nil then
+    local path = faviconFiles[host]
+    picture = path and hs.image.imageFromPath and hs.image.imageFromPath(path) or false
+    faviconImages[host] = picture
+  end
+  return picture or nil
+end
+
+local function faviconFolder()
+  local base = os.getenv("TMPDIR")
+  if not base or base == "" then return nil end
+  local folder = base:gsub("/$", "") .. "/commandlayer"
+  hs.fs.mkdir(folder)
+  folder = folder .. "/favicons"
+  hs.fs.mkdir(folder)
+  return hs.fs.attributes(folder) and folder or nil
+end
+
+-- One icon per host, its smallest bitmap of 16 to 32 pixels.
+M.faviconQuery = ("select host, hex(image_data) as png, min(width) from ("
+  .. "select case when instr(rest, '/') > 0 then substr(rest, 1, instr(rest, '/') - 1) else rest end as host, "
+  .. "image_data, width from (select substr(m.page_url, instr(m.page_url, '://') + 3) as rest, "
+  .. "b.image_data, b.width from icon_mapping m join favicon_bitmaps b on b.icon_id = m.icon_id "
+  .. "where b.width between 16 and 32 and m.page_url like 'http%%')) group by host limit %d;")
+
+-- Rows written as icons: host to file, the image made again when next asked.
+function M.keepFavicons(rows)
+  local folder = faviconFolder()
+  if not folder then return false end
+  local changed = false
+  for _, row in ipairs(rows or {}) do
+    local host = type(row) == "table" and M.hostOf("https://" .. tostring(row.host))
+    local hex = type(row) == "table" and row.png
+    if host and type(hex) == "string" and hex ~= "" and not faviconFiles[host] then
+      local path = folder .. "/" .. host:gsub("[^%w%.%-]", "_") .. ".png"
+      if not hs.fs.attributes(path) then
+        local handle = io.open(path, "wb")
+        if handle then
+          handle:write((hex:gsub("%x%x", function(pair) return string.char(tonumber(pair, 16)) end)))
+          handle:close()
+        end
+      end
+      if hs.fs.attributes(path) then
+        faviconFiles[host] = path
+        faviconImages[host] = nil
+        changed = true
+      end
+    end
+  end
+  return changed
+end
+
+function M.refreshFavicons(sqlite, done)
+  if not sqlite or faviconRun then return false end
+  local sources = {}
+  for _, profile in ipairs(M.profiles) do
+    local path = profilePath(profile, "Favicons")
+    local attributes = path and hs.fs.attributes(path)
+    local stamp = attributes and (tostring(attributes.modification) .. ":" .. tostring(attributes.size))
+    if stamp and faviconStamps[path] ~= stamp then sources[#sources + 1] = { path = path, stamp = stamp } end
+  end
+  if #sources == 0 then return false end
+
+  local run = { left = #sources, changed = false, tasks = {} }
+  faviconRun = run
+  local function finished(i)
+    run.tasks[i] = nil
+    run.left = run.left - 1
+    if run.left > 0 then return end
+    faviconRun = nil
+    if done then done(run.changed) end
+  end
+  local query = M.faviconQuery:format(M.faviconLimit)
+  for i, source in ipairs(sources) do
+    local temp = os.tmpname()
+    run.tasks[i] = layer and layer.tools.run("/bin/cp", { source.path, temp }, function(code)
+      if code ~= 0 then os.remove(temp) return finished(i) end
+      run.tasks[i] = layer.tools.run(sqlite, { "-json", temp, query }, function(status, stdout)
+        os.remove(temp)
+        if status == 0 then
+          faviconStamps[source.path] = source.stamp
+          if M.keepFavicons(M.decodeRows(stdout)) then run.changed = true end
+        end
+        finished(i)
+      end)
+      if not run.tasks[i] then os.remove(temp) finished(i) end
+    end)
+    if not run.tasks[i] then os.remove(temp) finished(i) end
+  end
+  return true
+end
+
+function M.forgetFavicons()
+  faviconFiles, faviconImages, faviconStamps, faviconRun = {}, {}, {}, nil
+end
+
 function M.warm(sqlite)
   M.refreshHistory(sqlite)
   M.refreshBookmarks()
+  if layer and layer.setting("browser", "favicons") ~= false then
+    -- Rows made before the icons landed are made again, with them.
+    M.refreshFavicons(sqlite, function(changed)
+      if not changed then return end
+      rowsOfList = setmetatable({}, { __mode = "k" })
+      layer.refresh()
+    end)
+  end
   return M
 end
 
@@ -859,9 +987,15 @@ function M.extension(cl)
   -- that asks the browser anything.
   local function on(key) return cl.setting("browser", key) ~= false end
 
+  local function iconOf(url)
+    if cl.setting("browser", "favicons") == false then return nil end
+    return M.faviconFor(url)
+  end
+
   local function bookmarkRow(mark)
     return {
       label       = mark.title,
+      iconPath    = iconOf(mark.url),
       description = "Bookmark -- " .. mark.url,
       keywords    = { mark.url },
       command     = "system.open",
@@ -876,6 +1010,7 @@ function M.extension(cl)
   local function historyRow(page)
     return {
       label       = page.title,
+      iconPath    = iconOf(page.url),
       description = (page.browser or "History") .. " -- " .. page.url,
       keywords    = { page.url },
       command     = "system.open",
@@ -1098,6 +1233,9 @@ function M.extension(cl)
 
     settings = {
       tabs      = { type = "boolean", description = "Open tabs", default = true },
+      favicons  = { type = "boolean", default = true,
+                    description = "Each site's icon on its tab, bookmark and history rows, from the browser's "
+                                  .. "own Favicons database" },
       bravePaletteKeys = { type = "string", default = "ctrl+space",
                            description = "The chord that opens Brave's own command palette, pressed by "
                                          .. "Brave: Command palette" },
@@ -1194,6 +1332,7 @@ function M.extension(cl)
           if limit and #rows >= limit then break end
           rows[#rows + 1] = {
             label       = tab.title,
+            iconPath    = iconOf(tab.url),
             description = "Tab -- " .. tab.url,
             keywords    = { tab.url },
             command     = "browser.tab",

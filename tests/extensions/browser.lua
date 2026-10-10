@@ -1126,3 +1126,45 @@ do
         offered and not elsewhere and activated == 1 and pressed[#pressed] == "ctrl+space",
         tostring(offered) .. " " .. tostring(elsewhere) .. " " .. table.concat(pressed, " "))
 end
+
+do
+  local B = cl.modules.browser
+  B.forgetFavicons()
+  local made = {}
+  local savedImage = hs.image.imageFromPath
+  hs.image.imageFromPath = function(path) made[#made + 1] = path; return { path = path } end
+  local png = "89504E470D0A1A0A"
+  local kept = B.keepFavicons({ { host = "Example.com:8080", png = png }, { host = "nothing.example", png = "" } })
+  local icon = B.faviconFor("https://example.com/some/page?q=1")
+  local again = B.faviconFor("http://example.com/")
+  local none = B.faviconFor("https://nothing.example/")
+  local file = icon and icon.path
+  local handle = file and io.open(file, "rb")
+  local bytes = handle and handle:read("a")
+  if handle then handle:close() end
+  if file then os.remove(file) end
+  hs.image.imageFromPath = savedImage
+  B.forgetFavicons()
+  check("a site's icon is kept once per host, written as the PNG it is, and made into an image once",
+        kept and icon ~= nil and again == icon and none == nil and #made == 1
+        and bytes == "\137PNG\r\n\26\n" and B.hostOf("HTTPS://Example.com:8080/x") == "example.com",
+        tostring(file))
+
+  -- The query runs against a database shaped as Chromium's: sqlite3 answers a
+  -- query it cannot read with nothing, which would look like no icons.
+  local db = os.tmpname() .. "-favicons.db"
+  os.execute(("/usr/bin/sqlite3 %q \"create table icon_mapping (page_url text, icon_id integer); "
+    .. "create table favicon_bitmaps (icon_id integer, image_data blob, width integer); "
+    .. "insert into icon_mapping values ('https://a.example/x', 1), ('https://a.example/y', 2), "
+    .. "('https://b.example:8443/', 3), ('chrome://settings', 4); "
+    .. "insert into favicon_bitmaps values (1, x'AA', 32), (2, x'BB', 16), (3, x'CC', 16), (4, x'DD', 16);\""):format(db))
+  local out = io.popen(("/usr/bin/sqlite3 -json %q %q"):format(db, B.faviconQuery:format(10)))
+  local json = out and out:read("a") or ""
+  if out then out:close() end
+  os.remove(db)
+  local rows = cl.decodeJSONC(json) or {}
+  local byHost = {}
+  for _, row in ipairs(rows) do byHost[row.host] = row.png end
+  check("the favicon query gives one icon per host, the smallest of 16 to 32 pixels, http pages only",
+        byHost["a.example"] == "BB" and byHost["b.example:8443"] == "CC" and #rows == 2, json)
+end

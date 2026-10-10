@@ -233,6 +233,11 @@
       "description": "Whether Browser is on; a change applies on reload.",
       "type": "boolean"
     },
+    "browser.favicons": {
+      "default": true,
+      "description": "Each site's icon on its tab, bookmark and history rows, from the browser's own Favicons database",
+      "type": "boolean"
+    },
     "browser.history": {
       "default": true,
       "description": "History",

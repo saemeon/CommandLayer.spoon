@@ -791,6 +791,16 @@ likewise list the window you were in last. The root lists the front browser's ta
 every running browser's (by `activeView`); context gets
 tabs, bookmarks and history only while a browser is in front.
 
+**Favicons** (`browser.favicons`, on as shipped): a tab, bookmark or
+history row carries its site's icon, from Chromium's own `Favicons`
+database -- copied and queried with `sqlite3` as History is, on the same
+timer, and only once that file was written since. One icon per host, its
+smallest bitmap of 16 to 32 pixels, at most `M.faviconLimit` (500) hosts;
+each is a PNG in `$TMPDIR/commandlayer/favicons/`, written once, made into an
+image once, when a row first wants it. Rows made before the icons landed
+are made again, and the picker redrawn. Safari has none: it keeps no such
+file.
+
 **Brave's own command palette** (`browser.bravePalette`, "Brave: Command
 palette"), offered in `cmd+.` and the palette while Brave is in front: Brave
 brought forward and `browser.bravePaletteKeys` (`ctrl+space`) pressed a tenth

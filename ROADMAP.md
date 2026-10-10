@@ -75,6 +75,9 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ### Browser, projects and remote
 
+- [ ] Tab, bookmark and history rows show their site's icon (J18).
+  How: a few minutes after a reload, `recent ` or `context ` with Brave in
+  front: tabs carry their sites' icons. `"browser.favicons": false` removes them.
 - [ ] Brave: Command palette opens Brave's own palette (J20). If nothing
   opens, the chord is not Brave's: set `browser.bravePaletteKeys` to the one
   Brave shows for its command palette.
