@@ -195,7 +195,7 @@ end
 ----------------------------------------------------------------------
 
 local PUBLIC = { start = true, stop = true, bindHotkeys = true, addExtension = true, executeCommand = true,
-                 rows = true, setLogLevel = true, apiVersion = true }
+                 rows = true, setLogLevel = true, apiVersion = true, log = true }
 local SETTABLE = { profile = true, userDir = true }
 
 M.public = setmetatable({}, {

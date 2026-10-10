@@ -14,11 +14,11 @@
         "parameters" : [
 
         ],
+        "name" : "spoonPath",
         "stripped_doc" : [
           "The Spoon's folder, ending in a slash."
         ],
         "doc" : "The Spoon's folder, ending in a slash.",
-        "def" : "CommandLayer.spoonPath",
         "notes" : [
 
         ],
@@ -27,20 +27,20 @@
         "returns" : [
 
         ],
-        "name" : "spoonPath",
+        "def" : "CommandLayer.spoonPath",
         "desc" : "The Spoon's folder, ending in a slash."
       },
       {
         "parameters" : [
 
         ],
+        "name" : "defaultHotkeys",
         "stripped_doc" : [
           "The mapping `CommandLayer:bindHotkeys()` takes, holding the chord that opens",
           "the layer as shipped: `{ enter = { { \"alt\" }, \"space\" } }`.",
           ""
         ],
         "doc" : "The mapping `CommandLayer:bindHotkeys()` takes, holding the chord that opens\nthe layer as shipped: `{ enter = { { \"alt\" }, \"space\" } }`.\n\nNotes:\n * start() binds alt+space from the shipped keybindings without it. Passing it to bindHotkeys binds the same\n   chord in init.lua instead, where a keybinding written from the launcher cannot remove it.",
-        "def" : "CommandLayer.defaultHotkeys",
         "notes" : [
           " * start() binds alt+space from the shipped keybindings without it. Passing it to bindHotkeys binds the same",
           "   chord in init.lua instead, where a keybinding written from the launcher cannot remove it."
@@ -50,19 +50,19 @@
         "returns" : [
 
         ],
-        "name" : "defaultHotkeys",
+        "def" : "CommandLayer.defaultHotkeys",
         "desc" : "The mapping `CommandLayer:bindHotkeys()` takes, holding the chord that opens"
       },
       {
         "parameters" : [
 
         ],
+        "name" : "profile",
         "stripped_doc" : [
           "Which profile's settings.json and keybindings.json apply over the shipped defaults, or nil.",
           ""
         ],
         "doc" : "Which profile's settings.json and keybindings.json apply over the shipped defaults, or nil.\n\nNotes:\n * A name is the Spoon's config\/profiles\/<name>\/, then ~\/.hammerspoon\/commandlayer\/profiles\/<name>\/; a path\n   is that folder.\n * Left nil, ~\/.hammerspoon\/commandlayer\/profile.json decides, then \"default\", whose files are\n   ~\/.hammerspoon\/commandlayer\/settings.json and keybindings.json.\n * Read at the first start(); set it before.",
-        "def" : "CommandLayer.profile",
         "notes" : [
           " * A name is the Spoon's config\/profiles\/<name>\/, then ~\/.hammerspoon\/commandlayer\/profiles\/<name>\/; a path",
           "   is that folder.",
@@ -75,19 +75,19 @@
         "returns" : [
 
         ],
-        "name" : "profile",
+        "def" : "CommandLayer.profile",
         "desc" : "Which profile's settings.json and keybindings.json apply over the shipped defaults, or nil."
       },
       {
         "parameters" : [
 
         ],
+        "name" : "userDir",
         "stripped_doc" : [
           "The folder holding your settings, keybindings, profiles and plugin files, or nil.",
           ""
         ],
         "doc" : "The folder holding your settings, keybindings, profiles and plugin files, or nil.\n\nNotes:\n * Left nil, it is commandlayer\/ in Hammerspoon's own folder: ~\/.hammerspoon\/commandlayer.\n * Read at the first start(); set it before.",
-        "def" : "CommandLayer.userDir",
         "notes" : [
           " * Left nil, it is commandlayer\/ in Hammerspoon's own folder: ~\/.hammerspoon\/commandlayer.",
           " * Read at the first start(); set it before."
@@ -97,19 +97,41 @@
         "returns" : [
 
         ],
-        "name" : "userDir",
+        "def" : "CommandLayer.userDir",
         "desc" : "The folder holding your settings, keybindings, profiles and plugin files, or nil."
       },
       {
         "parameters" : [
 
         ],
+        "name" : "logger",
+        "stripped_doc" : [
+          "The layer's hs.logger, as Spoons offer theirs: `spoon.CommandLayer.logger.setLogLevel(\"debug\")`.",
+          ""
+        ],
+        "doc" : "The layer's hs.logger, as Spoons offer theirs: `spoon.CommandLayer.logger.setLogLevel(\"debug\")`.\n\nNotes:\n * The same logger every line of the layer is written through, extensions' included; `layer.setLogLevel`\n   takes VS Code's level names for it too.",
+        "notes" : [
+          " * The same logger every line of the layer is written through, extensions' included; `layer.setLogLevel`",
+          "   takes VS Code's level names for it too."
+        ],
+        "signature" : "CommandLayer.logger",
+        "type" : "Variable",
+        "returns" : [
+
+        ],
+        "def" : "CommandLayer.logger",
+        "desc" : "The layer's hs.logger, as Spoons offer theirs: `spoon.CommandLayer.logger.setLogLevel(\"debug\")`."
+      },
+      {
+        "parameters" : [
+
+        ],
+        "name" : "layer",
         "stripped_doc" : [
           "The layer itself, made by init(), as the console reaches it: `spoon.CommandLayer.layer`.",
           ""
         ],
         "doc" : "The layer itself, made by init(), as the console reaches it: `spoon.CommandLayer.layer`.\n\nNotes:\n * `executeCommand(id, args)` runs a command by id, asking for what args does not answer, and returns\n   true and what the command returned, or false when there is no such command.\n * `rows(view)` gives a picker's rows as it would open on them, for an hs.menubar or a menu of your own:\n   each `{ label, subtitle, icon, enabled, submenu, run }`, `run()` doing what picking it does; nil for a\n   picker that does not exist.\n * `setLogLevel(level)` takes VS Code's level names: \"off\", \"trace\", \"debug\", \"info\", \"warning\", \"error\".\n * `problems` is a copy of what is wrong in your files, each `{ file, message }`.\n * `apiVersion` is the plugin contract's version, 0 while in development.\n * `start`, `stop`, `bindHotkeys` and `addExtension` are what the methods of the same names call.\n * Reading or setting any other name raises.",
-        "def" : "CommandLayer.layer",
         "notes" : [
           " * `executeCommand(id, args)` runs a command by id, asking for what args does not answer, and returns",
           "   true and what the command returned, or false when there is no such command.",
@@ -127,18 +149,18 @@
         "returns" : [
 
         ],
-        "name" : "layer",
+        "def" : "CommandLayer.layer",
         "desc" : "The layer itself, made by init(), as the console reaches it: `spoon.CommandLayer.layer`."
       }
     ],
     "stripped_doc" : [
 
     ],
+    "type" : "Module",
     "Deprecated" : [
 
     ],
     "desc" : "A keyboard launcher shaped like VS Code's quick open: the commands for",
-    "type" : "Module",
     "Constructor" : [
 
     ],
@@ -151,12 +173,12 @@
           " * None",
           ""
         ],
+        "name" : "init",
         "stripped_doc" : [
           "Loads the layer without starting it.",
           ""
         ],
         "doc" : "Loads the layer without starting it.\n\nParameters:\n * None\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * hs.loadSpoon calls this. No folder is read and no chord claimed until start(), so `profile` and\n   `userDir` can be set in between.",
-        "def" : "CommandLayer:init()",
         "notes" : [
           " * hs.loadSpoon calls this. No folder is read and no chord claimed until start(), so `profile` and",
           "   `userDir` can be set in between."
@@ -167,7 +189,7 @@
           " * The CommandLayer object",
           ""
         ],
-        "name" : "init",
+        "def" : "CommandLayer:init()",
         "desc" : "Loads the layer without starting it."
       },
       {
@@ -177,12 +199,12 @@
           "    `\"alt+space\"`",
           ""
         ],
+        "name" : "bindHotkeys",
         "stripped_doc" : [
           "Binds the chord that opens the layer, in place of the one the keybindings files bind.",
           ""
         ],
         "doc" : "Binds the chord that opens the layer, in place of the one the keybindings files bind.\n\nParameters:\n * mapping - A table with one key:\n  * enter - opens the default picker, from any app: `{ { \"alt\" }, \"space\" }`, or a keybinding's\n    `\"alt+space\"`\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * The chord becomes a global keybinding after every file's, and every chord entering the layer\n   before it is removed. Every other chord still comes from the keybindings files.\n * Before start() it applies at start; after, at once. A name other than `enter` is reported with\n   the problems in your files.\n * `CommandLayer.defaultHotkeys` is the shipped chord in this shape.",
-        "def" : "CommandLayer:bindHotkeys(mapping)",
         "notes" : [
           " * The chord becomes a global keybinding after every file's, and every chord entering the layer",
           "   before it is removed. Every other chord still comes from the keybindings files.",
@@ -196,7 +218,7 @@
           " * The CommandLayer object",
           ""
         ],
-        "name" : "bindHotkeys",
+        "def" : "CommandLayer:bindHotkeys(mapping)",
         "desc" : "Binds the chord that opens the layer, in place of the one the keybindings files bind."
       },
       {
@@ -207,12 +229,12 @@
           "   `require(\"media_control\")` does",
           ""
         ],
+        "name" : "addExtension",
         "stripped_doc" : [
           "Adds an extension kept anywhere Hammerspoon can load it, such as ~\/.hammerspoon, under a name.",
           ""
         ],
         "doc" : "Adds an extension kept anywhere Hammerspoon can load it, such as ~\/.hammerspoon, under a name.\n\nParameters:\n * name - The extension's name: a letter, then letters, digits or _. Its settings are `<name>.enabled` and\n   the rest under `<name>.`, and its commands' ids start with `<name>.`\n * module - What an extension file returns: a table whose `extension(cl)` gives the extension, as\n   `require(\"media_control\")` does\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * It is an extension like any file in extensions\/: switched off with `\"<name>.enabled\": false`, and a\n   mistake in it is shown with the problems in your files. One named like a file in extensions\/\n   replaces that file.\n * Before start() it applies at start; after, at once, by reloading the layer. Kept across reloads.\n * Example: `spoon.CommandLayer:addExtension(\"mediacontrol\", require(\"media_control\"))`",
-        "def" : "CommandLayer:addExtension(name, module)",
         "notes" : [
           " * It is an extension like any file in extensions\/: switched off with `\"<name>.enabled\": false`, and a",
           "   mistake in it is shown with the problems in your files. One named like a file in extensions\/",
@@ -226,7 +248,7 @@
           " * The CommandLayer object",
           ""
         ],
-        "name" : "addExtension",
+        "def" : "CommandLayer:addExtension(name, module)",
         "desc" : "Adds an extension kept anywhere Hammerspoon can load it, such as ~\/.hammerspoon, under a name."
       },
       {
@@ -234,12 +256,12 @@
           " * None",
           ""
         ],
+        "name" : "start",
         "stripped_doc" : [
           "Starts the layer.",
           ""
         ],
         "doc" : "Starts the layer.\n\nParameters:\n * None\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * The first start reads the plugin folders, the settings and the keybindings of `profile` from\n   `userDir`, and binds the keybindings. Every start then starts the extensions, binds the global\n   keybindings and shows any problem found in one alert.",
-        "def" : "CommandLayer:start()",
         "notes" : [
           " * The first start reads the plugin folders, the settings and the keybindings of `profile` from",
           "   `userDir`, and binds the keybindings. Every start then starts the extensions, binds the global",
@@ -251,7 +273,7 @@
           " * The CommandLayer object",
           ""
         ],
-        "name" : "start",
+        "def" : "CommandLayer:start()",
         "desc" : "Starts the layer."
       },
       {
@@ -259,12 +281,12 @@
           " * None",
           ""
         ],
+        "name" : "stop",
         "stripped_doc" : [
           "Stops the layer.",
           ""
         ],
         "doc" : "Stops the layer.\n\nParameters:\n * None\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * Closes the launcher if it is open, releases the global keybindings, and stops every extension that\n   started. start() starts it again.",
-        "def" : "CommandLayer:stop()",
         "notes" : [
           " * Closes the launcher if it is open, releases the global keybindings, and stops every extension that",
           "   started. start() starts it again."
@@ -275,26 +297,22 @@
           " * The CommandLayer object",
           ""
         ],
-        "name" : "stop",
+        "def" : "CommandLayer:stop()",
         "desc" : "Stops the layer."
       }
     ],
-    "Command" : [
-
-    ],
-    "doc" : "A keyboard launcher shaped like VS Code's quick open: the commands for\nwhatever is in front of you -- an app, a window, a Finder selection, a\nbrowser tab, a project -- in one palette, each handed to whatever already\ndoes the job -- Spotlight, the menu bar, a CLI, another Spoon.\n\nInstall to ~\/.hammerspoon\/Spoons\/CommandLayer.spoon, then in init.lua:\n\n```\nhs.loadSpoon(\"CommandLayer\")\nspoon.CommandLayer:start()\n```\n\nalt+space opens it -- Raycast's and Alfred's default too, so whichever of\nthem holds it has to give it up first.\n\nSettings, keybindings and profiles are JSONC files in ~\/.hammerspoon\/commandlayer\/,\nover the Spoon's own in config\/. Anything needing code is a file in\nextensions\/, matchers\/, rankers\/ or presenters\/, or an extension added\nfrom init.lua with addExtension -- see README.md.",
     "items" : [
       {
         "parameters" : [
 
         ],
+        "name" : "defaultHotkeys",
         "stripped_doc" : [
           "The mapping `CommandLayer:bindHotkeys()` takes, holding the chord that opens",
           "the layer as shipped: `{ enter = { { \"alt\" }, \"space\" } }`.",
           ""
         ],
         "doc" : "The mapping `CommandLayer:bindHotkeys()` takes, holding the chord that opens\nthe layer as shipped: `{ enter = { { \"alt\" }, \"space\" } }`.\n\nNotes:\n * start() binds alt+space from the shipped keybindings without it. Passing it to bindHotkeys binds the same\n   chord in init.lua instead, where a keybinding written from the launcher cannot remove it.",
-        "def" : "CommandLayer.defaultHotkeys",
         "notes" : [
           " * start() binds alt+space from the shipped keybindings without it. Passing it to bindHotkeys binds the same",
           "   chord in init.lua instead, where a keybinding written from the launcher cannot remove it."
@@ -304,19 +322,19 @@
         "returns" : [
 
         ],
-        "name" : "defaultHotkeys",
+        "def" : "CommandLayer.defaultHotkeys",
         "desc" : "The mapping `CommandLayer:bindHotkeys()` takes, holding the chord that opens"
       },
       {
         "parameters" : [
 
         ],
+        "name" : "layer",
         "stripped_doc" : [
           "The layer itself, made by init(), as the console reaches it: `spoon.CommandLayer.layer`.",
           ""
         ],
         "doc" : "The layer itself, made by init(), as the console reaches it: `spoon.CommandLayer.layer`.\n\nNotes:\n * `executeCommand(id, args)` runs a command by id, asking for what args does not answer, and returns\n   true and what the command returned, or false when there is no such command.\n * `rows(view)` gives a picker's rows as it would open on them, for an hs.menubar or a menu of your own:\n   each `{ label, subtitle, icon, enabled, submenu, run }`, `run()` doing what picking it does; nil for a\n   picker that does not exist.\n * `setLogLevel(level)` takes VS Code's level names: \"off\", \"trace\", \"debug\", \"info\", \"warning\", \"error\".\n * `problems` is a copy of what is wrong in your files, each `{ file, message }`.\n * `apiVersion` is the plugin contract's version, 0 while in development.\n * `start`, `stop`, `bindHotkeys` and `addExtension` are what the methods of the same names call.\n * Reading or setting any other name raises.",
-        "def" : "CommandLayer.layer",
         "notes" : [
           " * `executeCommand(id, args)` runs a command by id, asking for what args does not answer, and returns",
           "   true and what the command returned, or false when there is no such command.",
@@ -334,19 +352,41 @@
         "returns" : [
 
         ],
-        "name" : "layer",
+        "def" : "CommandLayer.layer",
         "desc" : "The layer itself, made by init(), as the console reaches it: `spoon.CommandLayer.layer`."
       },
       {
         "parameters" : [
 
         ],
+        "name" : "logger",
+        "stripped_doc" : [
+          "The layer's hs.logger, as Spoons offer theirs: `spoon.CommandLayer.logger.setLogLevel(\"debug\")`.",
+          ""
+        ],
+        "doc" : "The layer's hs.logger, as Spoons offer theirs: `spoon.CommandLayer.logger.setLogLevel(\"debug\")`.\n\nNotes:\n * The same logger every line of the layer is written through, extensions' included; `layer.setLogLevel`\n   takes VS Code's level names for it too.",
+        "notes" : [
+          " * The same logger every line of the layer is written through, extensions' included; `layer.setLogLevel`",
+          "   takes VS Code's level names for it too."
+        ],
+        "signature" : "CommandLayer.logger",
+        "type" : "Variable",
+        "returns" : [
+
+        ],
+        "def" : "CommandLayer.logger",
+        "desc" : "The layer's hs.logger, as Spoons offer theirs: `spoon.CommandLayer.logger.setLogLevel(\"debug\")`."
+      },
+      {
+        "parameters" : [
+
+        ],
+        "name" : "profile",
         "stripped_doc" : [
           "Which profile's settings.json and keybindings.json apply over the shipped defaults, or nil.",
           ""
         ],
         "doc" : "Which profile's settings.json and keybindings.json apply over the shipped defaults, or nil.\n\nNotes:\n * A name is the Spoon's config\/profiles\/<name>\/, then ~\/.hammerspoon\/commandlayer\/profiles\/<name>\/; a path\n   is that folder.\n * Left nil, ~\/.hammerspoon\/commandlayer\/profile.json decides, then \"default\", whose files are\n   ~\/.hammerspoon\/commandlayer\/settings.json and keybindings.json.\n * Read at the first start(); set it before.",
-        "def" : "CommandLayer.profile",
         "notes" : [
           " * A name is the Spoon's config\/profiles\/<name>\/, then ~\/.hammerspoon\/commandlayer\/profiles\/<name>\/; a path",
           "   is that folder.",
@@ -359,18 +399,18 @@
         "returns" : [
 
         ],
-        "name" : "profile",
+        "def" : "CommandLayer.profile",
         "desc" : "Which profile's settings.json and keybindings.json apply over the shipped defaults, or nil."
       },
       {
         "parameters" : [
 
         ],
+        "name" : "spoonPath",
         "stripped_doc" : [
           "The Spoon's folder, ending in a slash."
         ],
         "doc" : "The Spoon's folder, ending in a slash.",
-        "def" : "CommandLayer.spoonPath",
         "notes" : [
 
         ],
@@ -379,19 +419,19 @@
         "returns" : [
 
         ],
-        "name" : "spoonPath",
+        "def" : "CommandLayer.spoonPath",
         "desc" : "The Spoon's folder, ending in a slash."
       },
       {
         "parameters" : [
 
         ],
+        "name" : "userDir",
         "stripped_doc" : [
           "The folder holding your settings, keybindings, profiles and plugin files, or nil.",
           ""
         ],
         "doc" : "The folder holding your settings, keybindings, profiles and plugin files, or nil.\n\nNotes:\n * Left nil, it is commandlayer\/ in Hammerspoon's own folder: ~\/.hammerspoon\/commandlayer.\n * Read at the first start(); set it before.",
-        "def" : "CommandLayer.userDir",
         "notes" : [
           " * Left nil, it is commandlayer\/ in Hammerspoon's own folder: ~\/.hammerspoon\/commandlayer.",
           " * Read at the first start(); set it before."
@@ -401,7 +441,7 @@
         "returns" : [
 
         ],
-        "name" : "userDir",
+        "def" : "CommandLayer.userDir",
         "desc" : "The folder holding your settings, keybindings, profiles and plugin files, or nil."
       },
       {
@@ -412,12 +452,12 @@
           "   `require(\"media_control\")` does",
           ""
         ],
+        "name" : "addExtension",
         "stripped_doc" : [
           "Adds an extension kept anywhere Hammerspoon can load it, such as ~\/.hammerspoon, under a name.",
           ""
         ],
         "doc" : "Adds an extension kept anywhere Hammerspoon can load it, such as ~\/.hammerspoon, under a name.\n\nParameters:\n * name - The extension's name: a letter, then letters, digits or _. Its settings are `<name>.enabled` and\n   the rest under `<name>.`, and its commands' ids start with `<name>.`\n * module - What an extension file returns: a table whose `extension(cl)` gives the extension, as\n   `require(\"media_control\")` does\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * It is an extension like any file in extensions\/: switched off with `\"<name>.enabled\": false`, and a\n   mistake in it is shown with the problems in your files. One named like a file in extensions\/\n   replaces that file.\n * Before start() it applies at start; after, at once, by reloading the layer. Kept across reloads.\n * Example: `spoon.CommandLayer:addExtension(\"mediacontrol\", require(\"media_control\"))`",
-        "def" : "CommandLayer:addExtension(name, module)",
         "notes" : [
           " * It is an extension like any file in extensions\/: switched off with `\"<name>.enabled\": false`, and a",
           "   mistake in it is shown with the problems in your files. One named like a file in extensions\/",
@@ -431,7 +471,7 @@
           " * The CommandLayer object",
           ""
         ],
-        "name" : "addExtension",
+        "def" : "CommandLayer:addExtension(name, module)",
         "desc" : "Adds an extension kept anywhere Hammerspoon can load it, such as ~\/.hammerspoon, under a name."
       },
       {
@@ -441,12 +481,12 @@
           "    `\"alt+space\"`",
           ""
         ],
+        "name" : "bindHotkeys",
         "stripped_doc" : [
           "Binds the chord that opens the layer, in place of the one the keybindings files bind.",
           ""
         ],
         "doc" : "Binds the chord that opens the layer, in place of the one the keybindings files bind.\n\nParameters:\n * mapping - A table with one key:\n  * enter - opens the default picker, from any app: `{ { \"alt\" }, \"space\" }`, or a keybinding's\n    `\"alt+space\"`\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * The chord becomes a global keybinding after every file's, and every chord entering the layer\n   before it is removed. Every other chord still comes from the keybindings files.\n * Before start() it applies at start; after, at once. A name other than `enter` is reported with\n   the problems in your files.\n * `CommandLayer.defaultHotkeys` is the shipped chord in this shape.",
-        "def" : "CommandLayer:bindHotkeys(mapping)",
         "notes" : [
           " * The chord becomes a global keybinding after every file's, and every chord entering the layer",
           "   before it is removed. Every other chord still comes from the keybindings files.",
@@ -460,7 +500,7 @@
           " * The CommandLayer object",
           ""
         ],
-        "name" : "bindHotkeys",
+        "def" : "CommandLayer:bindHotkeys(mapping)",
         "desc" : "Binds the chord that opens the layer, in place of the one the keybindings files bind."
       },
       {
@@ -468,12 +508,12 @@
           " * None",
           ""
         ],
+        "name" : "init",
         "stripped_doc" : [
           "Loads the layer without starting it.",
           ""
         ],
         "doc" : "Loads the layer without starting it.\n\nParameters:\n * None\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * hs.loadSpoon calls this. No folder is read and no chord claimed until start(), so `profile` and\n   `userDir` can be set in between.",
-        "def" : "CommandLayer:init()",
         "notes" : [
           " * hs.loadSpoon calls this. No folder is read and no chord claimed until start(), so `profile` and",
           "   `userDir` can be set in between."
@@ -484,7 +524,7 @@
           " * The CommandLayer object",
           ""
         ],
-        "name" : "init",
+        "def" : "CommandLayer:init()",
         "desc" : "Loads the layer without starting it."
       },
       {
@@ -492,12 +532,12 @@
           " * None",
           ""
         ],
+        "name" : "start",
         "stripped_doc" : [
           "Starts the layer.",
           ""
         ],
         "doc" : "Starts the layer.\n\nParameters:\n * None\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * The first start reads the plugin folders, the settings and the keybindings of `profile` from\n   `userDir`, and binds the keybindings. Every start then starts the extensions, binds the global\n   keybindings and shows any problem found in one alert.",
-        "def" : "CommandLayer:start()",
         "notes" : [
           " * The first start reads the plugin folders, the settings and the keybindings of `profile` from",
           "   `userDir`, and binds the keybindings. Every start then starts the extensions, binds the global",
@@ -509,7 +549,7 @@
           " * The CommandLayer object",
           ""
         ],
-        "name" : "start",
+        "def" : "CommandLayer:start()",
         "desc" : "Starts the layer."
       },
       {
@@ -517,12 +557,12 @@
           " * None",
           ""
         ],
+        "name" : "stop",
         "stripped_doc" : [
           "Stops the layer.",
           ""
         ],
         "doc" : "Stops the layer.\n\nParameters:\n * None\n\nReturns:\n * The CommandLayer object\n\nNotes:\n * Closes the launcher if it is open, releases the global keybindings, and stops every extension that\n   started. start() starts it again.",
-        "def" : "CommandLayer:stop()",
         "notes" : [
           " * Closes the launcher if it is open, releases the global keybindings, and stops every extension that",
           "   started. start() starts it again."
@@ -533,10 +573,14 @@
           " * The CommandLayer object",
           ""
         ],
-        "name" : "stop",
+        "def" : "CommandLayer:stop()",
         "desc" : "Stops the layer."
       }
     ],
+    "Command" : [
+
+    ],
+    "doc" : "A keyboard launcher shaped like VS Code's quick open: the commands for\nwhatever is in front of you -- an app, a window, a Finder selection, a\nbrowser tab, a project -- in one palette, each handed to whatever already\ndoes the job -- Spotlight, the menu bar, a CLI, another Spoon.\n\nInstall to ~\/.hammerspoon\/Spoons\/CommandLayer.spoon, then in init.lua:\n\n```\nhs.loadSpoon(\"CommandLayer\")\nspoon.CommandLayer:start()\n```\n\nalt+space opens it -- Raycast's and Alfred's default too, so whichever of\nthem holds it has to give it up first.\n\nSettings, keybindings and profiles are JSONC files in ~\/.hammerspoon\/commandlayer\/,\nover the Spoon's own in config\/. Anything needing code is a file in\nextensions\/, matchers\/, rankers\/ or presenters\/, or an extension added\nfrom init.lua with addExtension -- see README.md.",
     "name" : "CommandLayer"
   }
 ]

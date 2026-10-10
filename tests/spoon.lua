@@ -91,3 +91,31 @@ check("defaultHotkeys holds the chord the shipped keybindings enter the layer on
         local ours = type(enter) == "table" and cl.chordId(enter) or tostring(enter)
         return #shipped == 1 and shipped[1] == ours, table.concat(shipped, " ") .. " / " .. tostring(ours)
       end)())
+
+check("init gives the Spoon its homepage and the layer's logger, as Spoons offer one", (function()
+        local spoonObj = chunk and chunk() or {}
+        local fakeLayer = { log = cl.log }
+        spoonObj.spoonPath = T.dir
+        T.stub(_G, "dofile", function() return fakeLayer end)
+        local ok = pcall(spoonObj.init, spoonObj)
+        return ok and spoonObj.logger == cl.log and type(spoonObj.logger.setLogLevel) == "function"
+               and spoonObj.homepage == "https://github.com/saemeon/CommandLayer.spoon",
+               tostring(spoonObj.homepage)
+      end)())
+
+check("scripts/spoon-release.sh writes the zip SpoonInstall unpacks, the Spoon as it runs, and docs.json",
+      (function()
+        local out = os.tmpname() .. "-release"
+        local ran = os.execute(("sh %q %q >/dev/null 2>&1"):format(T.dir .. "scripts/spoon-release.sh", out))
+        local list = io.popen(("unzip -Z1 %q 2>/dev/null"):format(out .. "/Spoons/CommandLayer.spoon.zip"))
+        local names = list and list:read("a") or ""
+        if list then list:close() end
+        local docs = io.open(out .. "/docs/docs.json", "r")
+        if docs then docs:close() end
+        os.execute(("rm -rf %q"):format(out))
+        return ran and names:find("CommandLayer.spoon/init.lua", 1, true) ~= nil
+               and names:find("CommandLayer.spoon/extensions/apps.lua", 1, true) ~= nil
+               and not names:find("/tests/", 1, true) and not names:find("CLAUDE.md", 1, true)
+               and docs ~= nil,
+               #names .. " bytes of listing"
+      end)())

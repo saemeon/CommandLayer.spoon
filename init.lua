@@ -28,8 +28,7 @@ obj.version = "1.0"
 obj.author  = "Simon Niederberger"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 
--- Unset until the repository is public; SPOONS.md asks for it then.
-obj.homepage = nil
+obj.homepage = "https://github.com/saemeon/CommandLayer.spoon"
 
 --- CommandLayer.spoonPath
 --- Variable
@@ -69,6 +68,15 @@ obj.profile = nil
 ---  * Read at the first start(); set it before.
 obj.userDir = nil
 
+--- CommandLayer.logger
+--- Variable
+--- The layer's hs.logger, as Spoons offer theirs: `spoon.CommandLayer.logger.setLogLevel("debug")`.
+---
+--- Notes:
+---  * The same logger every line of the layer is written through, extensions' included; `layer.setLogLevel`
+---    takes VS Code's level names for it too.
+obj.logger = nil
+
 --- CommandLayer.layer
 --- Variable
 --- The layer itself, made by init(), as the console reaches it: `spoon.CommandLayer.layer`.
@@ -101,6 +109,7 @@ obj.layer = nil
 ---    `userDir` can be set in between.
 function obj:init()
   self.layer = dofile(self.spoonPath .. "commandlayer.lua")
+  self.logger = self.layer.log
   return self
 end
 
