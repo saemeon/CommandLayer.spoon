@@ -1,12 +1,10 @@
 # Roadmap -- working file
 
-What is left to do, test and watch: a reference for the owner. What was
-done is in git's history and [docs/seen-working.md](docs/seen-working.md). Decisions and their reasons are in
-[design.md](design.md), the contract in [CLAUDE.md](CLAUDE.md), how the code
-behaves in [docs/behaviour.md](docs/behaviour.md), credits in
-[PRIOR_ART.md](PRIOR_ART.md). An id (Q2, C17) is stable, so "Q2 yes, Q5 no"
-works in chat. A check confirmed on screen moves to
-[docs/seen-working.md](docs/seen-working.md); delete it here once ticked.
+What is left to do, test and watch: a reference for the owner. Tick a box
+when done; a check confirmed on screen moves to
+[docs/seen-working.md](docs/seen-working.md) and is deleted here. What was
+built is in git's history; decisions and their reasons are in
+[design.md](design.md).
 
 ## 1. Do first
 
