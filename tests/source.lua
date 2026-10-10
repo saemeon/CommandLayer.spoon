@@ -283,6 +283,26 @@ do
   check("the input file is removed once the task exits, and the task let go",
         heldWhileRunning and contents(fedFile) == nil and cl.tools.running[fed] == nil, tostring(fedFile))
 
+  -- hs.task may stream a filter's whole answer after its completion: fzf
+  -- exited 0 having matched, and the palette opened by a chord showed nothing.
+  local turns, savedAfter = {}, hs.timer.doAfter
+  hs.timer.doAfter = function(_, fn)
+    turns[#turns + 1] = fn
+    return { stop = function() end }
+  end
+  local late
+  cl.tools.run("/fake/fzf", { "--filter=pull" }, function(code, stdout) late = { code, stdout } end,
+               { input = "1\tGit: Pull\n" })
+  local filter = made[#made]
+  filter.complete(0, "", "")
+  local toldAtCompletion = late ~= nil
+  local keptLate = filter.stream(filter, "1\tGit: Pull\n", "") == true
+  for _, fn in ipairs(turns) do fn() end
+  hs.timer.doAfter = savedAfter
+  check("a filter's answer streamed after its completion still reaches done, a turn later",
+        not toldAtCompletion and keptLate and late ~= nil and late[1] == 0 and late[2] == "1\tGit: Pull\n",
+        late and tostring(late[2]) or "not told")
+
   local stopped = cl.tools.run("/fake/bc", { "-l" }, function() end, { input = "1+1\n" })
   local stoppedTask = made[#made]
   local stoppedFile = stoppedTask.args[4]

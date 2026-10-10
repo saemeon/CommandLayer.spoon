@@ -71,6 +71,9 @@ end
 -- holds can be collected mid-run, and its callback never comes.
 tools.running = {}
 
+-- The turn between a task's exit and telling its caller, held like a task.
+tools.telling = {}
+
 -- A child's input is never written into its stdin from here. Writing into a
 -- pipe whose reader has gone -- fzf or bc terminated for a newer query --
 -- raises SIGPIPE, which Hammerspoon does not ignore, so the whole app dies;
@@ -146,10 +149,20 @@ function tools.run(program, args, done, opts)
     if type(stderr) == "string" and stderr ~= "" then err[#err + 1] = stderr end
   end
 
-  -- hs.task may stream one last chunk after the completion, with no task;
-  -- by then `done` has been told, so it is dropped.
+  local told = false
+  local function tell(code)
+    if told then return end
+    told = true
+    if done then done(code, table.concat(out), table.concat(err)) end
+  end
+
+  -- hs.task may stream the last chunk after the completion -- for a small
+  -- output, all of it: fzf exited 0 having matched, and done heard nothing.
+  -- So a task fed input that succeeded having said nothing -- a filter whose
+  -- answer is still on its way -- tells done a turn later, and a chunk
+  -- arriving until then is kept.
   local function stream(_, stdout, stderr)
-    if finished then return false end
+    if told then return false end
     keep(stdout, stderr)
     return true
   end
@@ -161,7 +174,14 @@ function tools.run(program, args, done, opts)
     removeInput()
     stopSpan("exit " .. tostring(code))
     keep(stdout, stderr)
-    if done then done(code, table.concat(out), table.concat(err)) end
+    if not opts.input or code ~= 0 or #out > 0 or #err > 0 then return tell(code) end
+    local timer
+    timer = hs.timer.doAfter(0, function()
+      if timer then tools.telling[timer] = nil end
+      tell(code)
+    end)
+    if not timer then return tell(code) end
+    if not told then tools.telling[timer] = true end
   end
 
   local launched, argv = program, args or {}

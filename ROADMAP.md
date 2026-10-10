@@ -28,7 +28,9 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 - [ ] Switching pickers by chord keeps what you typed: "pull" in the root,
   then cmd+o, reads `>pull`; cmd+p from there reads `files pull`.
   How: open the launcher, type "pull", press cmd+o: the field reads ">pull"
-  and the Git commands are listed. Press cmd+p: "files pull".
+  and the Git commands are listed at once, without typing another letter
+  (fzf's answer once arrived after its exit and was dropped). Press cmd+p:
+  "files pull".
 
 ### Search, files and selection
 
