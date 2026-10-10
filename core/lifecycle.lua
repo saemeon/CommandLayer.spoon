@@ -156,6 +156,37 @@ function M.stop()
   return M
 end
 
+-- A picker's rows for Hammerspoon code to show -- an hs.menubar, a menu of
+-- one's own -- as it would open on them, ranked with nothing typed: plain
+-- data, so no presenter is involved, and run() doing what picking the row
+-- does, asking for what a command still needs. nil for no such picker.
+function M.rows(name)
+  if not M.viewNamed(name) then return nil end
+  local built = M.rowsOfView(name, M.buildContext())
+  local ranked
+  M.rankItems(built, "", function(rows) ranked = rows end)
+  local out = {}
+  for _, row in ipairs(ranked or built) do
+    M.normaliseRow(row)
+    if row.kind ~= "separator" then
+      out[#out + 1] = {
+        label = tostring(row.label or ""), subtitle = M.secondLine(row), icon = row.iconPath,
+        enabled = row.enabled ~= false, submenu = row.submenu,
+        run = function()
+          if row.enabled == false then return end
+          M.recordUse(row)
+          if row.submenu then return M.executeCommand("quickOpen", { view = row.submenu }) end
+          if type(row.command) == "string" and type(row.run) ~= "function" then
+            return M.executeCommand(row.command, row.args, row.ctx)
+          end
+          M.runRow(row)
+        end,
+      }
+    end
+  end
+  return out
+end
+
 ----------------------------------------------------------------------
 -- THE PUBLIC LAYER
 --
@@ -164,7 +195,7 @@ end
 ----------------------------------------------------------------------
 
 local PUBLIC = { start = true, stop = true, bindHotkeys = true, addExtension = true, executeCommand = true,
-                 setLogLevel = true, apiVersion = true }
+                 rows = true, setLogLevel = true, apiVersion = true }
 local SETTABLE = { profile = true, userDir = true }
 
 M.public = setmetatable({}, {

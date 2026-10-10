@@ -118,9 +118,6 @@ check shown to fail without its change. What an item leaves to be seen on
 screen goes to the Owner checks above. Declined on the same day, with the
 reasons: design.md, "Declined, and why".
 
-5. **G2** `layer.rows(view)` on the public layer: each row's label, subtitle
-   and a function running it, so Hammerspoon code -- an `hs.menubar`, the
-   owner's menubar.lua -- can show a picker's rows. No menu bar of our own.
 6. **J19** Run a recent command again with the arguments it had.
 7. **C11** Typing that extends the last query searches only what matched it.
 8. **C15** A notification when a result lands after its picker closed.

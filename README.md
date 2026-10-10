@@ -306,6 +306,25 @@ Every field, hook and `cl` member is in the generated
 [reference](docs/api.md). How each part behaves in detail is in
 [docs/behaviour.md](docs/behaviour.md).
 
+## A picker's rows in your own menu
+
+Hammerspoon code can show any picker's rows, for example as a menu bar icon:
+
+```lua
+local menu = hs.menubar.new()
+menu:setTitle("⌘")
+menu:setMenu(function()
+  local items = {}
+  for _, row in ipairs(spoon.CommandLayer.layer.rows("recent") or {}) do
+    items[#items + 1] = { title = row.label, fn = row.run, disabled = not row.enabled }
+  end
+  return items
+end)
+```
+
+`rows(view)` gives what the picker would open on; each row's `run()` does
+what picking it does.
+
 ## How it's built
 
     commandlayer.lua   loads the kernel

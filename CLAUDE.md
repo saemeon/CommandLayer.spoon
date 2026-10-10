@@ -289,9 +289,9 @@ file.
 
 - **The public layer** -- what `commandlayer.lua` returns and `hs -c`
   reaches as `spoon.CommandLayer.layer`: `start`, `stop`, `bindHotkeys`,
-  `addExtension`, `executeCommand`, `setLogLevel`, `apiVersion`, a copy of
-  `problems`, and `profile` and `userDir` to set before start. Anything else
-  raises.
+  `addExtension`, `executeCommand`, `rows`, `setLogLevel`, `apiVersion`, a
+  copy of `problems`, and `profile` and `userDir` to set before start.
+  Anything else raises.
 - **A plugin's API** -- one per extension, presenter, matcher and
   ranker, from an allowlist per kind (`M.pluginAPI(kind, name)`; members in
   the reference). A name outside it raises, naming the name and the kind.

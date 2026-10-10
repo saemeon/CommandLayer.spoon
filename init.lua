@@ -76,6 +76,9 @@ obj.userDir = nil
 --- Notes:
 ---  * `executeCommand(id, args)` runs a command by id, asking for what args does not answer, and returns
 ---    true and what the command returned, or false when there is no such command.
+---  * `rows(view)` gives a picker's rows as it would open on them, for an hs.menubar or a menu of your own:
+---    each `{ label, subtitle, icon, enabled, submenu, run }`, `run()` doing what picking it does; nil for a
+---    picker that does not exist.
 ---  * `setLogLevel(level)` takes VS Code's level names: "off", "trace", "debug", "info", "warning", "error".
 ---  * `problems` is a copy of what is wrong in your files, each `{ file, message }`.
 ---  * `apiVersion` is the plugin contract's version, 0 while in development.

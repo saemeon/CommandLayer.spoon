@@ -702,6 +702,8 @@ From the October 10 planning:
   this repository.
 - **A safer paste** (C14). Not wanted.
 - **Docker and mas as sources of rows.** Already reached another way.
+- **A menu bar icon of our own** (G2). Hammerspoon code makes its own with
+  `hs.menubar`, filled from `layer.rows(view)`, which is all it needs.
 - **A runner for script commands of our own** (J4 as first written).
   Scripts are dispatched to what runs them -- Shortcuts, Raycast, tasks.json
   -- and those extensions feed a Scripts picker.

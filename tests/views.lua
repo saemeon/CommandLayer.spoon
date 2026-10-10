@@ -744,3 +744,34 @@ check("a picker declared in settings with a command holds that text command, wha
                ("bare %d rows (%s), typed %d rows (%s), %d problems"):format(#bare, tostring(bare[1] and bare[1].label),
                  #typed, tostring(typed[1] and typed[1].label), #holding.problems)
       end)())
+
+group("a picker's rows for Hammerspoon code")
+do
+  local ran = 0
+  cl.registerCommand("test.rowsRun", { title = "Counted", menus = {}, run = function() ran = ran + 1 end })
+  -- On this suite's own kernel: the harness's picker helper feeds the latest.
+  cl.register({ name = "test-feeds-rows-api", menus = { "test-rows-api" }, items = function()
+    return { { label = "Runs a command", description = "Second line", command = "test.rowsRun" },
+             { label = "Not now", command = "test.rowsRun", enabled = false } }
+  end })
+  cl.view({ name = "test-rows-api", menus = { "test-rows-api" } })
+  local function undo()
+    for i, v in ipairs(cl.views) do
+      if v.name == "test-rows-api" then table.remove(cl.views, i) break end
+    end
+    cl.unregisterExtension("test-feeds-rows-api")
+  end
+  local rows = cl.public.rows("test-rows-api")
+  local byLabel = {}
+  for _, row in ipairs(rows or {}) do byLabel[row.label] = row end
+  local running, disabled = byLabel["Runs a command"], byLabel["Not now"]
+  if running then running.run() end
+  if disabled then disabled.run() end
+  undo()
+  check("layer.rows gives a picker's rows as plain data, run() doing what picking does, a disabled row "
+          .. "running nothing, and nil for a picker that does not exist",
+        running ~= nil and type(running.label) == "string" and running.subtitle ~= nil
+        and disabled ~= nil and disabled.enabled == false and ran == 1
+        and cl.public.rows("no-such-picker") == nil,
+        ("%d rows, ran %d"):format(rows and #rows or -1, ran))
+end
