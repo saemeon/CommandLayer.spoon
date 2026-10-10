@@ -1,5 +1,5 @@
 -- What only VS Code with the Command Layer extension installed answers
--- (vscode/command-layer-extension in this repository). Switching this
+-- (saemeon/vscode-command-layer-extension, a repository of its own). Switching this
 -- extension on says that extension is installed, so its rows are always
 -- there; a stock VS Code is vscode.lua's.
 
@@ -12,7 +12,7 @@ M.extensionsPath = (os.getenv("HOME") or "") .. "/.vscode/extensions"
 
 M.vscodeBundleID = "com.microsoft.VSCode"
 
-M.NOT_INSTALLED = "VS Code bridge not installed: install vscode/command-layer-extension "
+M.NOT_INSTALLED = "VS Code bridge not installed: install the Command Layer extension in VS Code "
                   .. "(Developer: Install Extension from Location…)"
 
 -- Read when a bridge command runs, never on an open. "Install Extension from
@@ -127,6 +127,16 @@ function M.extension(cl)
         inputs = { { id = "label", description = "Task, as Run Task names it", picker = { typed = true } } },
         command = "vscodebridge.run",
         args = { command = "workbench.action.tasks.runTask", args = { "${input:label}" } } },
+
+      -- Choosing is VS Code's: its own lists have every task and command, with
+      -- titles, which nothing outside VS Code can read.
+      { id = "vscodebridge.chooseTask", title = "Choose task…", category = "VS Code",
+        icon = "$(run-all)", menus = { "commandPalette" },
+        command = "vscodebridge.run", args = { command = "workbench.action.tasks.runTask" } },
+
+      { id = "vscodebridge.showCommands", title = "Show all commands", category = "VS Code",
+        icon = "$(list-flat)", menus = { "commandPalette" },
+        command = "vscodebridge.run", args = { command = "workbench.action.showCommands" } },
 
       { id = "vscodebridge.runCommand", title = "Run command…", category = "VS Code",
         icon = "$(terminal-cmd)", menus = { "commandPalette" },
