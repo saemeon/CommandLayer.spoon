@@ -74,6 +74,11 @@ tools.running = {}
 -- The turn between a task's exit and telling its caller, held like a task.
 tools.telling = {}
 
+-- How long a filter that exited having said nothing is waited for, and how
+-- long the rest of a late answer is given once a chunk of it has arrived.
+tools.LATE_SECONDS = 0.25
+tools.SETTLE_SECONDS = 0.02
+
 -- A child's input is never written into its stdin from here. Writing into a
 -- pipe whose reader has gone -- fzf or bc terminated for a newer query --
 -- raises SIGPIPE, which Hammerspoon does not ignore, so the whole app dies;
@@ -157,13 +162,35 @@ function tools.run(program, args, done, opts)
   end
 
   -- hs.task may stream the last chunk after the completion -- for a small
-  -- output, all of it: fzf exited 0 having matched, and done heard nothing.
-  -- So a task fed input that succeeded having said nothing -- a filter whose
-  -- answer is still on its way -- tells done a turn later, and a chunk
-  -- arriving until then is kept.
+  -- output, all of it: fzf exited 0 having matched, and done heard nothing,
+  -- so the palette opened by cmd+o after "pull" stayed empty. A task fed
+  -- input that succeeded having said nothing -- a filter whose answer is
+  -- still on its way -- waits for it: told once a late chunk has had
+  -- tools.SETTLE_SECONDS for the rest to follow, or after tools.LATE_SECONDS
+  -- with nothing.
+  local exitCode, waiting
+  local function wait(seconds)
+    if waiting then
+      tools.telling[waiting] = nil
+      waiting:stop()
+    end
+    local timer
+    timer = hs.timer.doAfter(seconds, function()
+      if timer then tools.telling[timer] = nil end
+      if waiting == timer then waiting = nil end
+      tell(exitCode)
+    end)
+    if not timer then return tell(exitCode) end
+    if not told then
+      waiting = timer
+      tools.telling[timer] = true
+    end
+  end
+
   local function stream(_, stdout, stderr)
     if told then return false end
     keep(stdout, stderr)
+    if finished then wait(tools.SETTLE_SECONDS) end
     return true
   end
 
@@ -175,13 +202,8 @@ function tools.run(program, args, done, opts)
     stopSpan("exit " .. tostring(code))
     keep(stdout, stderr)
     if not opts.input or code ~= 0 or #out > 0 or #err > 0 then return tell(code) end
-    local timer
-    timer = hs.timer.doAfter(0, function()
-      if timer then tools.telling[timer] = nil end
-      tell(code)
-    end)
-    if not timer then return tell(code) end
-    if not told then tools.telling[timer] = true end
+    exitCode = code
+    wait(tools.LATE_SECONDS)
   end
 
   local launched, argv = program, args or {}

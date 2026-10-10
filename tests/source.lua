@@ -303,6 +303,39 @@ do
         not toldAtCompletion and keptLate and late ~= nil and late[1] == 0 and late[2] == "1\tGit: Pull\n",
         late and tostring(late[2]) or "not told")
 
+  -- Later than a turn: the wait is a timer, not the next turn, and a chunk
+  -- that lands is given a moment for the rest.
+  local delays, timersMade = {}, {}
+  hs.timer.doAfter = function(seconds, fn)
+    local t = { fn = fn, stopped = false }
+    function t.stop() t.stopped = true end
+    delays[#delays + 1] = seconds
+    timersMade[#timersMade + 1] = t
+    return t
+  end
+  local later, nothing
+  cl.tools.run("/fake/fzf", { "--filter=pull" }, function(code, stdout) later = { code, stdout } end,
+               { input = "1\tGit: Pull\n" })
+  local slowFilter = made[#made]
+  slowFilter.complete(0, "", "")
+  local toldEarly = later ~= nil
+  slowFilter.stream(slowFilter, "1\tGit: ", "")
+  slowFilter.stream(slowFilter, "Pull\n", "")
+  for _, t in ipairs(timersMade) do if not t.stopped then t.fn() end end
+  cl.tools.run("/fake/fzf", { "--filter=zzz" }, function(code, stdout) nothing = { code, stdout } end,
+               { input = "1\tGit: Pull\n" })
+  local empty = made[#made]
+  local before = #timersMade
+  empty.complete(0, "", "")
+  for i = before + 1, #timersMade do if not timersMade[i].stopped then timersMade[i].fn() end end
+  hs.timer.doAfter = savedAfter
+  check("a filter's answer landing well after its exit is waited for, every chunk of it; one that never "
+          .. "comes is given up after tools.LATE_SECONDS",
+        not toldEarly and later ~= nil and later[2] == "1\tGit: Pull\n"
+        and delays[1] == cl.tools.LATE_SECONDS and delays[#delays] == cl.tools.LATE_SECONDS
+        and nothing ~= nil and nothing[2] == "",
+        tostring(later and later[2]) .. " / " .. table.concat(delays, " "))
+
   local stopped = cl.tools.run("/fake/bc", { "-l" }, function() end, { input = "1+1\n" })
   local stoppedTask = made[#made]
   local stoppedFile = stoppedTask.args[4]
