@@ -94,7 +94,13 @@
     // while the picker is open; Quit and Force quit on cmd+k. No "empty":
     // the first list lands a moment after the picker opens.
     { "name": "processes", "title": "Processes", "icon": "$(pulse)", "prefix": "processes ",
-      "placeholder": "Processes", "menus": [ "processes" ] }
+      "placeholder": "Processes", "menus": [ "processes" ] },
+    // What runs a script, together: your Shortcuts, your tasks.json, and
+    // Raycast's script commands (raycast.scriptDirectories). Each is run by
+    // the tool that keeps it.
+    { "name": "scripts", "title": "Scripts", "icon": "$(file-code)", "prefix": "scripts ",
+      "placeholder": "Scripts", "menus": [ "scripts" ],
+      "empty": "No scripts: Shortcuts, tasks.json and Raycast's script commands are listed here" }
   ],
 
   // The matchers used, in the order tried: the first that takes a query

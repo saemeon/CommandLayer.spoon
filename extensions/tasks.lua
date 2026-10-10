@@ -98,7 +98,7 @@ function M.extension(cl)
   return {
     displayName = "Tasks",
     description = "The tasks in tasks.json beside settings.json, run in the terminal",
-    menus       = { "root" },
+    menus       = { "root", "scripts" },
     rank        = 0.29,
     extensionDependencies = { "terminal" },
 

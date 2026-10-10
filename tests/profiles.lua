@@ -185,12 +185,12 @@ check("a second profile is a second launcher", (function()
         for _, v in ipairs(second.views) do names[#names + 1] = v.name end
         table.sort(names)
         -- root holds all four menus; actions, keybindings, settings, spoons,
-        -- processes and help are declared in the defaults, the text commands with a
+        -- processes, scripts and help are declared in the defaults, the text commands with a
         -- prefix are pickers of their own, and files and grep are kept from
         -- the defaults.
         return table.concat(names, " ")
                == "actions brew.info brew.install brew.search browser.searchWeb browser.searchYouTube "
-                  .. "files grep help keybindings processes root settings spoons",
+                  .. "files grep help keybindings processes root scripts settings spoons",
                table.concat(names, " ")
       end)())
 

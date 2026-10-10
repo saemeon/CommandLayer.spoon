@@ -839,6 +839,19 @@ message when it has one, its chord pressed a tenth of a second after the
 launcher closes. A hotkey whose key hs.keycodes does not know is left out;
 this Spoon is too, its commands being rows already. Nothing is kept.
 
+## Scripts
+
+`scripts ` (declared in `defaults.jsonc`) is what runs a script, together,
+each run by the tool that keeps it: the shortcuts extension's Shortcuts, the
+tasks extension's tasks.json, and Raycast's script commands. The raycast
+extension reads `raycast.scriptDirectories` -- the folders added in Raycast's
+own settings, empty as shipped -- and makes a row of each file whose first
+lines hold `@raycast.title` (in `#`, `//` or `--` comments), opening
+`raycast://script-commands/<file name without its extension>`; a folder is
+read again only once it changes. Those rows are in `scripts` alone, the
+deeplinks in `raycast.commands` in the palette alone. The launcher runs no
+script itself: Raycast runs them, so a folder must be added there too.
+
 ## Processes, a live picker
 
 `processes ` (`processes.lua`) is the one picker whose rows change while it

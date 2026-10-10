@@ -126,6 +126,11 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ### Terminal
 
+- [ ] `scripts ` lists Shortcuts, tasks and Raycast script commands (J4), and
+  the dummy script runs through Raycast.
+  How: in Raycast's settings, Extensions ▸ Script Commands ▸ Add Directories,
+  add `~/.hammerspoon/commandlayer/scripts`. Then type `scripts ` "hello":
+  Hello from Command Layer runs, and Raycast shows its greeting.
 - [ ] A task from `tasks.json` (beside settings.json) runs in its
   `options.cwd`; a bad task is in Show Problems; "Tasks: Open User Tasks"
   creates the file.

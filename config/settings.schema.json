@@ -950,6 +950,10 @@
       "description": "Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none.",
       "type": "object"
     },
+    "raycast.scriptDirectories": {
+      "description": "The folders of script commands added in Raycast's settings: each script is a row in scripts, run through Raycast",
+      "type": "array"
+    },
     "relevance.exactMatchBoost": {
       "default": 0,
       "description": "0..1: how much more a row counts when its label is exactly what was typed",

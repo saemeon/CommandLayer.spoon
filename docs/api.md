@@ -566,6 +566,7 @@ The processes running, busiest first, updated while the picker is open; Quit and
 | `raycast.enabled` | boolean | `false` | Whether Raycast is on; a change applies on reload. |
 | `raycast.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 | `raycast.commands` | array | `[ { "title": "Raycast: Clipboard history", "url": "raycast://extensions/raycast/clipboard-history/clipboard-history" }, { "title": "Raycast: Search files", "url": "raycast://extensions/raycast/file-search/search-files" } ]` | Raycast deeplinks: { title, url } |
+| `raycast.scriptDirectories` | array | `{}` | The folders of script commands added in Raycast's settings: each script is a row in scripts, run through Raycast |
 
 #### Relevance (`relevance`, ranker)
 

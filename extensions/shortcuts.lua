@@ -29,7 +29,7 @@ function M.extension(cl)
   return {
     displayName = "Shortcuts",
     rank        = 0.29,
-    menus       = { "root", "commandPalette" },
+    menus       = { "root", "commandPalette", "scripts" },
     optionalExtensionDependencies = { "icons" },
 
     settings = {
