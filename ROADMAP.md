@@ -1,9 +1,9 @@
 # Roadmap -- working file
 
 What is still to check on screen, and what is still to build. Decisions
-and their reasons are in
-[design.md](hammerspoon/CommandLayer.spoon/design.md), how the code
-behaves in [CLAUDE.md](CLAUDE.md), and credits in
+and their reasons are in [design.md](design.md), the contract in
+[CLAUDE.md](CLAUDE.md), how the code behaves in
+[docs/behaviour.md](docs/behaviour.md), and credits in
 [PRIOR_ART.md](PRIOR_ART.md). An id (D9, C4) is stable, so "C4 yes, E5
 no" works in chat.
 
@@ -11,44 +11,16 @@ no" works in chat.
 
 What only the owner can see or do; tick when done, delete once ticked. An
 agent's live check is a reload, the console and `problems`; what a check
-confirmed moves to CLAUDE.md's "Seen working".
+confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
-### Your own config
+### Performance
 
-- [ ] Optional: `"$schema"` pointing at the Spoon's
-  `config/settings.schema.json` in settings.json completes and underlines in
-  VS Code.
-  How: as the first key in settings.json add
-  `"$schema": "file:///Users/simonniederberger/.hammerspoon/Spoons/CommandLayer.spoon/config/settings.schema.json",`
-  then type `"brow` in VS Code: it offers the browser settings, and a typo
-  like `"browser.tabOrdr"` is underlined.
-
-### The picker
-
-- [x] Built, to be seen: why a key did what it did (D11).
-  How: in the console run `spoon.CommandLayer.layer.setLogLevel("debug")`,
-  open the launcher and press a chord you have two entries for (or cmd+k):
-  the console has a line `key cmd+k -> quickOpen.showActions: …` naming each
-  entry on that chord and why it did not run. `setLogLevel("warning")` after.
-
-- [x] Built, to be seen: Keep awake (I18).
-  How: type "keep awake" > Keep Awake: Keep awake -- an alert says so, and
-  `pmset -g assertions` in a terminal lists caffeinate. Type "allow sleep":
-  it ends. Keep awake for… offers 15 minutes, 1 hour, 2 hours. "What is
-  keeping it awake" names what holds the Mac awake right now.
-
-- [x] Built, to be seen: a site's commands on a tab row (I22).
-  How: have a YouTube video in a Brave tab, then look at another page. Open
-  `recent `, highlight the YouTube tab, cmd+k: "YouTube: Full screen" and the
-  others are offered. Pick one: Brave brings that tab forward and presses the
-  key (Vimium permitting, N9).
-
-- [i only see finderSelected. but this has no agcions oar cmd+k  actions. i.e. i dont know what to use for.] Look again (N7): several files selected in Finder reach
-  `finderSelectedFiles`. The capture reads every item; what hid it was
-  Inspect Context Keys showing only `activeView` (N4, fixed) and a list as
-  "table, 3 entries". A list of paths now reads as "3: one.txt, two.txt, …".
-  How: select three files in Finder, open the launcher, `>` "context keys":
-  finderSelectedFiles reads "3:" and their names.
+- [ ] No slow `open root` line naming systemsettings any more, and the panes
+  still listed.
+  How: reload, wait a few seconds, type "wi-fi" in the root: the pane is
+  there. Over the next hours, the console has no `open root … systemsettings`
+  warning. (One `slow: timer.systemsettings` line two seconds after a reload
+  is expected: that is the single scan.)
 
 ### Search, files and selection
 
@@ -69,12 +41,6 @@ confirmed moves to CLAUDE.md's "Seen working".
 
 ### Apps, windows and system
 
-- [x] The window providers other than raycast (rectangle, yabai, aerospace),
-  whose action names and flags were written from memory. Raycast's are seen
-  working.
-  How, for a tool you have: set `"windows.provider"`, save, quit the tool and
-  run Window: Left half -- nothing should move, since a move goes to that
-  provider and nowhere else. Start it again and run it: the window moves.
 - [ ] In a password field, Paste, Emoji & Symbols and a YouTube key alert
   that Secure Input is on, naming the app, and the key presses nothing.
   How: click into a password field (e.g. a login page in Safari), open the
@@ -85,14 +51,9 @@ confirmed moves to CLAUDE.md's "Seen working".
 
 - [ ] An ssh host row reading "SSH: <name>", as a command row reads
   "Category: Title", and the Homebrew commands reading "Brew: Update" and so
-  on -- both asked for after the last round.
+  on.
   How: type "ssh" in the root: the rows read "SSH: <host>". Type "brew"
   (terminal on): "Brew: Update", "Brew: Upgrade"…
-- [x] Show Problems lists nothing for the shipped sites; YouTube's commands
-  show on a video page; a mistake in your own site file is listed.
-  How: create `~/.config/commandlayer/sites/mine.json` holding
-  `{ "name": "Mine", "match": "[", "commands": [] }`, save settings.json to
-  reload: Show Problems names mine.json and the bad match. Delete the file.
 - [ ] Your ssh hosts in the root, changing without a reload when
   `~/.ssh/config` is edited; Connect in terminal opens `ssh <host>`; Connect
   in editor opens a remote VS Code window.
@@ -136,28 +97,41 @@ confirmed moves to CLAUDE.md's "Seen working".
 
 - **N6** "Search Text in…" takes long enough to open that a second enter --
   pressed because nothing had happened yet -- lands on the first folder and
-  opens it. What the code says: the question lists the rows its clause holds
-  for from two whole menus, `files` and `recent`, so opening it gathers
-  every extension feeding either -- recent files, zoxide's folders, projects,
-  and then the browser's tabs, the apps and the windows, whose rows the
-  clause (`file`, `folder` or `project`) throws away. Windows alone was 130 ms
-  of a root open before that list was narrowed.
-  Two ways out, neither started:
-  - Measure first: open it, then "Developer: Show Performance" -- the
-    `gather.<extension>` names say who, and one slow name may be the whole
-    story.
-  - Then, if it is the discarded rows: an extension would have to say which
-    subject kinds it contributes, so a question gathers only what could
-    answer it. That widens the extension contract, so it is a proposal, not
-    a tidy-up.
+  opens it. The question gathers every extension feeding `files` and
+  `recent` -- tabs, apps and windows included -- and its clause keeps only
+  files, folders and projects. Not yet measured: open it, then "Developer:
+  Show Performance"; the `gather.<extension>` names say who. If it is the
+  discarded rows, an extension would have to say which subject kinds it
+  contributes, so a question gathers only what could answer it -- a contract
+  change, so a proposal first.
+- **N7** Finder's multiple selection is captured (`finderSelectedFiles`) and
+  shown in Inspect Context Keys, but no command reads it, so it does nothing
+  you can see. Either verbs that take several files (Open with…, Reveal in
+  Finder, Copy paths, Open in editor), or the key goes.
 
-### In progress
+### Slow extensions
 
-- Hammerspoon went away twice on September 15. At 08:39 it was killed by
-  SIGPIPE: the layer wrote a task's input into a pipe whose reader had gone.
-  Fixed (ed37df6): input goes through a file, and a source check forbids
-  writing a task's stdin. Once more on a reload, with no crash report, more
-  likely a hang. Watch whether it happens again.
+Read from the console on October 10: the root's slow opens were
+systemsettings (about 200 ms, its hourly re-scan) and windows (about 200 ms
+on October 7, 25 ms since). systemsettings now scans once per start, and
+`cached` no longer refreshes inside an open. Hammerspoon has one Lua thread,
+so a hook stuck in a blocking call cannot be interrupted; what remains is
+how the picker copes with one.
+
+- **C16** Slow extensions named as a problem: an extension whose
+  `gather.<name>` p90 stays over a budget is listed in Show Problems with
+  its time, switching it off the way out. The spans exist; only the report
+  is missing.
+- **C17** Draw the fast rows first: gather the extensions known to be fast,
+  draw, then gather the slow ones a turn later and redraw, keeping the
+  highlight. Kernel only. Rows arriving late below the highlighted one, so
+  enter never lands on a row that just moved.
+- **C18** Streaming `items`: a hook may return a function (how to stop)
+  instead of rows and answer through `done`, as `search` does. Per-extension
+  row slots, so a late answer still wins dedupe in extension order; a stale
+  answer dropped once its level is left. Only helps an extension that moves
+  its slow part into a task. A contract change, so a proposal first; worth
+  it once an extension needs it.
 
 ### Later
 
@@ -167,41 +141,21 @@ confirmed moves to CLAUDE.md's "Seen working".
 - **C15** Notifications for results that land after the picker closed.
 - **G2** A menu bar icon whose menu is a picker's rows, through the popup.
 - **I2** appmenus: a path with alternatives (Play or Pause), so one key
-  toggles. Still dispatch: the menu says which of the two is there now, and
-  the row clicks that one. Reading the menu is reading the environment, and
-  nothing is remembered between presses.
+  toggles. The menu says which of the two is there now, and the row clicks
+  that one; nothing is remembered between presses.
 - **J2** Instant Send: a global chord that opens the cmd+k panel straight on
-  what is selected, skipping the picker in between -- Raycast's of the same
-  name. Pressed in any app, it reads the selection (`selection.lua`), pushes
-  the `actions` picker with that as its subject, and what you see is Look Up,
-  Search the web, Copy and whatever else takes a selection. Nothing new is
-  needed but the entry: a keybinding running `quickOpen` with the actions
-  picker and a subject taken from the context.
-  What it is for: acting on what you have selected without going looking for
-  the verb. Today that is three steps -- select the text, open the launcher,
-  find "Search the web" or "Look Up" among everything else. Instant Send is
-  one key: the panel opens already about the selection, listing only what can
-  be done with text (Look Up, Search the web, Copy, and whatever else takes a
-  `selection`), and enter runs it. Alfred calls the same thing Universal
-  Actions. It is worth building only if you select text and act on it often;
-  if you mostly copy and paste yourself, it saves nothing, and that is the
-  question to answer rather than the mechanism.
+  the selected text (Look Up, Search the web, Copy), skipping the picker in
+  between -- Raycast's Instant Send, Alfred's Universal Actions. Needs only a
+  keybinding running `quickOpen` with the actions picker and the selection as
+  subject. Worth it only if you act on selected text often.
 - **J4** Script commands in any language: a folder of executables that
   become rows, each saying in a comment block at its top what it is called
-  and what it takes -- Raycast's Script Commands (`@raycast.title`,
-  `@raycast.mode`, `@raycast.argument1`) or Alfred's Script Filter, which
-  prints JSON rows instead. An extension would read the folder, make a
-  command per file with its arguments as inputs, and run it through
-  `shell.run` or `terminal.run` by its mode. It is how a person adds a verb
-  without writing Lua, and it is dispatch: we run the file and show what it
-  prints.
-- **J11** Live pickers -- not VS Code's, kept because the owner wants it --
-  a picker whose rows keep changing while it is open --
-  running processes with Quit on cmd+k, or CPU, memory and battery as rows
-  that tick. The extension feeding it starts a timer when its picker opens
-  and calls `refresh()`; the `left` hook is what stops that timer when the
-  level comes off the stack, so nothing ticks behind a closed launcher. That
-  hook is why this is now possible.
+  and what it takes, as Raycast's Script Commands do. Run through
+  `shell.run` or `terminal.run` by its mode; a verb without writing Lua.
+- **J11** Live pickers, whose rows keep changing while open -- running
+  processes with Quit on cmd+k, or CPU, memory and battery. The extension
+  starts a timer when its picker opens and calls `refresh()`; the `left` hook
+  stops it.
 - **J17** Loaded Spoons: their hotkeys and the commands they expose.
 - **J18** Favicons for tabs and bookmarks from Chromium's local database.
 - **J19** Replay a recent command with its arguments.
@@ -216,24 +170,14 @@ confirmed moves to CLAUDE.md's "Seen working".
 - Ideas: a hand-off to Brave's own command palette (`ctrl+space`); `yabai`,
   `wezterm cli`, `mas`, `docker` as sources of rows.
 
+### Watch
+
+- Hammerspoon went away twice on September 15: once killed by SIGPIPE,
+  fixed in ed37df6 (a task's input goes through a file, and the harness
+  forbids writing stdin), and once on a reload with no crash report, more
+  likely a hang. Note it here if it happens again.
+
 ### Yours to decide
 
-- Browser automation: **decided, and minimal.** Going to a tab is Apple
-  Events already (`browser.tab` selects the tab in its window, and a tab
-  gone, a refusal or a non-browser opens the URL instead), and a site's `js`
-  runs the same way. Nothing more is wanted: no typing into pages, no forms,
-  no Raycast round trip, no browser extension of our own. Why the
-  alternatives were turned down is in design.md.
-  What stays and is worth keeping good: verbs that know what the URL *is* --
-  Clone repository on a GitHub page, a site's own commands. Those lead the
-  context picker now, since the page is a context inside the app's.
-- Before publishing: `obj.homepage` once a repository is public, and whether
-  init.lua should offer a `logger` and an HSKeybindings `mapping`.
-
-## Progress
-
-**81/81 built**, and everything agreed since is built too: E10, F7, I13,
-I18, I21, I22, D11, and apps and menu items where they belong. Of the nine
-found on screen, N6 is the one still open -- it needs a measurement only
-the owner's machine can give (above). What remains is the owner checks,
-Later, and what is yours to decide.
+- Before publishing: `obj.homepage` once the repository is public, and
+  whether init.lua should offer a `logger` and an HSKeybindings `mapping`.

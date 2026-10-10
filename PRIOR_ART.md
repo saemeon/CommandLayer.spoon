@@ -41,8 +41,8 @@ false falls through), its undoing of what an extension registered and its
 allowlisted API were copied here; it is still better at keeping that API
 stable.
 
-**[Command Layer for VS Code](vscode/command-layer-extension)** and the
-**[zsh palette](zsh/)** (this repository's author). The two prototypes this
+**Command Layer for VS Code** and the **zsh palette** (this repository's
+author; neither is in this repository). The two prototypes this
 Spoon grew from. The extension named trigger → resolve → dispatch: a thin
 layer that fills a command's arguments from context and hands its id to a
 registry it does not own, with `when` scoping and the rule that a generic
