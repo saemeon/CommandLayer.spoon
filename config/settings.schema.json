@@ -4,7 +4,7 @@
   "additionalProperties": false,
   "description": "settings.json, over the Spoon's config/defaults.jsonc.",
   "patternProperties": {
-    "^(?!(?:ambient|applescript|appmenus|apps|audio|brew|browser|calculator|chooser|codicons|context|developer|editor|files|finder|frecency|git|github|grep|hammerspoon|help|icons|keepawake|keybindings|lazygit|maccy|media|popup|processes|projects|quicklinks|raycast|relevance|rerun|secureinput|selection|settings|shell|shortcuts|snippets|spoon|spoons|ssh|system|systemsettings|tasks|terminal|url|urlhandler|vscode|vscodebridge|webview|windows|workbench|zoxide)\\.)[A-Za-z0-9_-]+\\.": {
+    "^(?!(?:ambient|applescript|appmenus|apps|audio|brew|browser|calculator|chooser|codicons|context|developer|editor|files|finder|frecency|git|github|grep|hammerspoon|help|icons|keepawake|keybindings|lazygit|maccy|media|popup|processes|projects|quicklinks|raycast|relevance|rerun|secureinput|selection|settings|shell|shortcuts|snippets|spoon|spoons|ssh|system|systemsettings|tasks|terminal|url|urlhandler|vscode|vscodebridge|webview|wezterm|windows|workbench|yabai|zoxide)\\.)[A-Za-z0-9_-]+\\.": {
       "description": "A setting of an extension, presenter or ranker that does not ship with the Spoon."
     }
   },
@@ -1433,6 +1433,18 @@
       "description": "Window width, as a percentage of the screen",
       "type": "number"
     },
+    "wezterm.enabled": {
+      "default": false,
+      "description": "Whether WezTerm is on; a change applies on reload. WezTerm's panes as rows, each focused when picked; needs WezTerm.",
+      "type": "boolean"
+    },
+    "wezterm.menus": {
+      "additionalProperties": {
+        "type": "boolean"
+      },
+      "description": "Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none.",
+      "type": "object"
+    },
     "windows.animationDuration": {
       "default": 0,
       "description": "Seconds a window takes to move",
@@ -1647,6 +1659,18 @@
       "type": "boolean"
     },
     "workbench.menus": {
+      "additionalProperties": {
+        "type": "boolean"
+      },
+      "description": "Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none.",
+      "type": "object"
+    },
+    "yabai.enabled": {
+      "default": false,
+      "description": "Whether yabai is on; a change applies on reload. yabai's spaces as rows, each focused when picked; needs yabai.",
+      "type": "boolean"
+    },
+    "yabai.menus": {
       "additionalProperties": {
         "type": "boolean"
       },

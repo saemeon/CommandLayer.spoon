@@ -170,6 +170,7 @@
               "vscodebridge.runCommand",
               "vscodebridge.runTask",
               "webview.open",
+              "wezterm.focusPane",
               "windows.bottomHalf",
               "windows.bottomLeft",
               "windows.bottomRight",
@@ -199,7 +200,8 @@
               "workbench.action.removeFromRecentlyUsed",
               "workbench.action.resetSetting",
               "workbench.actions.view.problems",
-              "workbench.profiles.actions.switchProfile"
+              "workbench.profiles.actions.switchProfile",
+              "yabai.focusSpace"
             ],
             "type": "string"
           },

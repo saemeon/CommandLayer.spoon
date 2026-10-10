@@ -171,5 +171,7 @@
   "github.enabled": false,       // needs gh, signed in
   "maccy.enabled": false,        // needs Maccy
   "raycast.enabled": false,      // needs Raycast
-  "vscodebridge.enabled": false  // needs VS Code with vscode/command-layer-extension installed
+  "vscodebridge.enabled": false, // needs VS Code with the Command Layer extension installed
+  "wezterm.enabled": false,      // needs WezTerm
+  "yabai.enabled": false         // needs yabai
 }

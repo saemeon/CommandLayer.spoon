@@ -839,6 +839,17 @@ message when it has one, its chord pressed a tenth of a second after the
 launcher closes. A hotkey whose key hs.keycodes does not know is left out;
 this Spoon is too, its commands being rows already. Nothing is kept.
 
+## WezTerm panes and yabai spaces
+
+Two extensions, switched off as shipped since each needs its tool. `wezterm`
+lists every WezTerm pane in the root and `recent` -- `wezterm cli list
+--format json`, asked in a task only while WezTerm runs (by bundle id), kept
+`M.seconds` (3) -- by its title and the folder it is in; picking one runs
+`wezterm cli activate-pane --pane-id` and brings WezTerm forward. `yabai`
+lists every space in the root -- `yabai -m query --spaces`, kept the same
+way -- as "Space 2 -- label", focused with `yabai -m space --focus`. Neither
+asks anything while its tool is not there.
+
 ## Scripts
 
 `scripts ` (declared in `defaults.jsonc`) is what runs a script, together,

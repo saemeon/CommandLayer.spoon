@@ -126,6 +126,9 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ### Terminal
 
+- [ ] WezTerm's panes are rows in the root, focused when picked (J22).
+  How: with WezTerm running and two tabs open, type part of a tab's title:
+  "WezTerm pane" rows; picking one brings WezTerm forward on that pane.
 - [ ] `scripts ` lists Shortcuts, tasks and Raycast script commands (J4), and
   the dummy script runs through Raycast.
   How: in Raycast's settings, Extensions ▸ Script Commands ▸ Add Directories,

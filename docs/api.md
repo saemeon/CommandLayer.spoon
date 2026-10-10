@@ -758,6 +758,15 @@ Show a page, some HTML or a file in a window of its own
 | `webview.height` | number | `70` | Window height, as a percentage of the screen |
 | `webview.width` | number | `60` | Window width, as a percentage of the screen |
 
+#### WezTerm (`wezterm`, extension)
+
+WezTerm's panes as rows, each focused when picked; needs WezTerm
+
+| Setting | Type | Default | Description |
+|---|---|---|---|
+| `wezterm.enabled` | boolean | `false` | Whether WezTerm is on; a change applies on reload. WezTerm's panes as rows, each focused when picked; needs WezTerm. |
+| `wezterm.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
+
 #### Windows (`windows`, extension)
 
 | Setting | Type | Default | Description |
@@ -771,6 +780,15 @@ Show a page, some HTML or a file in a window of its own
 | `windows.reuseLastList` | boolean | `true` | Open on the windows the last open listed and read them again once the picker is up, rather than waiting for every app to answer first; a window closed since shows for a moment |
 | `windows.source` | string | `"ordered"` | Which windows are listed, read as a picker lists them, once per open; windows.sourceByPicker chooses another for a picker One of `all`, `ordered`, `visible`. |
 | `windows.sourceByPicker` | object | `{ "recent": "all" }` | A source for a picker, by the picker's name -- { "root": "ordered", "recent": "all" } -- each all, ordered or visible; a picker not named uses windows.source |
+
+#### yabai (`yabai`, extension)
+
+yabai's spaces as rows, each focused when picked; needs yabai
+
+| Setting | Type | Default | Description |
+|---|---|---|---|
+| `yabai.enabled` | boolean | `false` | Whether yabai is on; a change applies on reload. yabai's spaces as rows, each focused when picked; needs yabai. |
+| `yabai.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 
 #### zoxide (`zoxide`, extension)
 
@@ -1079,6 +1097,7 @@ Every command the shipped extensions and the kernel register, by id.
 | `vscodebridge.runCommand` | VS Code: Run command… | `vscodebridge` |
 | `vscodebridge.runTask` | VS Code: Run task… | `vscodebridge` |
 | `webview.open` | Open in a window | `webview` |
+| `wezterm.focusPane` | WezTerm: Focus pane | `wezterm` |
 | `windows.bottomHalf` | Window: Bottom half | `windows` |
 | `windows.bottomLeft` | Window: Bottom left | `windows` |
 | `windows.bottomRight` | Window: Bottom right | `windows` |
@@ -1109,3 +1128,4 @@ Every command the shipped extensions and the kernel register, by id.
 | `workbench.action.resetSetting` | Reset Setting | `workbench` |
 | `workbench.actions.view.problems` | View: Show Problems | `workbench` |
 | `workbench.profiles.actions.switchProfile` | Profiles: Switch Profile… | `workbench` |
+| `yabai.focusSpace` | yabai: Focus space | `yabai` |
