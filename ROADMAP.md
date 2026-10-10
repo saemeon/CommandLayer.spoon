@@ -1,218 +1,195 @@
 # Roadmap -- working file
 
-What is still to check on screen, and what is still to build. Decisions
-and their reasons are in [design.md](design.md), the contract in
-[CLAUDE.md](CLAUDE.md), how the code behaves in
-[docs/behaviour.md](docs/behaviour.md), and credits in
-[PRIOR_ART.md](PRIOR_ART.md). An id (D9, C4) is stable, so "C4 yes, E5
-no" works in chat.
+What is left to do, decide, test and watch. Decisions and their reasons are in
+[design.md](design.md), the contract in [CLAUDE.md](CLAUDE.md), how the code
+behaves in [docs/behaviour.md](docs/behaviour.md), credits in
+[PRIOR_ART.md](PRIOR_ART.md). An id (Q2, C17) is stable, so "Q2 yes, Q5 no"
+works in chat. A check confirmed on screen moves to
+[docs/seen-working.md](docs/seen-working.md); delete it here once ticked.
 
-## Owner checks
+## 1. Do first
 
-What only the owner can see or do; tick when done, delete once ticked. An
-agent's live check is a reload, the console and `problems`; what a check
-confirmed moves to [docs/seen-working.md](docs/seen-working.md).
+Things only the owner can do, and that other checks depend on.
 
-### Performance
+- [ ] **Give Hammerspoon Full Disk Access.** Since October 7 macOS refuses
+  Hammerspoon opening Brave's files ("Operation not permitted"), so Brave's
+  bookmarks, history and maybe tabs are missing; Show Problems says so.
+  How: System Settings ▸ Privacy & Security ▸ Full Disk Access (or App
+  Data), allow Hammerspoon, reload: the problem is gone, bookmarks are rows.
+- [ ] **Add the scripts folder in Raycast**, so the dummy script command can
+  run. How: Raycast ▸ Settings ▸ Extensions ▸ Script Commands ▸ Add
+  Directories ▸ `~/.hammerspoon/commandlayer/scripts`.
+- [ ] **Commit the dotfiles.** Uncommitted there: the config folder moved
+  from `.config/commandlayer` to `.hammerspoon/commandlayer`, the
+  `init.lua` changes (addExtension, mediacontrol on the media Mac only), the
+  dummy script, `raycast.scriptDirectories` and `wezterm.enabled`.
+- [ ] **Delete the old config folder** once all is well:
+  `~/.config/commandlayer.backup-2026-10-10`.
 
-- [ ] No slow `open root` line naming systemsettings any more (the panes are
-  seen listed after the change). None in the console from the reload at
-  12:47 to 13:26 on October 10; the old cost came hourly, so a day is the
-  test.
-  How: over the next hours, the console has no `open root … systemsettings`
-  warning. (One `slow: timer.systemsettings` line two seconds after a reload
-  is expected: that is the single scan.)
+## 2. Open questions
+
+- **Q1 Push main?** 41 commits ahead of GitHub, none pushed yet.
+- **Q2 SpoonInstall:** `scripts/spoon-release.sh <folder>` writes
+  `Spoons/CommandLayer.spoon.zip` and `docs/docs.json`. Publish it as a
+  `spoons` branch -- by hand per release, or a GitHub Action -- and add the
+  SpoonInstall lines to the README? Recommended: a GitHub Action on each tag.
+- **Q3 Settings per machine:** settings.json is now in shared dotfiles, so a
+  setting for one Mac only needs a way to differ. Today init.lua checks the
+  Mac's name (mediacontrol). Keep that, or support something like
+  `settings.<machine name>.json` applied on top? Recommended: keep init.lua's
+  way until a second setting needs it.
+- **Q4 Instant Send's key:** which global chord runs `selection.showActions`?
+  Suggested: `alt+shift+space`, added to your keybindings.json.
+- **Q5 HSKeybindings `mapping`:** drop it, or find out first what
+  HSKeybindings reads from a Spoon? Recommended: drop.
+- **Q6 The old app history** (`commandlayer.appMRU` in hs.settings) is no
+  longer read since J21. Delete it, or leave it? Recommended: leave; it is
+  harmless.
+
+## 3. To test on screen
+
+Each needs a reload of Hammerspoon first (cmd+alt+ctrl+R).
 
 ### The picker
 
-- [ ] Rerun last command and Rerun a recent command… (J19).
-  How: run Git: Checkout… and pick a branch, then `>` "rerun last": the same
-  checkout runs again without asking. `>` "rerun a recent" lists what ran,
-  each with its arguments below it.
-- [ ] Opening the launcher no longer waits on the window list (N8): no `slow:
-  gather.windows` or `windows: reading the … list` warning on an open; the
-  windows rows are there, and a window opened since appears a moment later.
-  How: use it for a day, then look in the console for those lines. A reread
-  that is slow may still log, after the picker is up.
-- [ ] "Search Text in…" opens at once (N6): it no longer gathers windows,
-  apps or tabs to throw them away.
-  How: `>` "search text in", enter: the folders are listed without a pause,
-  and a second enter is not needed. Before: 147 ms, 104 of it windows and apps.
-- [ ] Switching pickers by chord keeps what you typed: "pull" in the root,
-  then cmd+o, reads `>pull`; cmd+p from there reads `files pull`.
-  How: open the launcher, type "pull", press cmd+o: the field reads ">pull"
-  and the Git commands are listed at once, without typing another letter
-  (fzf's answer once arrived after its exit and was dropped). Press cmd+p:
-  "files pull".
+- [ ] **Picker chords keep what you typed.** Type "pull", press cmd+o: the
+  field reads `>pull` and the Git commands are listed at once; cmd+p then
+  reads `files pull`.
+- [ ] **Rerun** (J19). Run Git: Checkout… and pick a branch, then `>` "rerun
+  last": the same checkout runs without asking. `>` "rerun a recent" lists
+  what ran, with its arguments below.
+- [ ] **"Search Text in…" opens at once** (N6). `>` "search text in", enter:
+  the folders are listed without a pause; no second enter needed.
 
-### Search, files and selection
+### Files and selection
 
-- [ ] Instant Send (J2): a global key opens the actions panel on selected text.
-  How: bind `{ "key": "alt+shift+space", "command": "selection.showActions",
-  "global": true }`, select a word in TextEdit, press it: Look Up, Search the
-  web and Copy are listed for that word.
-- [ ] Several files selected in Finder are acted on together (N7).
-  How: select three files in Finder, open the launcher: `cmd+.` lists "3
-  selected"; Copy path copies three lines, Reveal in Finder selects all three,
-  Open with… opens all three in the app chosen.
-- [ ] Text selected in TextEdit, Notes or Xcode is a subject in the root and
-  `cmd+.`, with Look Up (Dictionary), Search the web and Copy.
-  How: select a word in TextEdit, open the launcher: a row for the selected
-  text; cmd+. offers Look Up, Search the web and Copy.
-- [ ] No selection in a password field, Brave or VS Code, and no `slow:
-  capture.selection` line. If Brave or VS Code get slower (reading their
-  focused element can switch on accessibility mode), they should be skipped.
-  How: select text on a Brave page and in VS Code, open the launcher: no
-  selection row. The console has no "slow: capture.selection" line.
+- [ ] **Several Finder files at once** (N7). Select three files in Finder,
+  open the launcher: `cmd+.` lists "3 selected"; Copy path copies three
+  lines, Reveal in Finder selects all three, Open with… opens all three.
+- [ ] **Selected text** is a subject. Select a word in TextEdit, open the
+  launcher: a row for it; `cmd+.` offers Look Up, Search the web and Copy.
+- [ ] **No selection** where there should be none: a password field, Brave, VS
+  Code; and no `slow: capture.selection` line in the console.
+- [ ] **Instant Send** (J2), once Q4 has a key: select a word in TextEdit,
+  press the key: Look Up, Search the web and Copy, for that word.
 
 ### Apps, windows and system
 
-- [ ] `processes ` lists running processes busiest first and updates while open
-  (J11); cmd+k on one offers Quit and Force quit.
-  How: type `processes `, watch the CPU figures change; leave it, and the
-  console shows no more `ps` runs.
-- [ ] Recent apps come from macOS (J21): `recent ` lists the running apps front
-  to back and then apps you quit, most recently used first.
-  How: quit an app, open `recent `: it is listed under the running ones.
-- [ ] `spoons ` lists the Hammerspoon hotkeys, and picking one presses it
-  (J17); another Spoon's methods are rows once one is loaded.
-  How: type `spoons ` then "f13": picking Hotkey F13 does what the remote's
-  Home key does.
-- [ ] In a password field, Paste, Emoji & Symbols and a YouTube key alert
-  that Secure Input is on, naming the app, and the key presses nothing.
-  How: click into a password field (e.g. a login page in Safari), open the
-  launcher, pick Paste or Emoji & Symbols: an alert names Safari and says
-  Secure Input is on; nothing is typed.
+- [ ] **Recent apps from macOS** (J21). Quit an app, open `recent `: it is
+  listed under the running apps, which come front to back.
+- [ ] **Processes** (J11). Type `processes `: busiest first, the CPU figures
+  change while you watch; cmd+k offers Quit and Force quit (asks first).
+- [ ] **Spoons and hotkeys** (J17). Type `spoons ` then "f13": picking Hotkey
+  F13 does what the remote's Home key does.
+- [ ] **Secure Input.** In a password field, Paste and Emoji & Symbols alert
+  that Secure Input is on, naming the app, and type nothing.
 
-### Browser, projects and remote
+### Browser
 
-- [ ] Brave's bookmarks, history and tabs readable again: since October 7 macOS
-  refuses Hammerspoon opening Brave's files ("Operation not permitted"), and
-  Show Problems now says so.
-  How: System Settings > Privacy & Security > Full Disk Access (or App Data),
-  allow Hammerspoon, reload: the problem is gone and bookmarks are rows again.
-- [ ] Tab, bookmark and history rows show their site's icon (J18).
-  How: a few minutes after a reload, `recent ` or `context ` with Brave in
-  front: tabs carry their sites' icons. `"browser.favicons": false` removes them.
-- [ ] Brave: Command palette opens Brave's own palette (J20). If nothing
-  opens, the chord is not Brave's: set `browser.bravePaletteKeys` to the one
-  Brave shows for its command palette.
-  How: with Brave in front, `cmd+.` then "command palette".
-- [ ] Your ssh hosts in the root, changing without a reload when
-  `~/.ssh/config` is edited; Connect in terminal opens `ssh <host>`; Connect
-  in editor opens a remote VS Code window.
-  How, against this Mac: add `Host test-box`, `HostName 127.0.0.1`,
-  `User simonniederberger` to ~/.ssh/config; "test-box" in the root shows
-  "SSH: test-box" without a reload. Picking it runs `ssh test-box` in
-  Terminal ("Connection refused" until Remote Login is on, which is enough to
-  see it sent). With System Settings ▸ General ▸ Sharing ▸ Remote Login on
-  (your user only), it connects; cmd+k ▸ Connect in editor opens a remote VS
-  Code window. Deleting the block takes the row away without a reload.
-- [ ] A remote recent reads "Project on <host>" in the root and `recent `,
-  opens remotely, and cmd+k offers Connect in terminal.
-  How: in the remote window from the check above, File ▸ Open Folder… ~/Git,
-  close it; "Git" in the root shows "Project on test-box -- …/Git", enter
-  opens it remotely. Afterwards: Remote Login off, the block removed.
-- [ ] VS Code's menu commands find their item: Command Palette, Go to File,
-  Run Task and Toggle Terminal (whose menu titles read "…" and carry a
-  shortcut) select it instead of alerting "has no menu item".
-  How: `>` "command palette", enter: VS Code comes forward with its palette
-  open. Likewise "run task", "go to file" and "toggle terminal".
-- [ ] The VS Code bridge's alerts when a bridge row runs: with VS Code quit or
-  removed, with the extension not installed, and (no alert) installed from
-  location.
-  How: quit VS Code, pick VS Code: Run command…: an alert says so.
-- [ ] `open "hammerspoon://commandlayer?command=<id>"` runs an id in
-  `urlhandler.allowedCommands` and refuses one that is not.
-  How: add `"urlhandler.allowedCommands": [ "developer.showLogs" ]`, then in
-  a terminal `open "hammerspoon://commandlayer?command=developer.showLogs"`:
-  the console opens. With `developer.showPerformance` instead: an alert
-  refuses it.
+Needs Full Disk Access (section 1).
 
-### Terminal
+- [ ] **Site icons** (J18). A few minutes after a reload, `recent ` with Brave
+  in front: tabs carry their sites' icons. `"browser.favicons": false`
+  removes them.
+- [ ] **Brave: Command palette** (J20). With Brave in front, `cmd+.` then
+  "command palette": Brave's own palette opens. If nothing happens,
+  `ctrl+space` is not Brave's chord: set `browser.bravePaletteKeys` to the
+  one Brave shows.
 
-- [ ] WezTerm's panes are rows in the root, focused when picked (J22).
-  How: with WezTerm running and two tabs open, type part of a tab's title:
-  "WezTerm pane" rows; picking one brings WezTerm forward on that pane.
-- [ ] `scripts ` lists Shortcuts, tasks and Raycast script commands (J4), and
-  the dummy script runs through Raycast.
-  How: in Raycast's settings, Extensions ▸ Script Commands ▸ Add Directories,
-  add `~/.hammerspoon/commandlayer/scripts`. Then type `scripts ` "hello":
-  Hello from Command Layer runs, and Raycast shows its greeting.
-- [ ] A task from `tasks.json` (beside settings.json) runs in its
-  `options.cwd`; a bad task is in Show Problems; "Tasks: Open User Tasks"
-  creates the file.
-  How (terminal on): `>` "user tasks" > Tasks: Open User Tasks creates the
-  file. Put in
-  `{ "version": "2.0.0", "tasks": [ { "label": "where am I", "type": "shell", "command": "pwd", "options": { "cwd": "~/Git" } } ] }`
-  and save: "where am I" in the root runs in Terminal and prints ~/Git. A
-  task without "command" is listed in Show Problems.
+### VS Code
 
-## What is left
+- [ ] **Menu commands find their item.** `>` "command palette", enter: VS
+  Code comes forward with its palette open. Likewise "run task", "go to
+  file", "toggle terminal".
+- [ ] **The bridge's alert.** Quit VS Code, pick VS Code: Run command…: an
+  alert says VS Code is not running, and nothing else happens.
 
-### The plan, agreed on October 10
+### SSH and remote
 
-In this order, one commit each, the harness green after each and every new
-check shown to fail without its change. What an item leaves to be seen on
-screen goes to the Owner checks above. Declined on the same day, with the
-reasons: design.md, "Declined, and why".
+- [ ] **ssh hosts change without a reload**; Connect in terminal and in
+  editor. Add `Host test-box`, `HostName 127.0.0.1`, `User
+  simonniederberger` to ~/.ssh/config: "test-box" in the root shows "SSH:
+  test-box" without a reload. Picking it runs `ssh test-box` in Terminal
+  ("Connection refused" until Remote Login is on, which is enough). With
+  System Settings ▸ General ▸ Sharing ▸ Remote Login on (your user only), it
+  connects; cmd+k ▸ Connect in editor opens a remote VS Code window.
+  Deleting the block removes the row without a reload.
+- [ ] **A remote recent.** In that remote window, File ▸ Open Folder… ~/Git,
+  close it: "Git" in the root shows "Project on test-box -- …/Git", enter
+  opens it remotely, cmd+k offers Connect in terminal. Afterwards: Remote
+  Login off, the block removed.
 
-**Progress: 18 of 18 done.**
+### Terminal and scripts
 
-| # | Item | State |
+- [ ] **Scripts** (J4), after section 1's Raycast step. Type `scripts `
+  "hello": Hello from Command Layer runs, and Raycast shows its greeting.
+- [ ] **WezTerm panes** (J22). With WezTerm running and two tabs, type part of
+  a tab's title: "WezTerm pane" rows; picking one brings WezTerm forward on
+  that pane.
+- [ ] **tasks.json.** `>` "user tasks" ▸ Tasks: Open User Tasks makes the
+  file. Put in `{ "version": "2.0.0", "tasks": [ { "label": "where am I",
+  "type": "shell", "command": "pwd", "options": { "cwd": "~/Git" } } ] }`
+  and save: "where am I" in the root runs in the terminal and prints ~/Git; a
+  task without "command" is in Show Problems.
+
+### URL handler
+
+- [ ] **Only allowed commands run.** Add `"urlhandler.allowedCommands": [
+  "developer.showLogs" ]`, then in a terminal `open
+  "hammerspoon://commandlayer?command=developer.showLogs"`: the console
+  opens. With `developer.showPerformance` instead: an alert refuses it.
+
+## 4. To watch over the next days
+
+Read from the console (or tell an agent to read it).
+
+- **No slow opens from System Settings or windows** (N8, systemsettings): no
+  `open root … systemsettings`, `slow: gather.windows` or `windows: reading
+  the … list` warning on an open. One `slow: timer.systemsettings` line two
+  seconds after a reload is expected: that is the single scan.
+- **Slow extensions in Show Problems** (C16): if one is named, it holds up
+  opens often enough to be worth switching off or looking at.
+- **Slow results as notifications** (C15): a Git: Fetch that takes over 5 s
+  shows up in Notification Center rather than as a fading alert.
+- **Crashes:** Hammerspoon went away twice on September 15 (one SIGPIPE,
+  fixed in ed37df6; one on a reload, more likely a hang). Note it here if it
+  happens again.
+
+## 5. Not planned
+
+- **C17** Draw the fast rows first, the slow extensions' rows a turn later.
+  The answer for a blocking source if one shows up again in section 4.
+- **C18** Streaming `items`, answering through `done` as `search` does. A
+  contract change; worth it once an extension needs it.
+- **Window focus order:** the lists are z-order, not focus history; a source
+  that watches focus is still to be judged worth its cost.
+
+## 6. Done on October 10
+
+| Item | Commit | What changed |
 |---|---|---|
-| 1 | **N6** "Search Text in…" slow to open | Done, 188a216 -- a question gathers only extensions that can answer it (`viewItems`); 147 ms to 64 ms |
-| 2 | **N8** Window list slow (up to 1.3 s) | Done, 60556d8 -- apps woken from App Nap were the cause; an open shows the last list and rereads it after drawing |
-| 3 | **C16** Slow extensions as problems | Done, 00ea3b0 -- slow at the 90th percentile of 5+ opens: named in Show Problems |
-| 4 | **N7** Finder's multiple selection | Done, 2fb4f9e -- Copy path, Reveal, Open with…, Open in editor act on every selected file |
-| 5 | **G2** Rows for Hammerspoon code | Done, a494f3b -- `layer.rows(view)`, e.g. for an `hs.menubar` |
-| 6 | **J19** Run a recent command again with its arguments | Done, 49c1ee7 -- Rerun last command, Rerun a recent command… (`rerun.lua`) |
-| 7 | **C11** Typing that extends the last query searches only what matched it | Done, de1118c -- the matcher is handed only the last query's matches |
-| 8 | **C15** A notification when a result lands after its picker closed | Done, 4f393b3 -- a background result taking `notifyAfterSeconds` (5) or longer is a notification; Git's task commands, shell and AppleScript failures |
-| 9 | **J20** A row handing over to Brave's own command palette (`ctrl+space`) | Done, 0ec3439 -- Brave: Command palette, chord in `browser.bravePaletteKeys` |
-| 10 | **J2** Instant Send: a global key opening cmd+k on the selected text | Done, de5caba -- `selection.showActions` for a global key; no chord shipped |
-| 11 | **J18** Favicons on tab and bookmark rows, from Chromium's database | Done, 4516721 -- site icons from Chromium's Favicons database; `browser.favicons` |
-| 12 | **J17** The loaded Spoons: their hotkeys and the commands they expose | Done, ac91938 -- `spoons ` picker: other Spoons' methods and every hotkey |
-| 13 | **J21** App history from macOS (`lsappinfo`, Spotlight's last-used date) in place of the launcher's own | Done, 6c0460f -- `lsappinfo` order and Spotlight's last-used date; the layer's own record is gone |
-| 14 | **J11** A live picker: running processes with Quit, redrawn while open | Done, 6b18366 -- `processes ` updates every 2 s while open; Quit, Force quit |
-| 15 | **J4** A Scripts picker fed by extensions (Shortcuts, tasks, Raycast script commands), tried with a dummy script | Done, 9f1ba55 -- `scripts ` picker; Raycast script commands from `raycast.scriptDirectories`; a dummy script in your dotfiles |
-| 16 | **J22** yabai spaces and WezTerm panes as rows | Done, 903c553 -- `wezterm` and `yabai` extensions (off as shipped; WezTerm switched on in your settings) |
-| 17 | **L5** A README table, one row per extension | Done, f20ea17 -- generated from each extension's description and verbs, kept current by the harness |
-| 18 | **L4** SpoonInstall, `obj.homepage`, logger and hotkey mapping; needs the repository public | Done, 3a70953 -- homepage, `logger`, `scripts/spoon-release.sh`; publishing the branch is yours to decide |
+| User folder | 7d014b5 | `~/.hammerspoon/commandlayer` by default |
+| addExtension | 518b1f3 | Extensions handed over from init.lua; replaced L6 |
+| Picker chords | 8e55074, f93f5ef, 172b83b | Keep what was typed; fzf's late answer no longer lost |
+| N6 | 188a216 | A question gathers only extensions that can answer it (`viewItems`): 147 ms to 64 ms |
+| N8 | 60556d8, 0cf7862 | The window list opens from the last read and rereads after drawing; `windows.reuseLastList` |
+| C16 | 00ea3b0 | An extension slow in 1 of 10 opens is named in Show Problems |
+| N7 | 2fb4f9e | Verbs on every file selected in Finder |
+| G2 | a494f3b | `layer.rows(view)` for an hs.menubar or a menu of your own |
+| J19 | 49c1ee7 | Rerun last command, Rerun a recent command… |
+| C11 | de1118c | Typing on searches only the last query's matches |
+| C15 | 4f393b3 | A background result taking 5 s or more is a notification (`notifyAfterSeconds`) |
+| J20 | 0ec3439 | Brave: Command palette (`browser.bravePaletteKeys`) |
+| J2 | de5caba | Instant Send, `selection.showActions` |
+| J18 | 4516721 | Site icons on tab, bookmark and history rows (`browser.favicons`) |
+| J17 | ac91938 | `spoons `: other Spoons' methods and every hotkey |
+| J21 | 6c0460f | Recent apps from macOS; the layer's own record gone |
+| J11 | 6b18366 | `processes `, a live picker |
+| J4 | 9f1ba55 | `scripts `: Shortcuts, tasks and Raycast script commands |
+| J22 | 903c553 | `wezterm` and `yabai` extensions, off as shipped |
+| L5 | f20ea17 | The README's table of extensions, generated |
+| L4 | 3a70953 | `obj.homepage`, `logger`, `scripts/spoon-release.sh` |
+| Brave access | 6ea21aa | A refused Bookmarks file is a problem saying where to allow it |
 
-Done before the plan, the same day: the user folder moved to
-`~/.hammerspoon/commandlayer` (7d014b5), extensions added from init.lua
-(518b1f3), picker chords keeping what was typed (8e55074, f93f5ef).
-
-### Not planned
-
-- **C17** Draw the fast rows first: gather the extensions known to be fast,
-  draw, then gather the slow ones a turn later and redraw, keeping the
-  highlight. Kernel only. The answer for a blocking source if N8 finds no
-  other.
-- **C18** Streaming `items`: a hook may return a function (how to stop)
-  instead of rows and answer through `done`, as `search` does. A contract
-  change; worth it once an extension needs it.
-- Window focus order: the lists are z-order, not focus history. Nothing
-  watches focus; a source that does is still to be judged worth its cost.
-
-### Watch
-
-- Hammerspoon went away twice on September 15: once killed by SIGPIPE,
-  fixed in ed37df6 (a task's input goes through a file, and the harness
-  forbids writing stdin), and once on a reload with no crash report, more
-  likely a hang. Note it here if it happens again.
-
-### Yours to decide
-
-- Publishing for SpoonInstall: `scripts/spoon-release.sh <folder>` writes
-  `Spoons/CommandLayer.spoon.zip` and `docs/docs.json`; pushed as a branch
-  (say `spoons`), SpoonInstall can install from it. Who pushes it -- by hand
-  per release, or a GitHub Action -- and whether the README then shows the
-  SpoonInstall lines.
-- An HSKeybindings `mapping`: not added; what HSKeybindings would read from a
-  Spoon is to be checked first.
-- Settings per machine: settings.json now lives in shared dotfiles, so a
-  setting meant for one Mac (`mediacontrol` on the media Mac only) needs a
-  way to differ by machine. Today init.lua decides it by the Mac's name.
-- A chord for Instant Send (`selection.showActions`): none ships.
+Declined the same day, with the reasons: design.md, "Declined, and why" (I2,
+M1, C14, Docker and mas, a script runner and a menu bar of our own).
