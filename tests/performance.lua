@@ -187,3 +187,32 @@ do
         spent < BUDGET_MS and opened > 0 and narrowed > 0 and #picker.shown > 0,
         ("%.0f ms, %d / %d / %d rows"):format(spent, opened, narrowed, #(picker.shown or {})))
 end
+
+group("slow extensions")
+do
+  steppedClock()
+  cl.configurePerformance({ slowMilliseconds = 250 })
+  cl.register({ name = "testslowrows", menus = { "test-slow-menu" }, items = hookCounting(300) })
+  cl.register({ name = "testfastrows", menus = { "test-slow-menu" }, items = hookCounting(5) })
+  local function named(name)
+    local found = {}
+    for _, p in ipairs(cl.getProblems()) do
+      if p.file == "extension " .. name then found[#found + 1] = p.message end
+    end
+    return found
+  end
+  local lines, restore = T.capturingPrint()
+  for _ = 1, 4 do cl.gather({}, { menus = { "test-slow-menu" } }) end
+  local afterFour = #named("testslowrows")
+  for _ = 1, 3 do cl.gather({}, { menus = { "test-slow-menu" } }) end
+  restore()
+  local slow = named("testslowrows")
+  cl.unregisterExtension("testslowrows")
+  cl.unregisterExtension("testfastrows")
+  check("an extension slow in one open of ten, over five opens, is a problem naming its time and how to "
+          .. "switch it off, once; a fast one is not",
+        afterFour == 0 and #slow == 1 and #named("testfastrows") == 0
+        and slow[1]:find("300 ms at the 90th percentile of 5 opens", 1, true) ~= nil
+        and slow[1]:find('"testslowrows.enabled": false', 1, true) ~= nil and #lines > 0,
+        tostring(slow[1]))
+end

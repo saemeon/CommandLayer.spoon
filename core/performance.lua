@@ -261,6 +261,18 @@ function M.performance(opts)
   return out
 end
 
+-- One name's count and the 90th percentile of its latest, cheaper than
+-- performance() when one is all a caller asks about; nil when never recorded.
+function M.spanStats(name)
+  local a = aggregates[name]
+  if not a then return nil end
+  local list = sortedSamples(a)
+  return { count = a.count, last = a.last, p90 = list[math.max(1, math.ceil(#list * 0.9))] }
+end
+
+-- The threshold over which a span is slow, in milliseconds; nil while unset.
+function M.slowMilliseconds() return slow end
+
 -- The latest spans, oldest first.
 function M.recentSpans()
   local out = {}

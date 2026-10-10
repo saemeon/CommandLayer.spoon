@@ -140,7 +140,10 @@ it, every span a `trace` line; `0` records nothing. Work off the main thread
 logs its slow line at `debug`, never `warning`: a span named `task.*` or
 `cache.*` waits on another process and slows nothing on screen, so name
 background work that way. Setup and start write
-their line at `debug` only, since starting may take longer. "Developer: Show
+their line at `debug` only, since starting may take longer. An extension whose
+`gather.<name>` is over that threshold at the 90th percentile of five opens or
+more is a problem once per setup, naming its time and its `"<ext>.enabled":
+false` (`noticeSlow` in `core/extensions.lua`). "Developer: Show
 Performance" lists the names slowest first, "Reset Performance" clears
 them, and an extension reads them through `cl.performance()`. The harness
 gives every kernel a still clock (`T.loadKernel`), so no timing line

@@ -190,6 +190,7 @@ function M.reload(opts)
   if type(opts) == "table" and opts.ifChanged and not M.profileFilesChanged() then return false end
   M.stop()
   M.unloadPlugins()
+  M.namedSlow = {}
   for _, list in ipairs({ M.keybindings, M.problems }) do
     for i = #list, 1, -1 do list[i] = nil end
   end

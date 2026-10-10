@@ -353,6 +353,23 @@ local function subjectKey(item)
          .. tostring(s.id or s.path or s.url or s.name or item.label)
 end
 
+-- An extension that keeps holding up opens is a problem naming its time, once
+-- a setup: switching it off is the way out, and only the person can choose it.
+-- Five opens at least, so one slow first open after a reload is not enough.
+local SLOW_OPENS = 5
+M.namedSlow = {}
+
+local function noticeSlow(name, ms)
+  local limit = M.slowMilliseconds()
+  if not limit or ms < limit or M.namedSlow[name] then return end
+  local stats = M.spanStats("gather." .. name)
+  if not (stats and stats.count >= SLOW_OPENS and stats.p90 >= limit) then return end
+  M.namedSlow[name] = true
+  M.problem("extension " .. name, ("its rows take over %d ms in one open of ten (%d ms at the 90th "
+    .. "percentile of %d opens), holding up every picker it feeds; \"%s.enabled\": false switches it off")
+    :format(math.floor(limit), math.floor(stats.p90 + 0.5), stats.count, name))
+end
+
 -- One pass over the extensions, in order. The first row for a subject
 -- wins, so an extension lists what matters first -- recently used apps,
 -- then every app -- and never has to filter one list by the other.
@@ -378,7 +395,7 @@ local function gather(ctx, opts)
        and M.onOwnMenu(ext.menus or DEFAULT_MENUS, ext.name, wanted, ctx, overrides) then
       local stop = M.span("gather." .. ext.name)
       local ok, produced = pcall(ext.items, ctx, opts)
-      stop(ok and type(produced) == "table" and (#produced .. " rows") or nil)
+      noticeSlow(ext.name, stop(ok and type(produced) == "table" and (#produced .. " rows") or nil))
       if not ok then
         M.log.e("extension '" .. tostring(ext.name)
               .. "' items -> " .. tostring(produced))

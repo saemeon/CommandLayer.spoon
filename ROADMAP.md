@@ -114,8 +114,6 @@ check shown to fail without its change. What an item leaves to be seen on
 screen goes to the Owner checks above. Declined on the same day, with the
 reasons: design.md, "Declined, and why".
 
-3. **C16** An extension whose `gather.<name>` stays over a budget is listed in
-   Show Problems with its time, switching it off the way out.
 4. **N7** Finder's multiple selection (`finderSelectedFiles`): Copy path,
    Reveal in Finder, Open with… and Open in editor act on every selected file
    when several are selected.
