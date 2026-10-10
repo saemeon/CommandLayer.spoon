@@ -527,6 +527,15 @@ Open the settings and keybindings files, switch profile, list problems, and forg
 | `workbench.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
 | `workbench.autoReload` | boolean | `true` | Reload when settings.json or keybindings.json changes |
 
+#### Processes (`processes`, extension)
+
+The processes running, busiest first, updated while the picker is open; Quit and Force quit
+
+| Setting | Type | Default | Description |
+|---|---|---|---|
+| `processes.enabled` | boolean | `true` | Whether Processes is on; a change applies on reload. The processes running, busiest first, updated while the picker is open; Quit and Force quit. |
+| `processes.menus` | object |  | Which pickers its rows and commands are in, over what it declares: a menu's name to true (added) or false (taken out); a menu not named keeps the declaration. A command that is no row anywhere stays none. |
+
 #### Projects (`projects`, extension)
 
 | Setting | Type | Default | Description |
@@ -1002,6 +1011,8 @@ Every command the shipped extensions and the kernel register, by id.
 | `media.nextTrack` | Media: Next track | `media` |
 | `media.playPause` | Media: Play / pause | `media` |
 | `media.previousTrack` | Media: Previous track | `media` |
+| `processes.forceQuit` | Process: Force quit | `processes` |
+| `processes.quit` | Process: Quit | `processes` |
 | `quickOpen` | Quick Open | kernel |
 | `quickOpen.accept` | open | kernel |
 | `quickOpen.back` | back | kernel |

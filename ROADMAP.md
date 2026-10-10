@@ -67,6 +67,10 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ### Apps, windows and system
 
+- [ ] `processes ` lists running processes busiest first and updates while open
+  (J11); cmd+k on one offers Quit and Force quit.
+  How: type `processes `, watch the CPU figures change; leave it, and the
+  console shows no more `ps` runs.
 - [ ] Recent apps come from macOS (J21): `recent ` lists the running apps front
   to back and then apps you quit, most recently used first.
   How: quit an app, open `recent `: it is listed under the running ones.

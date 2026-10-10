@@ -839,6 +839,18 @@ message when it has one, its chord pressed a tenth of a second after the
 launcher closes. A hotkey whose key hs.keycodes does not know is left out;
 this Spoon is too, its commands being rows already. Nothing is kept.
 
+## Processes, a live picker
+
+`processes ` (`processes.lua`) is the one picker whose rows change while it
+is open: its first gather reads `ps -Ao pid=,pcpu=,rss=,comm=` in a task and
+starts a timer that reads it again every `M.seconds` (2), each answer redrawn
+through `refresh()`; the extension's `left` hook stops the timer when the
+level comes off the stack, so nothing ticks behind a closed launcher. Busiest
+first, the 50 most, a row's subject `{ kind = "process", pid }`, its id the
+pid, so the highlight stays on a process as the list moves. cmd+k offers Quit
+(`kill -TERM`) and Force quit (`kill -KILL`, asked first). The picker has no
+`empty`: the first list lands a moment after it opens.
+
 ## Commands that take text
 
 An input with `fromQuery`, its picker `typed`, is answered by what was

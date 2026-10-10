@@ -103,6 +103,8 @@
               "media.nextTrack",
               "media.playPause",
               "media.previousTrack",
+              "processes.forceQuit",
+              "processes.quit",
               "quickOpen",
               "quickOpen.accept",
               "quickOpen.back",
