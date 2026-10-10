@@ -106,3 +106,6 @@ Ticked on October 10: `"$schema"` in settings.json pointing at the Spoon's
 
 Seen on October 10: the System Settings panes still listed ("Wi-Fi") once they
 are scanned once per start rather than on an open.
+
+Seen on October 10: ssh host rows reading "SSH: <name>" and the Homebrew
+commands reading "Brew: Update", "Brew: Upgrade" and so on.

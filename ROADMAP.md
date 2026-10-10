@@ -51,11 +51,6 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ### Browser, projects and remote
 
-- [ ] An ssh host row reading "SSH: <name>", as a command row reads
-  "Category: Title", and the Homebrew commands reading "Brew: Update" and so
-  on.
-  How: type "ssh" in the root: the rows read "SSH: <host>". Type "brew"
-  (terminal on): "Brew: Update", "Brew: Upgrade"…
 - [ ] Your ssh hosts in the root, changing without a reload when
   `~/.ssh/config` is edited; Connect in terminal opens `ssh <host>`; Connect
   in editor opens a remote VS Code window.
