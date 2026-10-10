@@ -103,3 +103,6 @@ a site file of your own.
 
 Ticked on October 10: `"$schema"` in settings.json pointing at the Spoon's
 `config/settings.schema.json`, completing and underlining in VS Code.
+
+Seen on October 10: the System Settings panes still listed ("Wi-Fi") once they
+are scanned once per start rather than on an open.

@@ -15,20 +15,22 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ### Performance
 
-- [ ] No slow `open root` line naming systemsettings any more, and the panes
-  still listed.
-  How: reload, wait a few seconds, type "wi-fi" in the root: the pane is
-  there. Over the next hours, the console has no `open root … systemsettings`
+- [ ] No slow `open root` line naming systemsettings any more (the panes are
+  seen listed after the change).
+  How: over the next hours, the console has no `open root … systemsettings`
   warning. (One `slow: timer.systemsettings` line two seconds after a reload
   is expected: that is the single scan.)
 
 ### Search, files and selection
 
 - [ ] zoxide's folders in `files ` before and while typing, cmd+k on one; a
-  folder opened here reaches `zoxide query` (writes your real database;
-  `zoxide.learn` off stops it).
-  How: cmd+p: folders from zoxide are listed; open one. In a terminal,
-  `zoxide query` lists it near the top. `"zoxide.learn": false` stops that.
+  folder opened here reaches zoxide's list, and an app opened here does not
+  (writes your real database; `zoxide.learn` off stops it).
+  How: cmd+p, open a folder, then in a terminal
+  `zoxide query --list --score | grep <folder name>`: it is there, at a low
+  score after one visit (`zoxide query` alone prints only the best match).
+  Open an app from the launcher: `zoxide query --list | grep '\.app$'` lists
+  nothing new.
 - [ ] Text selected in TextEdit, Notes or Xcode is a subject in the root and
   `cmd+.`, with Look Up (Dictionary), Search the web and Copy.
   How: select a word in TextEdit, open the launcher: a row for the selected

@@ -91,13 +91,20 @@ end
 -- The folder a pick went to, if it went to one: the row's own path, or
 -- what its command was given -- a folder opened, Open in terminal on a
 -- folder row.
+-- An app is a directory too, so a path counts only from a row that is a
+-- folder or a project: picking Spotify once put Spotify.app in `cd`'s list.
+local FOLDER_KINDS = { folder = true, project = true }
+
 function M.folderOf(item)
   if type(item) ~= "table" then return nil end
   local subject = item.subject or {}
   local args = type(item.args) == "table" and item.args or {}
-  local candidates = { subject.path, args.target }
+  local candidates = {}
+  if FOLDER_KINDS[subject.kind] then
+    candidates = { subject.path, args.target }
+  end
   for _, arg in pairs(args) do
-    if type(arg) == "table" then candidates[#candidates + 1] = arg.path end
+    if type(arg) == "table" and FOLDER_KINDS[arg.kind] then candidates[#candidates + 1] = arg.path end
   end
   for i = 1, #candidates do
     if isDirectory(candidates[i]) then return candidates[i] end

@@ -82,9 +82,12 @@ ext.picked({ subject = { kind = "file", path = file },
              command = "system.open", args = { target = file } })
 ext.picked({ label = "Open in terminal", command = "files.openInTerminal",
              args = { target = { kind = "folder", path = dir .. "/two" } } })
+-- An app bundle is a directory: picking an app must not reach `cd`'s list.
+ext.picked({ subject = { kind = "app", name = "Two", path = dir .. "/two" },
+             command = "apps.launchOrFocus", args = { target = dir .. "/two" } })
 local added = {}
 for i = before + 1, #ran do added[#added + 1] = table.concat(ran[i].args, " ") end
-check("opening a folder tells zoxide, whichever way it was opened; a file does not",
+check("opening a folder tells zoxide, whichever way it was opened; a file or an app does not",
       table.concat(added, " | ") == "add " .. dir .. "/one | add " .. dir .. "/two",
       table.concat(added, " | "))
 
