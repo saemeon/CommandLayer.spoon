@@ -83,6 +83,59 @@ check("with Finder in front they are context actions on its selection, and not o
       inContext({ finderSelection = "/x/y" }) and not inContext({ finderSelection = "" })
       and current ~= nil and current.path == "/x/y" and input.preferCurrent == true)
 
+-- Several files selected in Finder: the verbs that can take several act on all.
+do
+  local several = { finderSelection = "/x/a.txt", finderSelectedFiles = { "/x/a.txt", "/x/b.txt", "/x/c.txt" } }
+  local selection = input.current(several)
+  local one = input.current({ finderSelection = "/x/a.txt", finderSelectedFiles = { "/x/a.txt" } })
+
+  local copied, revealed, edited = nil, nil, {}
+  local copy, reveal, editor = cl.getCommand("system.copy"), cl.getCommand("system.reveal"),
+                               cl.getCommand("editor.open")
+  local saved = { copy = copy.run, reveal = reveal.run, editor = editor and editor.run }
+  copy.run = function(args) copied = args.text end
+  reveal.run = function(args) revealed = args.target end
+  if editor then editor.run = function(args) edited[#edited + 1] = args.target end end
+  cl.executeCommand("files.copyPath", { target = selection }, several)
+  cl.executeCommand("files.revealInFinder", { target = selection }, several)
+  cl.executeCommand("files.openInEditor", { target = selection }, several)
+  copy.run, reveal.run = saved.copy, saved.reveal
+  if editor then editor.run = saved.editor end
+
+  local selectionRow
+  for _, subject in ipairs(cl.ambientSubjects(several)) do
+    if subject.kind == "file" then selectionRow = subject end
+  end
+  check("with several files selected in Finder, Copy path, Reveal in Finder and Open in editor take them all, "
+          .. "and the selection reads how many",
+        selection and #selection.paths == 3 and one and one.paths == nil
+        and copied == "/x/a.txt\n/x/b.txt\n/x/c.txt"
+        and type(revealed) == "table" and table.concat(revealed, " ") == "/x/a.txt /x/b.txt /x/c.txt"
+        and table.concat(edited, " ") == "/x/a.txt /x/b.txt /x/c.txt"
+        and selectionRow and selectionRow.label == "3 selected" and #selectionRow.paths == 3,
+        tostring(copied) .. " / " .. table.concat(edited, " "))
+
+  local argv
+  local savedNew, savedOpen = hs.task.new, cl.tools.paths.open
+  cl.tools.paths.open = "/usr/bin/open"
+  hs.task.new = function(_, _, _, args)
+    argv = args
+    return { start = function(t) return t end, terminate = function() end }
+  end
+  cl.executeCommand("system.openWith", { target = selection,
+                                         app = { id = "com.example.editor", name = "Editor" } }, several)
+  cl.executeCommand("system.reveal", { target = { "/x/a.txt", "/x/b.txt" } }, several)
+  local revealArgv = argv and table.concat(argv, " ")
+  cl.executeCommand("system.openWith", { target = selection,
+                                         app = { id = "com.example.editor", name = "Editor" } }, several)
+  local openArgv = argv and table.concat(argv, " ")
+  hs.task.new, cl.tools.paths.open = savedNew, savedOpen
+  check("Open with… opens the whole selection in the app chosen, and a reveal of several is one open -R",
+        openArgv == "-b com.example.editor /x/a.txt /x/b.txt /x/c.txt"
+        and revealArgv == "-R /x/a.txt /x/b.txt",
+        tostring(openArgv) .. " / " .. tostring(revealArgv))
+end
+
 -- A search gives up to searchLimit paths, and every icon is an image made on
 -- the main thread.
 do

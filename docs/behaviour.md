@@ -569,6 +569,11 @@ not do is not taken as a text command's answer, so picking asks.
 - **Paths** (`files.lua`): Open in terminal, Open in editor, Reveal in
   Finder, Copy path, on a file, folder or project, preferring Finder's
   selection. No other extension writes its own copy; the harness counts.
+  With several items selected in Finder, the subject taken from it -- and the
+  selection row in `cmd+.`, reading "3 selected" -- carries them all as
+  `paths`: Copy path copies one per line, Reveal in Finder and Open with…
+  are one `open` of them all (`system.open`'s `target` may be a list), Open
+  in editor opens each, and Open in terminal opens the first one's folder.
 - **Git:** the repository commands take a project or folder that is a
   `gitRepository`. Pull, Push and Checkout… run `git` in the terminal, in the
   repository (`terminalCommand`), so a conflict or a credential prompt is seen

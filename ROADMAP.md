@@ -43,6 +43,10 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ### Search, files and selection
 
+- [ ] Several files selected in Finder are acted on together (N7).
+  How: select three files in Finder, open the launcher: `cmd+.` lists "3
+  selected"; Copy path copies three lines, Reveal in Finder selects all three,
+  Open with… opens all three in the app chosen.
 - [ ] Text selected in TextEdit, Notes or Xcode is a subject in the root and
   `cmd+.`, with Look Up (Dictionary), Search the web and Copy.
   How: select a word in TextEdit, open the launcher: a row for the selected
@@ -114,9 +118,6 @@ check shown to fail without its change. What an item leaves to be seen on
 screen goes to the Owner checks above. Declined on the same day, with the
 reasons: design.md, "Declined, and why".
 
-4. **N7** Finder's multiple selection (`finderSelectedFiles`): Copy path,
-   Reveal in Finder, Open with… and Open in editor act on every selected file
-   when several are selected.
 5. **G2** `layer.rows(view)` on the public layer: each row's label, subtitle
    and a function running it, so Hammerspoon code -- an `hs.menubar`, the
    owner's menubar.lua -- can show a picker's rows. No menu bar of our own.

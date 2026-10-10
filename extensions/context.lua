@@ -48,8 +48,11 @@ function M.extension(cl)
       local subjects = {}
 
       if (ctx.finderSelection or "") ~= "" then
+        local several = type(ctx.finderSelectedFiles) == "table" and #ctx.finderSelectedFiles > 1
         subjects[#subjects + 1] = {
-          kind = "file", path = ctx.finderSelection, label = "Selection",
+          kind = "file", path = ctx.finderSelection,
+          label = several and (#ctx.finderSelectedFiles .. " selected") or "Selection",
+          paths = several and ctx.finderSelectedFiles or nil,
         }
       end
 

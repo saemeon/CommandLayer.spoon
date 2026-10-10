@@ -89,12 +89,22 @@ function M.extension(cl)
   -- /usr/bin/open, which takes anything Launch Services knows; hs.urlevent
   -- does not take every scheme -- x-apple.systempreferences: does nothing
   -- through it.
+  -- `target` may be a list, which open takes in one call: several files
+  -- revealed, or opened in one app, as Finder does with a selection.
   local function open(args, ctx, flags, verb)
     local bundleOnly = args.target == nil and type(args.bundle) == "string" and args.bundle ~= ""
-    local target = not bundleOnly and cl.resolve(args.target, ctx) or nil
-    -- Bare `open` opens a Finder window, so an unresolved template would
-    -- look like it worked.
-    if not bundleOnly and (not target or target == "") then return end
+    local targets = {}
+    if not bundleOnly then
+      for _, given in ipairs(type(args.target) == "table" and args.target or { args.target }) do
+        local resolved = cl.resolve(given, ctx)
+        -- Bare `open` opens a Finder window, so an unresolved template would
+        -- look like it worked.
+        if not resolved or resolved == "" then return end
+        targets[#targets + 1] = resolved
+      end
+      if #targets == 0 then return end
+    end
+    local target = targets[1]
     local argv = {}
     for _, flag in ipairs(flags) do argv[#argv + 1] = flag end
     -- Which app, as Finder's Open With chooses: the bundle id before a name
@@ -106,7 +116,7 @@ function M.extension(cl)
       argv[#argv + 1] = "-a"
       argv[#argv + 1] = args.app
     end
-    argv[#argv + 1] = target
+    for _, each in ipairs(targets) do argv[#argv + 1] = each end
     cl.tools.run(cl.tools.path("open") or "/usr/bin/open", argv, function(code, _, stderr)
       if code ~= 0 then
         hs.alert.show("Could not " .. verb .. " " .. tostring(args.title or target or args.bundle))
@@ -212,8 +222,10 @@ function M.extension(cl)
           local target = M.openWithTarget(args.target)
           local app = args.app
           if not target or type(app) ~= "table" then return end
-          open({ target = target, bundle = app.id, app = not app.id and app.path or nil, title = app.name },
-               ctx, {}, "open")
+          -- Finder's whole selection, when the target stands for several.
+          local several = type(args.target.paths) == "table" and args.target.paths[2] and args.target.paths
+          open({ target = several or target, bundle = app.id, app = not app.id and app.path or nil,
+                 title = app.name }, ctx, {}, "open")
         end },
 
       -- The text as it is: a copied value is never a template.

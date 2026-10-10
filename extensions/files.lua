@@ -195,6 +195,16 @@ function M.searchArgs(tool, o)
   return args
 end
 
+-- Finder's selection when it holds more than one item, else nil: a subject
+-- carries it as `paths`, and a verb that can take several acts on them all.
+function M.severalSelected(ctx)
+  local files = ctx and ctx.finderSelectedFiles
+  if type(files) ~= "table" or #files < 2 then return nil end
+  local copy = {}
+  for i, path in ipairs(files) do copy[i] = path end
+  return copy
+end
+
 function M.extension(cl)
   layer = cl
 
@@ -220,7 +230,9 @@ function M.extension(cl)
       preferCurrent = true,
       current = function(ctx)
         local selection = ctx and ctx.finderSelection
-        if selection and selection ~= "" then return { kind = "file", path = selection } end
+        if selection and selection ~= "" then
+          return { kind = "file", path = selection, paths = M.severalSelected(ctx) }
+        end
       end,
     }
   end
@@ -244,18 +256,25 @@ function M.extension(cl)
     }
   end
 
+  -- Every path a subject stands for: Finder's whole selection when several
+  -- are selected, else its one path. A terminal opens in one folder, so Open
+  -- in terminal takes the first.
+  local function pathsOf(subject)
+    return type(subject.paths) == "table" and subject.paths[1] and subject.paths or { subject.path }
+  end
+
   local commands = {
     pathCommand("openInTerminal", "Open in terminal", "$(terminal)", function(target, ctx)
       cl.executeCommand("terminal.open", { target = folderOf(target) }, ctx)
     end, "terminalAvailable"),
     pathCommand("openInEditor", "Open in editor", "$(code)", function(target, ctx)
-      cl.executeCommand("editor.open", { target = target.path }, ctx)
+      for _, path in ipairs(pathsOf(target)) do cl.executeCommand("editor.open", { target = path }, ctx) end
     end),
     pathCommand("revealInFinder", "Reveal in Finder", "$(folder-opened)", function(target, ctx)
-      cl.executeCommand("system.reveal", { target = target.path }, ctx)
+      cl.executeCommand("system.reveal", { target = pathsOf(target) }, ctx)
     end),
     pathCommand("copyPath", "Copy path", "$(copy)", function(target, ctx)
-      cl.executeCommand("system.copy", { text = target.path }, ctx)
+      cl.executeCommand("system.copy", { text = table.concat(pathsOf(target), "\n") }, ctx)
     end),
 
     -- Only on cmd+k: from search, picking a file row already opens it.
