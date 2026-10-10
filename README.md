@@ -173,6 +173,13 @@ a list that never reorders itself.
 
 Escape always steps back one level and can't be rebound.
 
+To act on selected text from any app in one key -- Look Up, Search the web,
+Copy -- bind Show actions globally:
+
+```jsonc
+{ "key": "alt+shift+space", "command": "selection.showActions", "global": true }
+```
+
 ### Changing the entry key
 
 The entry key is a global keybinding, so it works in every app:

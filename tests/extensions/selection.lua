@@ -187,3 +187,18 @@ local copied
 stub(hs.pasteboard, "setContents", function(text) copied = text end)
 cl.executeCommand("selection.copy", { text = { kind = "selection", value = "  two ${clipboard} " } }, subjectCtx)
 check("Copy puts the selected text on the clipboard as it is", copied == "  two ${clipboard} ", tostring(copied))
+
+local opened
+local quickOpen = cl.getCommand("quickOpen")
+stub(quickOpen, "run", function(args) opened = args end)
+local said
+stub(hs.alert, "show", function(text) said = text end)
+cl.executeCommand("selection.showActions", {}, { selection = "  the  selected\ntext " })
+local withText = opened
+opened = nil
+cl.executeCommand("selection.showActions", {}, { selection = "" })
+check("Show actions opens the actions panel on the selected text; with none selected, it says so",
+      withText and withText.view == "actions" and withText.subject.kind == "selection"
+      and withText.subject.value == "  the  selected\ntext " and withText.label == "the selected text"
+      and opened == nil and said == "No text selected",
+      withText and (tostring(withText.view) .. " / " .. tostring(withText.label)) or tostring(said))

@@ -47,6 +47,10 @@ confirmed moves to [docs/seen-working.md](docs/seen-working.md).
 
 ### Search, files and selection
 
+- [ ] Instant Send (J2): a global key opens the actions panel on selected text.
+  How: bind `{ "key": "alt+shift+space", "command": "selection.showActions",
+  "global": true }`, select a word in TextEdit, press it: Look Up, Search the
+  web and Copy are listed for that word.
 - [ ] Several files selected in Finder are acted on together (N7).
   How: select three files in Finder, open the launcher: `cmd+.` lists "3
   selected"; Copy path copies three lines, Reveal in Finder selects all three,

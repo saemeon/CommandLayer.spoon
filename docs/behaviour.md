@@ -625,6 +625,10 @@ not do is not taken as a text command's answer, so picking asks.
   Hammerspoon itself, or past `M.maxLength` (1000). No cmd+c fallback: it
   would overwrite the clipboard, so an app without `AXSelectedText`
   (Electron, browsers) has no selection. Its cost is `capture.selection`.
+  Instant Send is `selection.showActions` ("Selection: Show actions"): bound
+  to a global key, it opens the actions panel -- the declared picker of kind
+  `item`, `actions` as shipped -- on the selected text, skipping the picker
+  in between; nothing selected, it says so. No chord ships for it.
 - **Typed URLs** (`url.lua`): a query that reads as an address (a scheme's
   `://`, `www.`, or a host with a path) is a row opening it, carrying a
   `url` subject, so cmd+k offers the link verbs other extensions own --

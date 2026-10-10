@@ -1012,6 +1012,7 @@ Every command the shipped extensions and the kernel register, by id.
 | `selection.copy` | Copy | `selection` |
 | `selection.lookUp` | Look Up | `selection` |
 | `selection.searchWeb` | Search the web | `selection` |
+| `selection.showActions` | Selection: Show actions | `selection` |
 | `shell.run` | Run a command line | `shell` |
 | `shortcuts.run` | Run shortcut | `shortcuts` |
 | `snippets.open` | Snippets | `snippets` |

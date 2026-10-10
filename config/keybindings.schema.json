@@ -123,6 +123,7 @@
               "selection.copy",
               "selection.lookUp",
               "selection.searchWeb",
+              "selection.showActions",
               "shell.run",
               "shortcuts.run",
               "snippets.open",

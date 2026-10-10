@@ -99,6 +99,28 @@ function M.extension(cl)
           if not ran then hs.alert.show("Search the web needs the Browser extension") end
         end },
 
+      -- Instant Send: one global key straight to what can be done with the
+      -- text selected, skipping the picker in between. The panel is the
+      -- declared picker of kind "item" -- "actions" as shipped.
+      { id = "selection.showActions", title = "Show actions", category = "Selection", icon = "$(zap)",
+        menus = {},
+        run = function(_, ctx)
+          local text = ctx and ctx.selection
+          if type(text) ~= "string" or text == "" then
+            hs.alert.show("No text selected")
+            return
+          end
+          local panel
+          for _, view in ipairs(cl.getViews()) do
+            if view.kind == "item" and (view.name == "actions" or not panel) then panel = view.name end
+          end
+          if not panel then return end
+          local label = trimmed(text):gsub("%s+", " ")
+          if #label > 40 then label = label:sub(1, 40) .. "…" end
+          local subject = { kind = "selection", value = text, label = "Selected text" }
+          cl.executeCommand("quickOpen", { view = panel, label = label, subject = subject }, ctx)
+        end },
+
       { id = "selection.copy", title = "Copy", icon = "$(copy)",
         menus = { ["view/item/context"] = true },
         inputs = selectionInput("Copy what"),
